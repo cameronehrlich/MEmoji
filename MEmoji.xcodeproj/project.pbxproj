@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
 		32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
@@ -22,6 +23,9 @@
 		32DD88AA19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
 		32DD88B219870B44008E8BCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD88B019870B44008E8BCE /* InfoPlist.strings */; };
 		32DD88B419870B44008E8BCE /* MEmojiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD88B319870B44008E8BCE /* MEmojiTests.m */; };
+		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
+		32F752681987513000045AFA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F752671987513000045AFA /* Image.m */; };
+		B70966644BFC49138AC4B007 /* libPods-MEmoji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
+		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
 		32DD888219870B44008E8BCE /* MEmoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEmoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DD888519870B44008E8BCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DD888719870B44008E8BCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -55,6 +61,11 @@
 		32DD88AF19870B44008E8BCE /* MEmojiTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MEmojiTests-Info.plist"; sourceTree = "<group>"; };
 		32DD88B119870B44008E8BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DD88B319870B44008E8BCE /* MEmojiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEmojiTests.m; sourceTree = "<group>"; };
+		32F7526419874FEA00045AFA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
+		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		440924C2EAE248058F39FCB9 /* Pods-MEmoji.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.xcconfig"; path = "Pods/Pods-MEmoji.xcconfig"; sourceTree = "<group>"; };
+		BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEmoji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +76,7 @@
 				32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */,
 				32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */,
 				32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */,
+				B70966644BFC49138AC4B007 /* libPods-MEmoji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +100,7 @@
 				32DD88AD19870B44008E8BCE /* MEmojiTests */,
 				32DD888419870B44008E8BCE /* Frameworks */,
 				32DD888319870B44008E8BCE /* Products */,
+				440924C2EAE248058F39FCB9 /* Pods-MEmoji.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +120,7 @@
 				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
 				32DD888919870B44008E8BCE /* UIKit.framework */,
 				32DD88A719870B44008E8BCE /* XCTest.framework */,
+				BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,6 +131,7 @@
 				32DD889419870B44008E8BCE /* MEAppDelegate.h */,
 				32DD889519870B44008E8BCE /* MEAppDelegate.m */,
 				32DD889719870B44008E8BCE /* Main_iPhone.storyboard */,
+				32F752691987514300045AFA /* Model */,
 				32DD889A19870B44008E8BCE /* Main_iPad.storyboard */,
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
@@ -155,6 +170,18 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		32F752691987514300045AFA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				32F7526319874FEA00045AFA /* Model.xcdatamodeld */,
+				32F752661987513000045AFA /* Image.h */,
+				32F752671987513000045AFA /* Image.m */,
+				327A02221987542200DF27BC /* MEMEmojiCell.h */,
+				327A02231987542200DF27BC /* MEMEmojiCell.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -162,9 +189,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32DD88B719870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmoji" */;
 			buildPhases = (
+				790A48745724412D88DC492A /* Check Pods Manifest.lock */,
 				32DD887E19870B44008E8BCE /* Sources */,
 				32DD887F19870B44008E8BCE /* Frameworks */,
 				32DD888019870B44008E8BCE /* Resources */,
+				C6552BDD0D8D4118B98CE1D6 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,14 +278,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		790A48745724412D88DC492A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C6552BDD0D8D4118B98CE1D6 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-MEmoji-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		32DD887E19870B44008E8BCE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
+				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
+				32F752681987513000045AFA /* Image.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +453,7 @@
 		};
 		32DD88B819870B44008E8BCE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 440924C2EAE248058F39FCB9 /* Pods-MEmoji.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -401,6 +467,7 @@
 		};
 		32DD88B919870B44008E8BCE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 440924C2EAE248058F39FCB9 /* Pods-MEmoji.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -471,6 +538,7 @@
 				32DD88B919870B44008E8BCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		32DD88BA19870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmojiTests" */ = {
 			isa = XCConfigurationList;
@@ -479,8 +547,22 @@
 				32DD88BC19870B44008E8BCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		32F7526319874FEA00045AFA /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				32F7526419874FEA00045AFA /* Model.xcdatamodel */,
+			);
+			currentVersion = 32F7526419874FEA00045AFA /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 32DD887A19870B44008E8BCE /* Project object */;
 }
