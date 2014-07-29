@@ -1,0 +1,15 @@
+PODS:
+  - MagicalRecord (2.2):
+    - MagicalRecord/Core
+  - MagicalRecord/Core (2.2)
+  - UIImage+Additions (1.1.0)
+
+DEPENDENCIES:
+  - MagicalRecord (~> 2.2)
+  - UIImage+Additions (~> 1.1)
+
+SPEC CHECKSUMS:
+  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
+
+COCOAPODS: 0.33.1
