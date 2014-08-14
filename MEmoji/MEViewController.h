@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MEViewController : UIViewController
+#import "MEMEmojiCell.h"
+
+@import MessageUI;
+@import MobileCoreServices;
+
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *editBarButtonItem;
+@property (assign, nonatomic) BOOL editing;
+
+- (IBAction)editToggle:(id)sender;
 
 @end

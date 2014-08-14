@@ -1,15 +1,27 @@
 PODS:
+  - GPUImage (0.1.4)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
+  - MBProgressHUD (0.9)
+  - UIColor+Hex (1.0.1):
+    - UIColor+Hex/NSColor
+    - UIColor+Hex/UIColor
+  - UIColor+Hex/UIColor (1.0.1)
   - UIImage+Additions (1.1.0)
 
 DEPENDENCIES:
+  - GPUImage (~> 0.1)
   - MagicalRecord (~> 2.2)
+  - MBProgressHUD (~> 0.9)
+  - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
 
 SPEC CHECKSUMS:
+  GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
+  UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
 
 COCOAPODS: 0.33.1

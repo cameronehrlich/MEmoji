@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B8E799D1D12D448DBF00EEC2"
+               BlueprintIdentifier = "72222C111CF34F36B3D504BB"
                BuildableName = "libPods-MEmoji-MagicalRecord.a"
                BlueprintName = "Pods-MEmoji-MagicalRecord"
                ReferencedContainer = "container:Pods.xcodeproj">

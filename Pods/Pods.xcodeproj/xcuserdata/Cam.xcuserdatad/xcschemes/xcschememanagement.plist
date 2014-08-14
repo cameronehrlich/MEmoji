@@ -4,7 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-MEmoji-GPUImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-MagicalRecord.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-UIColor+Hex.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,17 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0EE55FC4B2B94279870ABBF0</key>
+		<key>008A67083DFC408BB344B311</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B8E799D1D12D448DBF00EEC2</key>
+		<key>45F9F1CA5A1F4ACD8EA1200F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BACCDF01EE3F4C2EA22AE189</key>
+		<key>72222C111CF34F36B3D504BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>916615FE623547FBB9D64820</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CD12E28A27B14FFEABBCED78</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D92B4AA967534E53B5122754</key>
 		<dict>
 			<key>primary</key>
 			<true/>

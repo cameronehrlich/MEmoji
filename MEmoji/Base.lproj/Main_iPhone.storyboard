@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="14A299l" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="14A299l" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bFF-kF-kyA">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -13,43 +13,41 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Auk-Oq-eOH">
-                                <rect key="frame" x="20" y="20" width="280" height="30"/>
-                                <state key="normal" title="Create MEmoji">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="createAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="84b-Bf-wJq"/>
-                                </connections>
-                            </button>
-                            <collectionView appearanceType="aqua" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOQ-Sr-BAi">
-                                <rect key="frame" x="20" y="58" width="280" height="510"/>
+                            <collectionView appearanceType="aqua" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOQ-Sr-BAi">
+                                <rect key="frame" x="0.0" y="58" width="320" height="461"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bxc-gI-aYW">
-                                    <size key="itemSize" width="69" height="84"/>
+                                    <size key="itemSize" width="95" height="95"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell appearanceType="aqua" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MEmojiCell" id="gdO-C4-ZIM" customClass="MEMEmojiCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="69" height="84"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="69" height="84"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMd-cg-7Yk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="69" height="84"/>
+                                                <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gMd-cg-7Yk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="top" secondItem="gdO-C4-ZIM" secondAttribute="top" id="Ok2-ZA-cGj"/>
+                                            <constraint firstAttribute="trailing" secondItem="gMd-cg-7Yk" secondAttribute="trailing" id="P47-xf-giC"/>
+                                            <constraint firstAttribute="bottom" secondItem="gMd-cg-7Yk" secondAttribute="bottom" id="b6A-Dz-s8T"/>
+                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="leading" secondItem="gdO-C4-ZIM" secondAttribute="leading" id="xj8-ym-Ilw"/>
+                                        </constraints>
+                                        <size key="customSize" width="95" height="95"/>
                                         <connections>
                                             <outlet property="imageView" destination="gMd-cg-7Yk" id="ngS-I3-CpG"/>
                                         </connections>
@@ -60,15 +58,83 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="jCt-jt-PgR"/>
                                 </connections>
                             </collectionView>
+                            <navigationBar appearanceType="aqua" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v5z-Ss-w3j">
+                                <rect key="frame" x="0.0" y="14" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="MEMoji" id="r0a-Tz-MGu">
+                                        <barButtonItem key="leftBarButtonItem" title="Edit" id="WIq-a4-ZS7">
+                                            <connections>
+                                                <action selector="editToggle:" destination="vXZ-lx-hvc" id="v85-la-rVt"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="0S4-mf-ueR">
+                                            <connections>
+                                                <segue destination="B4M-OH-94B" kind="modal" identifier="mainToCapture" modalTransitionStyle="coverVertical" id="B55-iS-8Ek"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="FOQ-Sr-BAi" secondAttribute="bottom" id="95f-Gg-XfD"/>
+                            <constraint firstItem="v5z-Ss-w3j" firstAttribute="trailing" secondItem="FOQ-Sr-BAi" secondAttribute="trailing" id="Gfe-dP-srW"/>
+                            <constraint firstItem="FOQ-Sr-BAi" firstAttribute="top" secondItem="v5z-Ss-w3j" secondAttribute="bottom" id="HY5-Ua-sei"/>
+                            <constraint firstItem="FOQ-Sr-BAi" firstAttribute="leading" secondItem="v5z-Ss-w3j" secondAttribute="leading" id="OuK-PY-vrB"/>
+                            <constraint firstItem="FOQ-Sr-BAi" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="fhA-kI-vPv"/>
+                            <constraint firstAttribute="trailing" secondItem="FOQ-Sr-BAi" secondAttribute="trailing" id="ruA-MX-Rkd"/>
+                            <constraint firstItem="v5z-Ss-w3j" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="14" id="szU-fl-mgk"/>
+                        </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="VN6-XJ-PME"/>
                     <connections>
                         <outlet property="collectionView" destination="FOQ-Sr-BAi" id="PhN-Q7-HHp"/>
+                        <outlet property="editBarButtonItem" destination="WIq-a4-ZS7" id="DRs-rq-y2Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="835" y="-592"/>
+        </scene>
+        <!--Capture View Controller-->
+        <scene sceneID="o6E-YT-d9F">
+            <objects>
+                <viewController id="B4M-OH-94B" customClass="MECaptureViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iyd-Tv-nMq"/>
+                        <viewControllerLayoutGuide type="bottom" id="Fn6-gb-yc1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JIy-zu-pYW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fWZ-TP-kfJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1301" y="-592"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="xGB-gp-fkB">
+            <objects>
+                <tabBarController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="bFF-kF-kyA" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="yCW-Eu-79W">
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Ek3-Ac-S3i"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DBY-zo-qMt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="103" y="61"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
