@@ -15,7 +15,6 @@ PODS:
   - UIColor+Hex/UIColor (1.0.1)
   - UIImage+Additions (1.1.0)
   - UIImage+animatedGif (0.1.0)
-  - UIImageView-PlayGIF (1.0.1)
 
 DEPENDENCIES:
   - FFmpegWrapper (~> 1.0)
@@ -25,7 +24,6 @@ DEPENDENCIES:
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
   - UIImage+animatedGif (~> 0.1)
-  - UIImageView-PlayGIF (~> 1.0.1)
 
 SPEC CHECKSUMS:
   FFmpeg: 7e37c1efa4206e68c225ec0d73b8e3373d537c2a
@@ -36,6 +34,5 @@ SPEC CHECKSUMS:
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
   UIImage+animatedGif: dfdff756b010648ee461663c0120c5b2581fc809
-  UIImageView-PlayGIF: 8208c6b864f5083608fb63621a6cb9d34e7106d9
 
 COCOAPODS: 0.33.1

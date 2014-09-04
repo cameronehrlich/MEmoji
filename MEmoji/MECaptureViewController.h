@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-#import <UIImageView+PlayGIF.h>
 #import <MBProgressHUD.h>
 
 @import AVFoundation;

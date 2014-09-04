@@ -9,7 +9,7 @@
 #import "MECaptureViewController.h"
 #import <UIImage+animatedGIF.h>
 
-static CGFloat stepOfGIF = 0.2f;
+static CGFloat stepOfGIF = 0.1f;
 
 @implementation MECaptureViewController
 
@@ -254,12 +254,6 @@ static CGFloat stepOfGIF = 0.2f;
      }];
 }
 
-- (void)togglePreview
-{
-    NSURL *url = [NSURL fileURLWithPath:[self currentVideoPath]];
-    [self generateImagesForVideo:url];
-}
-
 - (void)generateImagesForVideo:(NSURL *)url
 {
     NSLog(@"%s", __FUNCTION__);
@@ -306,9 +300,63 @@ static CGFloat stepOfGIF = 0.2f;
     
 }
 
+- (void)togglePreview
+{
+    if(self.playerController)
+    {
+        [self.playerController.view removeFromSuperview];
+        self.playerController = nil;
+    }
+    else
+    {
+        NSURL *url = [NSURL fileURLWithPath:[self currentVideoPath]];
+        self.playerController = [[MPMoviePlayerController alloc] initWithContentURL:url];
+        
+        self.playerController.movieSourceType = MPMovieSourceTypeFile;
+        self.playerController.shouldAutoplay = NO;
+        
+        // Begin conversion
+        AVURLAsset *avUrl = [AVURLAsset assetWithURL:url];
+        self.currentTime = [avUrl duration];
+        self.currentFrames = [NSMutableArray array];
+        
+        NSMutableArray *keyFrames = [NSMutableArray array];
+        
+        float current = 0.0f;
+        
+        while (current <= self.currentTime.value/self.currentTime.timescale)
+        {
+            [keyFrames addObject:[NSNumber numberWithFloat:current]];
+            current += stepOfGIF;
+        }
+        
+        [self.playerController requestThumbnailImagesAtTimes:keyFrames timeOption:MPMovieTimeOptionExact];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)receivedThumbnails:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSLog(@"%@", [userInfo objectForKey:MPMoviePlayerThumbnailTimeKey]);
+    
+    [self.currentFrames addObject:[userInfo objectForKey:MPMoviePlayerThumbnailImageKey]];
+    
+    if ([[userInfo objectForKey:MPMoviePlayerThumbnailTimeKey] floatValue] >= (self.currentTime.value/self.currentTime.timescale) - 2 *stepOfGIF) {
+        [self.playerController cancelAllThumbnailImageRequests];
+        NSLog(@"is last frame");
+        NSData *gifData = [self createGIFwithFrames:[self.currentFrames copy]];
+        self.gifView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        [self.gifView setContentMode:UIViewContentModeScaleAspectFit];
+        [self.gifView setBackgroundColor:[UIColor blackColor]];
+        [self.gifView setImage:[UIImage animatedImageWithAnimatedGIFData:gifData]];
+        [self.view addSubview:self.gifView];
+    }
 }
 
 
