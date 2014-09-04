@@ -10,6 +10,7 @@
 
 #define Emoji_Size 200
 #define Emoji_Padding Emoji_Size*0.75
+static CGFloat stepOfGIF = 0.2f;
 
 @implementation MEModel
 
@@ -30,6 +31,12 @@
     self = [super init];
     if (self) {
         [MagicalRecord setupAutoMigratingCoreDataStack];
+
+        self.loadingQueue = [[NSOperationQueue alloc] init];
+        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+        
+        self.operationCache = [NSMutableDictionary dictionary];
+
         self.currentImages = [Image MR_findAllSortedBy:@"createdAt" ascending:NO];
     }
     return self;
@@ -102,19 +109,6 @@
     
     emojiImage = [self rotateImage:emojiImage onDegrees:90];
     
-    GPUImageToonFilter *filter = [[GPUImageToonFilter alloc] init];
-    
-    //    GPUImageSketchFilter *filter = [[GPUImageSketchFilter alloc] init];
-    GPUImagePicture *filteredImage = [[GPUImagePicture alloc] initWithImage:emojiImage];
-    [filter setThreshold:0.6];
-    [filter setQuantizationLevels:8];
-    
-    [filteredImage addTarget:filter];
-    [filter useNextFrameForImageCapture];
-    [filteredImage processImage];
-    
-    emojiImage = [filter imageFromCurrentFramebuffer];
-    
     emojiImage = [emojiImage imageWithCornerRadius:emojiImage.size.width/2];
     
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
@@ -129,6 +123,69 @@
         callback();
     }];
 }
+
+- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MemojiCallback)callback
+{
+    self.playerController = [[MPMoviePlayerController alloc] initWithContentURL:url];
+    
+    self.playerController.movieSourceType = MPMovieSourceTypeFile;
+    self.playerController.shouldAutoplay = NO;
+    
+    // Begin conversion
+    AVURLAsset *avUrl = [AVURLAsset assetWithURL:url];
+    CMTime duration = [avUrl duration];
+    
+    self.currentFrames = [NSMutableArray array];
+    NSMutableArray *keyFrames = [NSMutableArray array];
+    
+    float current = 0.0f;
+    
+    while (current <= duration.value/duration.timescale)
+    {
+        [keyFrames addObject:[NSNumber numberWithFloat:current]];
+        current += stepOfGIF;
+    }
+    
+    [self.playerController requestThumbnailImagesAtTimes:keyFrames timeOption:MPMovieTimeOptionExact];
+    
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+
+        NSDictionary *userInfo = [note userInfo];
+        
+        UIImage *incomingFrame = [userInfo objectForKey:MPMoviePlayerThumbnailImageKey];
+
+        CGRect cropRect = CGRectMake(0, (incomingFrame.size.height/2) - (incomingFrame.size.width/2), incomingFrame.size.width, incomingFrame.size.width);
+        
+        NSLog(@"croprect: %@", NSStringFromCGRect(cropRect));
+        
+        CGImageRef imageRef = CGImageCreateWithImageInRect([incomingFrame CGImage], cropRect);
+        incomingFrame = [UIImage imageWithCGImage:imageRef];
+        CGImageRelease(imageRef);
+        
+        [self.currentFrames addObject:incomingFrame];
+        
+        if ([[userInfo objectForKey:MPMoviePlayerThumbnailTimeKey] floatValue] >= (duration.value/duration.timescale) - (2 * stepOfGIF)) {
+            [self.playerController cancelAllThumbnailImageRequests];
+            
+            NSData *gifData = [self createGIFwithFrames:[self.currentFrames copy]];
+            
+            
+            [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+                Image *newImage = [Image MR_createInContext:localContext];
+                [newImage setCreatedAt:[NSDate date]];
+                [newImage setImageData:gifData];
+                [newImage setIsAnimated:@YES];
+                
+            } completion:^(BOOL success, NSError *error) {
+                
+                self.currentImages = [Image MR_findAllSortedBy:@"createdAt" ascending:NO];
+                callback();
+            }];
+        }
+    }];
+}
+
 
 - (UIImage *)paddedImageFromImage:(UIImage *)image
 {
@@ -159,6 +216,41 @@
     return i;
 }
 
+- (NSData *)createGIFwithFrames:(NSArray *)images
+{
+    NSDictionary *fileProperties = @{
+                                     (__bridge id)kCGImagePropertyGIFDictionary: @{
+                                             (__bridge id)kCGImagePropertyGIFLoopCount: @0, // 0 means loop forever
+                                             }
+                                     };
+    NSDictionary *frameProperties = @{
+                                      (__bridge id)kCGImagePropertyGIFDictionary: @{
+                                              (__bridge id)kCGImagePropertyGIFDelayTime:[NSNumber numberWithFloat:stepOfGIF], // a float (not double!) in seconds, rounded to centiseconds in the GIF data
+                                              }
+                                      };
+    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
+    NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:@"animated.gif"];
+    
+    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, images.count, NULL);
+    CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
+    
+    
+    @autoreleasepool {
+        for (UIImage *image in images ) {
+            CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)frameProperties);
+        }
+    }
+    
+    if (!CGImageDestinationFinalize(destination)) {
+        NSLog(@"failed to finalize image destination");
+    }
+    CFRelease(destination);
+    
+    NSData *gifData = [NSData dataWithContentsOfFile:fileURL.relativePath];
+    
+    return gifData;
+    
+}
 
 
 

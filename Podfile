@@ -10,6 +10,7 @@ target "MEmoji" do
     pod 'MBProgressHUD', '~> 0.9'
     pod 'UIColor+Hex', '~> 1.0'
     pod 'UIImage+animatedGif', '~> 0.1'
+    pod 'UIView+Positioning', '~> 1.0'
 end
 
 target "MEmojiTests" do

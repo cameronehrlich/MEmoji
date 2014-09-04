@@ -7,6 +7,7 @@
 //
 
 #import <MBProgressHUD.h>
+#import <UIView+Positioning.h>
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -22,10 +23,6 @@
 @property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, strong) MPMoviePlayerController *playerController;
-@property (nonatomic, strong) UIImageView *gifView;
-@property (nonatomic, assign) CMTime currentTime;
-@property (nonatomic, strong) NSMutableArray *currentFrames;
 
 @property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;

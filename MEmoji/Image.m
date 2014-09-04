@@ -14,5 +14,6 @@
 @dynamic imageData;
 @dynamic hasSmile;
 @dynamic createdAt;
+@dynamic isAnimated;
 
 @end

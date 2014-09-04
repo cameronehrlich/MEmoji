@@ -8,6 +8,7 @@
 
 #import "MEViewController.h"
 #import <UIColor+Hex.h>
+#import <UIImage+animatedGIF.h>
 
 @implementation MEViewController
 
@@ -20,6 +21,18 @@
 {
     [super viewWillAppear:animated];
     [self.collectionView reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[[MEModel sharedInstance] operationCache] removeAllObjects];
+    [[[MEModel sharedInstance] loadingQueue]cancelAllOperations];
 }
 
 - (IBAction)editToggle:(id)sender
@@ -73,9 +86,37 @@
 {
     static NSString *cellIdentifier = @"MEmojiCell";
     Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
+
     MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    [cell.imageView setImage:[UIImage imageWithData:thisImage.imageData]];
-    [cell.layer setCornerRadius:10];
+    
+    //Create a block operation for loading the image into the profile image view
+    NSBlockOperation *loadImageIntoCellOp = [[NSBlockOperation alloc] init];
+    //Define weak operation so that operation can be referenced from within the block without creating a retain cycle
+    __weak NSBlockOperation *weakOp = loadImageIntoCellOp;
+    [loadImageIntoCellOp addExecutionBlock:^(void){
+        UIImage *image;
+        if (thisImage.isAnimated) {
+            image = [UIImage animatedImageWithAnimatedGIFData:thisImage.imageData];
+        }else{
+            image = [UIImage imageWithData:thisImage.imageData];
+        }
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
+            //Check for cancelation before proceeding. We use cellForRowAtIndexPath to make sure we get nil for a non-visible cell
+            if (!weakOp.isCancelled) {
+                [cell.imageView setImage:image];
+                [[[MEModel sharedInstance] operationCache] removeObjectForKey:thisImage.objectID];
+            }
+        }];
+    }];
+    
+    //Save a reference to the operation in an NSMutableDictionary so that it can be cancelled later on
+    [[[MEModel sharedInstance] operationCache] setObject:loadImageIntoCellOp forKey:thisImage.objectID];
+    
+    //Add the operation to the designated background queue
+    [[[MEModel sharedInstance] loadingQueue] addOperation:loadImageIntoCellOp];
+ 
+    cell.imageView.image = nil;
+
     if (self.collectionView.allowsMultipleSelection) {
         cell.backgroundColor = [UIColor colorWithHex:0x9E9E9E];
     }else{
@@ -85,14 +126,28 @@
     return cell;
 }
 
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
+
+    //Fetch operation that doesn't need executing anymore
+    NSBlockOperation *ongoingDownloadOperation = [[[MEModel sharedInstance] operationCache] objectForKey:thisImage.objectID];
+    if (ongoingDownloadOperation) {
+        //Cancel operation and remove from dictionary
+        [ongoingDownloadOperation cancel];
+        [[[MEModel sharedInstance] operationCache] removeObjectForKey:thisImage.objectID];
+        NSLog(@"REMOVED OPERATION THAT WAS NOT COMPLETE! GOOD!");
+    }
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.collectionView.allowsMultipleSelection) {
+    if (self.collectionView.allowsMultipleSelection) { // If in editing mode
         [self.collectionView performBatchUpdates:^{
             
             Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
@@ -110,20 +165,24 @@
         } completion:^(BOOL finished) {
             
         }];
-        return;
-    }
-    Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
-    
-    UIImage *paddedImage = [[MEModel sharedInstance] paddedImageFromImage:[UIImage imageWithData:thisImage.imageData]];
-    
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-    [controller setMessageComposeDelegate:self];
-    [controller addAttachmentData:UIImagePNGRepresentation(paddedImage) typeIdentifier:@"public.png" filename:[NSString stringWithFormat:@"MEmoji-%@.png", thisImage.createdAt.description]];
-    
-    [self presentViewController:controller animated:YES completion:^{
+    }else{
         
-    }];
-    
+        Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
+
+        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+        [controller setMessageComposeDelegate:self];
+        
+        if (thisImage.isAnimated) {
+            [controller addAttachmentData:thisImage.imageData typeIdentifier:@"com.compuserve.gif" filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
+        }else{
+            UIImage *paddedImage = [[MEModel sharedInstance] paddedImageFromImage:[UIImage imageWithData:thisImage.imageData]];
+            [controller addAttachmentData:UIImagePNGRepresentation(paddedImage) typeIdentifier:@"public.png" filename:[NSString stringWithFormat:@"MEmoji-%@.png", thisImage.createdAt.description]];
+        }
+        
+        [self presentViewController:controller animated:YES completion:^{
+            
+        }];
+    }
 }
 
 @end

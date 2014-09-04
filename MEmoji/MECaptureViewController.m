@@ -7,22 +7,13 @@
 //
 
 #import "MECaptureViewController.h"
-#import <UIImage+animatedGIF.h>
-
-static CGFloat stepOfGIF = 0.1f;
 
 @implementation MECaptureViewController
-
--(void)awakeFromNib
-{
-    [self initializeCaptureSession];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedThumbnails:) name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+    [self initializeCaptureSession];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -40,7 +31,6 @@ static CGFloat stepOfGIF = 0.1f;
     [UIView animateWithDuration:1 delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.instructionLabel setAlpha:0];
     } completion:^(BOOL finished) {
-        //
         [self.instructionLabel removeFromSuperview];
     }];
     
@@ -59,22 +49,17 @@ static CGFloat stepOfGIF = 0.1f;
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
-    NSLog(@"%s", __FUNCTION__);
-    [self captureImage:self];
+    [self captureImage];
 }
 
 -  (void)handleLongPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"Began %s", __FUNCTION__);
         [self startRecording];
     }
     else if (sender.state == UIGestureRecognizerStateEnded){
-        NSLog(@"Ended %s", __FUNCTION__);
+        [MBProgressHUD showHUDAddedTo:self.view animated:NO];
         [self finishRecording];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self togglePreview];
-        });
     }
 }
 
@@ -93,10 +78,8 @@ static CGFloat stepOfGIF = 0.1f;
     [self.stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
     [self.session addOutput:self.stillImageOutput];
     
-    
     self.fileOutput = [[AVCaptureMovieFileOutput alloc] init];
-    //    [self.movieFileOutput setMaxRecordedDuration:CMTimeMakeWithSeconds(5, 30)];
-    //    [self.movieFileOutput setMinFreeDiskSpaceLimit:1024*1024];
+//    [self.fileOutput setMaxRecordedDuration:CMTimeMa/keWithSeconds(5, 30)]; // TODO : enforce a time-limit
     [self.session addOutput:self.fileOutput];
     
     [self.session startRunning];
@@ -124,12 +107,30 @@ static CGFloat stepOfGIF = 0.1f;
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
-    self.previewLayer.frame = self.view.bounds;
+    CGRect layerFrame = CGRectMake(0, (self.view.height/2) - (self.view.width/2), self.view.width, self.view.width);
+    
+    self.previewLayer.frame = layerFrame;
     [self.view.layer addSublayer:self.previewLayer];
 }
 
 #pragma mark -
 #pragma mark AVCaptureMovieFileDelegate
+-(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
+{
+
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
+{
+    if (error) {
+        NSLog(@"Error: %@", error);
+        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video could not be converted for some reason!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+    }else{
+        [self captureGIF];
+        
+    }
+}
 
 - (void)beginRecordingWithDevice:(AVCaptureDevice *)device
 {
@@ -149,57 +150,10 @@ static CGFloat stepOfGIF = 0.1f;
     
     [self.session addInput:self.inputDevice];
     
-    self.session.sessionPreset = AVCaptureSessionPreset640x480;
-    
-    [self ensureConnectionIsActive];
-}
-
-- (void)ensureConnectionIsActive
-{
+    self.session.sessionPreset = AVCaptureSessionPresetMedium;
     [self.session startRunning];
-}
-
-- (NSString *)currentVideoPath
-{
-    NSArray *directories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *directory = directories.firstObject;
-    NSString *absolutePath = [directory stringByAppendingPathComponent:@"/current.mov"];
-    
-    return absolutePath;
-}
-
-- (void)startRecording
-{
-    NSString *path = [self currentVideoPath];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if([fileManager fileExistsAtPath:path])
-    {
-        NSError *error = nil;
-        [fileManager removeItemAtPath:path error:&error];
-        if(error)
-        {
-            NSLog(@"Error: %@", error);
-        }
-    }
-    
-    NSURL *url = [NSURL fileURLWithPath:path];
-    [self.fileOutput startRecordingToOutputFileURL:url recordingDelegate:self];
-}
-
-- (void)finishRecording
-{
-    [self.fileOutput stopRecording];
-}
-
-- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
-{
-    if (error) {
-        NSLog(@"Error: %@", error);
-    }
 
 }
-
 
 - (void)toggleCameras
 {
@@ -216,10 +170,39 @@ static CGFloat stepOfGIF = 0.1f;
     }
 }
 
-- (void)captureImage:(id)sender
+- (NSString *)currentVideoPath
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:NO];
+    NSArray *directories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *directory = directories.firstObject;
+    NSString *absolutePath = [directory stringByAppendingPathComponent:@"/current.mov"];
     
+    return absolutePath;
+}
+
+- (void)startRecording
+{
+    NSString *path = [self currentVideoPath];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path])
+    {
+        NSError *error = nil;
+        [fileManager removeItemAtPath:path error:&error];
+        if (error){ NSLog(@"Error: %@", error);}
+    }
+    
+    NSURL *url = [NSURL fileURLWithPath:path];
+    [self.fileOutput startRecordingToOutputFileURL:url recordingDelegate:self];
+}
+
+- (void)finishRecording
+{
+    [self.fileOutput stopRecording];
+
+}
+
+- (void)captureImage
+{
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in self.stillImageOutput.connections) {
         
@@ -254,146 +237,16 @@ static CGFloat stepOfGIF = 0.1f;
      }];
 }
 
-- (void)generateImagesForVideo:(NSURL *)url
+- (void)captureGIF
 {
-    NSLog(@"%s", __FUNCTION__);
-    AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:url options:nil];
+    NSURL *url = [NSURL fileURLWithPath:[self currentVideoPath]];
     
-    // Begin conversion
-    self.currentTime = [asset duration];
-    self.currentFrames = [NSMutableArray array];
-    
-    NSMutableArray *keyFrames = [NSMutableArray array];
-    float current = 0.0f;
-    
-    while (current <= self.currentTime.value/self.currentTime.timescale)
-    {
-        [keyFrames addObject:[NSNumber numberWithFloat:current]];
-        current += stepOfGIF;
-    }
-    
-    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    generator.appliesPreferredTrackTransform = YES;
-    
-    AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef im, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error){
-        if (result != AVAssetImageGeneratorSucceeded) {
-            NSLog(@"couldn't generate thumbnail, error:%@", error);
-        }
-        
-        UIImage *currentFrame = [UIImage imageWithCGImage:im];
-        [self.currentFrames addObject:currentFrame];
-        
-        if ( (requestedTime.value/requestedTime.timescale) >= [[keyFrames lastObject] floatValue] - 2*stepOfGIF) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSLog(@"Last frame found");
-                NSData *gifData = [self createGIFwithFrames:[self.currentFrames copy]];
-                self.gifView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-                [self.gifView setBackgroundColor:[UIColor blackColor]];
-                [self.gifView setImage:[UIImage animatedImageWithAnimatedGIFData:gifData]];
-                [self.view addSubview:self.gifView];
-            });
-            
-        }
-    };
-    
-    [generator generateCGImagesAsynchronouslyForTimes:keyFrames completionHandler:handler];
-    
-}
-
-- (void)togglePreview
-{
-    if(self.playerController)
-    {
-        [self.playerController.view removeFromSuperview];
-        self.playerController = nil;
-    }
-    else
-    {
-        NSURL *url = [NSURL fileURLWithPath:[self currentVideoPath]];
-        self.playerController = [[MPMoviePlayerController alloc] initWithContentURL:url];
-        
-        self.playerController.movieSourceType = MPMovieSourceTypeFile;
-        self.playerController.shouldAutoplay = NO;
-        
-        // Begin conversion
-        AVURLAsset *avUrl = [AVURLAsset assetWithURL:url];
-        self.currentTime = [avUrl duration];
-        self.currentFrames = [NSMutableArray array];
-        
-        NSMutableArray *keyFrames = [NSMutableArray array];
-        
-        float current = 0.0f;
-        
-        while (current <= self.currentTime.value/self.currentTime.timescale)
-        {
-            [keyFrames addObject:[NSNumber numberWithFloat:current]];
-            current += stepOfGIF;
-        }
-        
-        [self.playerController requestThumbnailImagesAtTimes:keyFrames timeOption:MPMovieTimeOptionExact];
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)receivedThumbnails:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSLog(@"%@", [userInfo objectForKey:MPMoviePlayerThumbnailTimeKey]);
-    
-    [self.currentFrames addObject:[userInfo objectForKey:MPMoviePlayerThumbnailImageKey]];
-    
-    if ([[userInfo objectForKey:MPMoviePlayerThumbnailTimeKey] floatValue] >= (self.currentTime.value/self.currentTime.timescale) - 2 *stepOfGIF) {
-        [self.playerController cancelAllThumbnailImageRequests];
-        NSLog(@"is last frame");
-        NSData *gifData = [self createGIFwithFrames:[self.currentFrames copy]];
-        self.gifView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        [self.gifView setContentMode:UIViewContentModeScaleAspectFit];
-        [self.gifView setBackgroundColor:[UIColor blackColor]];
-        [self.gifView setImage:[UIImage animatedImageWithAnimatedGIFData:gifData]];
-        [self.view addSubview:self.gifView];
-    }
-}
-
-
-- (NSData *)createGIFwithFrames:(NSArray *)images
-{
-    NSDictionary *fileProperties = @{
-                                     (__bridge id)kCGImagePropertyGIFDictionary: @{
-                                             (__bridge id)kCGImagePropertyGIFLoopCount: @0, // 0 means loop forever
-                                             }
-                                     };
-    NSDictionary *frameProperties = @{
-                                      (__bridge id)kCGImagePropertyGIFDictionary: @{
-                                              (__bridge id)kCGImagePropertyGIFDelayTime:[NSNumber numberWithFloat:stepOfGIF], // a float (not double!) in seconds, rounded to centiseconds in the GIF data
-                                              }
-                                      };
-    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
-    NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:@"animated.gif"];
-    
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, images.count, NULL);
-    CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
-    
-    
-    @autoreleasepool {
-        for (UIImage *image in images ) {
-            CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)frameProperties);
-        }
-    }
-    
-    if (!CGImageDestinationFinalize(destination)) {
-        NSLog(@"failed to finalize image destination");
-    }
-    CFRelease(destination);
-    
-    NSData *gifData = [NSData dataWithContentsOfFile:fileURL.relativePath];
-    
-    return gifData;
-    
+    [[MEModel sharedInstance] createEmojiFromMovieURL:url complete:^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self dismissViewControllerAnimated:YES completion:^{
+            //
+        }];
+    }];
 }
 
 @end
