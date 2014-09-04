@@ -9,6 +9,9 @@ target "MEmoji" do
     pod 'GPUImage', '~> 0.1'
     pod 'MBProgressHUD', '~> 0.9'
     pod 'UIColor+Hex', '~> 1.0'
+    pod 'FFmpegWrapper', '~> 1.0'
+    pod 'UIImageView-PlayGIF', '~> 1.0.1'
+    pod 'UIImage+animatedGif', '~> 0.1'
 end
 
 target "MEmojiTests" do

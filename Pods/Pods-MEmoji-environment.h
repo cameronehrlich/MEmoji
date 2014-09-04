@@ -6,6 +6,24 @@
 // project.
 
 
+// FFmpeg
+#define COCOAPODS_POD_AVAILABLE_FFmpeg
+#define COCOAPODS_VERSION_MAJOR_FFmpeg 2
+#define COCOAPODS_VERSION_MINOR_FFmpeg 2
+#define COCOAPODS_VERSION_PATCH_FFmpeg 0
+
+// FFmpeg/precompiled
+#define COCOAPODS_POD_AVAILABLE_FFmpeg_precompiled
+#define COCOAPODS_VERSION_MAJOR_FFmpeg_precompiled 2
+#define COCOAPODS_VERSION_MINOR_FFmpeg_precompiled 2
+#define COCOAPODS_VERSION_PATCH_FFmpeg_precompiled 0
+
+// FFmpegWrapper
+#define COCOAPODS_POD_AVAILABLE_FFmpegWrapper
+#define COCOAPODS_VERSION_MAJOR_FFmpegWrapper 1
+#define COCOAPODS_VERSION_MINOR_FFmpegWrapper 0
+#define COCOAPODS_VERSION_PATCH_FFmpegWrapper 0
+
 // GPUImage
 #define COCOAPODS_POD_AVAILABLE_GPUImage
 #define COCOAPODS_VERSION_MAJOR_GPUImage 0
@@ -47,4 +65,16 @@
 #define COCOAPODS_VERSION_MAJOR_UIImage_Additions 1
 #define COCOAPODS_VERSION_MINOR_UIImage_Additions 1
 #define COCOAPODS_VERSION_PATCH_UIImage_Additions 0
+
+// UIImage+animatedGif
+#define COCOAPODS_POD_AVAILABLE_UIImage_animatedGif
+#define COCOAPODS_VERSION_MAJOR_UIImage_animatedGif 0
+#define COCOAPODS_VERSION_MINOR_UIImage_animatedGif 1
+#define COCOAPODS_VERSION_PATCH_UIImage_animatedGif 0
+
+// UIImageView-PlayGIF
+#define COCOAPODS_POD_AVAILABLE_UIImageView_PlayGIF
+#define COCOAPODS_VERSION_MAJOR_UIImageView_PlayGIF 1
+#define COCOAPODS_VERSION_MINOR_UIImageView_PlayGIF 0
+#define COCOAPODS_VERSION_PATCH_UIImageView_PlayGIF 1
 

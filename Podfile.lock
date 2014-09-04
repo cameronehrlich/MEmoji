@@ -1,4 +1,9 @@
 PODS:
+  - FFmpeg (2.2):
+    - FFmpeg/precompiled
+  - FFmpeg/precompiled (2.2)
+  - FFmpegWrapper (1.0):
+    - FFmpeg (~> 2.2)
   - GPUImage (0.1.4)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
@@ -9,19 +14,28 @@ PODS:
     - UIColor+Hex/UIColor
   - UIColor+Hex/UIColor (1.0.1)
   - UIImage+Additions (1.1.0)
+  - UIImage+animatedGif (0.1.0)
+  - UIImageView-PlayGIF (1.0.1)
 
 DEPENDENCIES:
+  - FFmpegWrapper (~> 1.0)
   - GPUImage (~> 0.1)
   - MagicalRecord (~> 2.2)
   - MBProgressHUD (~> 0.9)
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
+  - UIImage+animatedGif (~> 0.1)
+  - UIImageView-PlayGIF (~> 1.0.1)
 
 SPEC CHECKSUMS:
+  FFmpeg: 7e37c1efa4206e68c225ec0d73b8e3373d537c2a
+  FFmpegWrapper: 9564268abcc9660ec5463adbe4b5e01f52b6fdd3
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
+  UIImage+animatedGif: dfdff756b010648ee461663c0120c5b2581fc809
+  UIImageView-PlayGIF: 8208c6b864f5083608fb63621a6cb9d34e7106d9
 
 COCOAPODS: 0.33.1
