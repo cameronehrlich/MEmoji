@@ -121,6 +121,8 @@
     
     incomingFrame = [UIImage imageWithCGImage:incomingFrame.CGImage scale:4 orientation:incomingFrame.scale];
     
+    incomingFrame = [self imageWithBorderFromImage:incomingFrame];
+    
 //    incomingFrame = [self paddedImageFromImage:incomingFrame];
     
     return incomingFrame;
@@ -182,6 +184,32 @@
     return gifData;
 }
 
+
+- (UIImage*)imageWithBorderFromImage:(UIImage*)source
+{
+    const CGFloat margin = 40.0f;
+    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
+    UIGraphicsBeginImageContextWithOptions(size, YES, source.scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+
+    CGContextTranslateCTM(context, 0, size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    [[UIColor whiteColor] setFill];
+    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    
+    CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    
+    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+    
+    CGContextRestoreGState(context);
+    UIGraphicsEndImageContext();
+    
+    return testImg;
+}
 
 //NSDictionary *detectorOptions = @{CIDetectorAccuracy: CIDetectorAccuracyHigh};
 //

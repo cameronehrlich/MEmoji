@@ -10,9 +10,4 @@
 
 @implementation MEMEmojiCell
 
-- (void)prepareForReuse
-{
-    self.imageView.image = nil;
-}
-
 @end
