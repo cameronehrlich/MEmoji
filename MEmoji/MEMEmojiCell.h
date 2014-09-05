@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <FLAnimatedImageView.h>
 
 @interface MEMEmojiCell : UICollectionViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
+@property (strong, nonatomic) IBOutlet FLAnimatedImageView *imageView;
 
 @end

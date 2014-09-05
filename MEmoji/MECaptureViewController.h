@@ -8,24 +8,11 @@
 
 #import <MBProgressHUD.h>
 #import <UIView+Positioning.h>
-
 @import AVFoundation;
-@import MediaPlayer;
-@import ImageIO;
-@import MobileCoreServices;
 
-@interface MECaptureViewController : UIViewController<AVCaptureFileOutputRecordingDelegate>
-
-@property (nonatomic, strong) AVCaptureSession *session;
-
-@property (nonatomic, strong) AVCaptureDevice *frontCamera;
-@property (nonatomic, strong) AVCaptureDevice *backCamera;
-@property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
+@interface MECaptureViewController : UIViewController <AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-
-@property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
-@property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
 
 @property (nonatomic, strong) UILabel *instructionLabel;
 

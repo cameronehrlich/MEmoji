@@ -9,6 +9,8 @@
 #import "MEViewController.h"
 #import <UIColor+Hex.h>
 #import <UIImage+animatedGIF.h>
+#import <FLAnimatedImageView.h>
+#import <FLAnimatedImage.h>
 
 @implementation MEViewController
 
@@ -23,16 +25,10 @@
     [self.collectionView reloadData];
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [[[MEModel sharedInstance] operationCache] removeAllObjects];
-    [[[MEModel sharedInstance] loadingQueue]cancelAllOperations];
+    [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
 }
 
 - (IBAction)editToggle:(id)sender
@@ -60,7 +56,7 @@
 #pragma mark -
 #pragma mark UIMessageComposeViewController Delegate
 
--(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     if (result == MessageComposeResultCancelled || result == MessageComposeResultFailed) {
         NSLog(@"Didn't send!");
@@ -88,22 +84,20 @@
     Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
 
     MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    
+    [cell.imageView setUserInteractionEnabled:NO];
     //Create a block operation for loading the image into the profile image view
     NSBlockOperation *loadImageIntoCellOp = [[NSBlockOperation alloc] init];
     //Define weak operation so that operation can be referenced from within the block without creating a retain cycle
     __weak NSBlockOperation *weakOp = loadImageIntoCellOp;
     [loadImageIntoCellOp addExecutionBlock:^(void){
-        UIImage *image;
-        if (thisImage.isAnimated) {
-            image = [UIImage animatedImageWithAnimatedGIFData:thisImage.imageData];
-        }else{
-            image = [UIImage imageWithData:thisImage.imageData];
-        }
+        
+        FLAnimatedImage *image = [[FLAnimatedImage alloc] initWithAnimatedGIFData:thisImage.imageData];
+
         [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
             //Check for cancelation before proceeding. We use cellForRowAtIndexPath to make sure we get nil for a non-visible cell
             if (!weakOp.isCancelled) {
-                [cell.imageView setImage:image];
+                MEMEmojiCell *oldCell = (MEMEmojiCell *)[collectionView cellForItemAtIndexPath:[indexPath copy]];
+                [oldCell.imageView setAnimatedImage:image];
                 [[[MEModel sharedInstance] operationCache] removeObjectForKey:thisImage.objectID];
             }
         }];
@@ -126,17 +120,14 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
-
     //Fetch operation that doesn't need executing anymore
     NSBlockOperation *ongoingDownloadOperation = [[[MEModel sharedInstance] operationCache] objectForKey:thisImage.objectID];
     if (ongoingDownloadOperation) {
         //Cancel operation and remove from dictionary
         [ongoingDownloadOperation cancel];
         [[[MEModel sharedInstance] operationCache] removeObjectForKey:thisImage.objectID];
-        NSLog(@"REMOVED OPERATION THAT WAS NOT COMPLETE! GOOD!");
     }
 }
 
@@ -172,12 +163,7 @@
         MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
         [controller setMessageComposeDelegate:self];
         
-        if (thisImage.isAnimated) {
-            [controller addAttachmentData:thisImage.imageData typeIdentifier:@"com.compuserve.gif" filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
-        }else{
-            UIImage *paddedImage = [[MEModel sharedInstance] paddedImageFromImage:[UIImage imageWithData:thisImage.imageData]];
-            [controller addAttachmentData:UIImagePNGRepresentation(paddedImage) typeIdentifier:@"public.png" filename:[NSString stringWithFormat:@"MEmoji-%@.png", thisImage.createdAt.description]];
-        }
+        [controller addAttachmentData:thisImage.imageData typeIdentifier:@"com.compuserve.gif" filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
         
         [self presentViewController:controller animated:YES completion:^{
             

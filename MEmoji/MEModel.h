@@ -20,7 +20,22 @@
 
 typedef void (^MemojiCallback)();
 
+#define Emoji_Size 200
+#define Emoji_Padding Emoji_Size*0.75
+
+static CGFloat stepOfGIF = 0.1f;
+
 @interface MEModel : NSObject
+
+@property (nonatomic, strong) AVCaptureSession *session;
+
+@property (nonatomic, strong) AVCaptureDevice *frontCamera;
+@property (nonatomic, strong) AVCaptureDevice *backCamera;
+@property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
+
+@property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 
 @property (nonatomic, strong) NSArray *currentImages; // Coredata Cache
 
@@ -29,13 +44,14 @@ typedef void (^MemojiCallback)();
 
 @property (nonatomic, strong) NSOperationQueue *loadingQueue;
 @property (nonatomic, strong) NSMutableDictionary *operationCache;
+@property (copy) MemojiCallback completionBlock;
 
 + (instancetype)sharedInstance;
 
-- (void)createEmojiFromImage:(UIImage *)originalImage complete:(MemojiCallback)callback;
 - (void)createEmojiFromMovieURL:(NSURL *)url complete:(MemojiCallback)callback;
 
-- (UIImage *)rotateImage:(UIImage *)image onDegrees:(CGFloat)degrees;
-- (UIImage *)paddedImageFromImage:(UIImage *)image;
+- (NSData *)createGIFwithFrames:(NSArray *)images;
+
++ (NSString *)currentVideoPath;
 
 @end

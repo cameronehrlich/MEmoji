@@ -10,14 +10,9 @@
 
 @implementation MEMEmojiCell
 
-- (id)initWithFrame:(CGRect)frame
+- (void)prepareForReuse
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    self.imageView.image = nil;
 }
-
 
 @end

@@ -1,4 +1,5 @@
 PODS:
+  - FLAnimatedImage (1.0.0)
   - GPUImage (0.1.4)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
@@ -13,6 +14,7 @@ PODS:
   - UIView+Positioning (1.0.1)
 
 DEPENDENCIES:
+  - FLAnimatedImage (from `https://github.com/caughtinflux/FLAnimatedImage`, branch `DisappearOnTapFix`)
   - GPUImage (~> 0.1)
   - MagicalRecord (~> 2.2)
   - MBProgressHUD (~> 0.9)
@@ -21,7 +23,13 @@ DEPENDENCIES:
   - UIImage+animatedGif (~> 0.1)
   - UIView+Positioning (~> 1.0)
 
+EXTERNAL SOURCES:
+  FLAnimatedImage:
+    :branch: DisappearOnTapFix
+    :git: https://github.com/caughtinflux/FLAnimatedImage
+
 SPEC CHECKSUMS:
+  FLAnimatedImage: e2853e19cc0364065379ef81bade08f0bd7b3859
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
