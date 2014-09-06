@@ -10,4 +10,9 @@
 
 @implementation MEMEmojiCell
 
+- (void)awakeFromNib
+{
+    [self.imageView setAnimatesWhileScrolling:YES];
+}
+
 @end

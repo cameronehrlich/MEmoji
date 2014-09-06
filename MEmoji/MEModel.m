@@ -29,83 +29,64 @@
         [MagicalRecord setupAutoMigratingCoreDataStack];
         
         self.loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setMaxConcurrentOperationCount:1];
+        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
-        self.operationCache = [NSMutableDictionary dictionary];
-        self.currentImages = [Image MR_findAllSortedBy:@"createdAt" ascending:NO];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self initializeCaptureSession];
         });
     }
     return self;
 }
 
-- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MemojiCallback)callback
+- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MEmojiCallback)callback
 {
     self.completionBlock = callback;
     
-    self.playerController = [[MPMoviePlayerController alloc] initWithContentURL:url];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
     
-    AVURLAsset *avUrl = [AVURLAsset assetWithURL:url];
-    CMTime duration = [avUrl duration];
+    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    [generator setRequestedTimeToleranceAfter:kCMTimeZero];
+    [generator setRequestedTimeToleranceBefore:kCMTimeZero];
+    [generator setAppliesPreferredTrackTransform:YES];
+    [generator setMaximumSize:CGSizeMake(dimensionOfGIF, dimensionOfGIF)];
     
-    self.currentFrames = [NSMutableArray array];
-    NSMutableArray *keyFrames = [NSMutableArray array];
+    CMTime duration = asset.duration;
+
+    NSMutableArray *outImages = [[NSMutableArray alloc] init];
+    NSError *error;
     
-    float current = 0.0f;
+    NSInteger frameRate = 80;
     
-    while (current <= duration.value/duration.timescale)
-    {
-        [keyFrames addObject:[NSNumber numberWithFloat:current]];
-        current += stepOfGIF;
+    for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
+        @autoreleasepool {
+            CMTime keyFrame = CMTimeMake( (Float64)frame ,duration.timescale);
+            
+            CMTime actualTime;
+            CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
+//            NSLog(@"Attempted: %lld / %d, Got: %lld / %d", keyFrame.value, keyFrame.timescale, actualTime.value, actualTime.timescale);
+            UIImage *tmpFrameImage = [self emojifyFrame:[UIImage imageWithCGImage:refImg]];
+            
+            [outImages addObject:tmpFrameImage];
+            
+            if (error) {
+                NSLog(@"Frame generation error: %@", error);
+                break;
+            }
+        }
     }
     
-    [self.playerController requestThumbnailImagesAtTimes:keyFrames timeOption:MPMovieTimeOptionExact];
+    NSData *gifData = [self createGIFwithFrames:[outImages copy]];
     
-    __block BOOL stop = NO;
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
         
-        NSDictionary *userInfo = [note userInfo];
+        Image *newImage = [Image MR_createInContext:localContext];
+        [newImage setCreatedAt:[NSDate date]];
+        [newImage setImageData:gifData];
+        [newImage setIsAnimated:@YES];
         
-        UIImage *incomingFrame = [userInfo objectForKey:MPMoviePlayerThumbnailImageKey];
+    } completion:^(BOOL success, NSError *error) {
         
-        incomingFrame = [self emojifyFrame:incomingFrame];
-        
-        [self.currentFrames addObject:incomingFrame];
-        
-        float time = [[userInfo objectForKey:MPMoviePlayerThumbnailTimeKey] floatValue];
-        if ( time >= (duration.value/duration.timescale) - (4 * stepOfGIF) ) {
-            // Done receiving frames
-            NSLog(@"Received all frames");
-            if (stop) {
-                NSLog(@"STOP!");
-                self.currentImages = [Image MR_findAllSortedBy:@"createdAt" ascending:NO];
-                self.completionBlock();
-                return;
-            }
-            
-            stop = YES;
-            
-            [self.playerController cancelAllThumbnailImageRequests];
-            self.playerController = nil;
-            NSData *gifData = [self createGIFwithFrames:self.currentFrames];
-            
-            [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-                
-                Image *newImage = [Image MR_createInContext:localContext];
-                [newImage setCreatedAt:[NSDate date]];
-                [newImage setImageData:gifData];
-                [newImage setIsAnimated:@YES];
-                
-            } completion:^(BOOL success, NSError *error) {
-                
-                self.currentImages = [Image MR_findAllSortedBy:@"createdAt" ascending:NO];
-                self.completionBlock();
-                
-            }];
-        }
+        self.completionBlock();
     }];
 }
 
@@ -119,34 +100,11 @@
     
     incomingFrame = [incomingFrame imageWithCornerRadius:incomingFrame.size.width/2];
     
-    incomingFrame = [UIImage imageWithCGImage:incomingFrame.CGImage scale:4 orientation:incomingFrame.scale];
+    incomingFrame = [UIImage imageWithCGImage:incomingFrame.CGImage scale:incomingFrame.scale orientation:incomingFrame.scale];
     
-    incomingFrame = [self imageWithBorderFromImage:incomingFrame];
-    
-//    incomingFrame = [self paddedImageFromImage:incomingFrame];
+    incomingFrame = [self imageWithBorder:incomingFrame.size.width*marginOfGIF FromImage:incomingFrame];
     
     return incomingFrame;
-}
-
-- (UIImage *)paddedImageFromImage:(UIImage *)image
-{
-    // Scale image down
-    UIGraphicsBeginImageContext(CGSizeMake(Emoji_Size + Emoji_Padding, Emoji_Size + Emoji_Padding));
-    
-    CGContextSaveGState(UIGraphicsGetCurrentContext());
-    
-    CGContextTranslateCTM(UIGraphicsGetCurrentContext(), 0, image.size.height/2);
-    CGContextScaleCTM(UIGraphicsGetCurrentContext(), 1.0, -1.0);
-    
-    CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, Emoji_Size, Emoji_Size), image.CGImage);
-
-    CGContextRestoreGState(UIGraphicsGetCurrentContext());
-
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return image;
 }
 
 - (NSData *)createGIFwithFrames:(NSArray *)images
@@ -156,6 +114,7 @@
                                              (__bridge id)kCGImagePropertyGIFLoopCount: @0, // 0 means loop forever
                                              }
                                      };
+    
     NSDictionary *frameProperties = @{
                                       (__bridge id)kCGImagePropertyGIFDictionary: @{
                                               (__bridge id)kCGImagePropertyGIFDelayTime:[NSNumber numberWithFloat:stepOfGIF], // a float (not double!) in seconds, rounded to centiseconds in the GIF data
@@ -166,7 +125,6 @@
     
     CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, images.count, NULL);
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
-    
     
     @autoreleasepool {
         for (UIImage *image in images ) {
@@ -180,14 +138,12 @@
     CFRelease(destination);
     
     NSData *gifData = [NSData dataWithContentsOfFile:fileURL.relativePath];
-    
     return gifData;
 }
 
 
-- (UIImage*)imageWithBorderFromImage:(UIImage*)source
+- (UIImage*)imageWithBorder:(CGFloat)margin FromImage:(UIImage*)source
 {
-    const CGFloat margin = 40.0f;
     CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
     UIGraphicsBeginImageContextWithOptions(size, YES, source.scale);
     
@@ -197,11 +153,14 @@
     CGContextTranslateCTM(context, 0, size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     
-    [[UIColor whiteColor] setFill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    CGRect entireRect = CGRectMake(-margin, -margin, size.width + margin*margin, size.height + margin*margin);
+    CGContextClearRect(context, entireRect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillRect(context, entireRect);
     
     CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
-    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    [source drawInRect:rect];
     
     UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
     
@@ -210,71 +169,6 @@
     
     return testImg;
 }
-
-//NSDictionary *detectorOptions = @{CIDetectorAccuracy: CIDetectorAccuracyHigh};
-//
-//CIDetector *faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
-//
-//NSDictionary *imageOptions = @{
-//                               CIDetectorImageOrientation: @(6),
-//                               CIDetectorSmile: @YES
-//                               };
-//
-//CIImage *ciImage = [CIImage imageWithCGImage:originalImage.CGImage];
-//
-//NSArray *faceFeatures = [faceDetector featuresInImage:ciImage options:imageOptions];
-//
-//if (faceFeatures.count == 0) {
-//    NSLog(@"Not able to find bounds.");
-//    [[[UIAlertView alloc] initWithTitle:@"No Emotion Detected"
-//                                message:@"Your face is missing."
-//                               delegate:nil
-//                      cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
-//    callback();
-//    return;
-//}
-//
-//CGRect faceBounds;
-//CGPoint leftEye, rightEye, mouthPosition;
-//
-//BOOL hasSmile = NO;
-//
-//for (CIFaceFeature *faceFeature in faceFeatures) {
-//
-//    leftEye = faceFeature.leftEyePosition;
-//    rightEye = faceFeature.rightEyePosition;
-//    mouthPosition = faceFeature.mouthPosition;
-//    faceBounds = faceFeature.bounds;
-//    hasSmile = faceFeature.hasSmile;
-//
-//    break;
-//}
-//
-//// Get cropped image of just the face
-//CGRect adjustedRect = faceBounds;
-//
-//// Translate bounds to account for mirroring
-//CGFloat distanceFromCenter = CGRectGetMidY(faceBounds) - originalImage.size.width/2;
-//
-//if (distanceFromCenter > 0) {
-//    adjustedRect.origin.y -= MAX(0, 2 * ABS(distanceFromCenter));
-//}else{
-//    adjustedRect.origin.y += 2 * ABS(distanceFromCenter);
-//}
-//
-//CGFloat insetBasedOnEyeDistance = ABS(rightEye.y - leftEye.y)/3;
-//
-//adjustedRect = CGRectInset(adjustedRect, insetBasedOnEyeDistance, insetBasedOnEyeDistance);
-//
-//CGImageRef imref = CGImageCreateWithImageInRect([originalImage CGImage], adjustedRect);
-//
-//// Create UIImage
-//UIImage *emojiImage = [UIImage imageWithCGImage:imref];
-//
-//CGImageRelease(imref);
-//
-//emojiImage = [self rotateImage:emojiImage onDegrees:90];
-//emojiImage = [emojiImage imageWithCornerRadius:emojiImage.size.width/2];
 
 #pragma mark -
 #pragma mark AVFoundation Setup
@@ -358,6 +252,5 @@
     
     return absolutePath;
 }
-
 
 @end

@@ -8,13 +8,13 @@
 
 #import <MBProgressHUD.h>
 #import <UIView+Positioning.h>
+#import <UIColor+Hex.h>
+
 @import AVFoundation;
 
 @interface MECaptureViewController : UIViewController <AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-
-@property (nonatomic, strong) UILabel *instructionLabel;
 
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressRecognier;

@@ -10,7 +10,7 @@ target "MEmoji" do
     pod 'MBProgressHUD', '~> 0.9'
     pod 'UIColor+Hex', '~> 1.0'
     pod 'UIImage+animatedGif', '~> 0.1'
-    pod 'FLAnimatedImage', :git => 'https://github.com/caughtinflux/FLAnimatedImage', :branch => 'DisappearOnTapFix' #using this fork becuause of a glitch in collectionview
+    pod 'FLAnimatedImage', :git => 'https://github.com/cameronehrlich/FLAnimatedImage', :branch => 'animatesWhileScrolling'
     pod 'UIView+Positioning', '~> 1.0'
 end
 

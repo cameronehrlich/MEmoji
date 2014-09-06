@@ -10,7 +10,7 @@
 #define COCOAPODS_POD_AVAILABLE_FLAnimatedImage
 #define COCOAPODS_VERSION_MAJOR_FLAnimatedImage 1
 #define COCOAPODS_VERSION_MINOR_FLAnimatedImage 0
-#define COCOAPODS_VERSION_PATCH_FLAnimatedImage 0
+#define COCOAPODS_VERSION_PATCH_FLAnimatedImage 1
 
 // GPUImage
 #define COCOAPODS_POD_AVAILABLE_GPUImage

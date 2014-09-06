@@ -13,7 +13,6 @@
 @interface Image : NSManagedObject
 
 @property (nonatomic, retain) NSData * imageData;
-@property (nonatomic, retain) NSNumber *hasSmile;
 @property (nonatomic, retain) NSDate * createdAt;
 @property (nonatomic, retain) NSNumber *isAnimated;
 

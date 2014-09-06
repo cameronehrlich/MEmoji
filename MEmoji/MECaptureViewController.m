@@ -10,26 +10,9 @@
 
 @implementation MECaptureViewController
 
-
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.instructionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, self.view.bounds.size.width, 50)];
-    [self.instructionLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.instructionLabel setTextColor:[UIColor grayColor]];
-    [self.instructionLabel setShadowColor:[UIColor blackColor]];
-    [self.instructionLabel setShadowOffset:CGSizeMake(0, 1)];
-    [self.instructionLabel setFont:[UIFont fontWithDescriptor:self.instructionLabel.font.fontDescriptor size:25]];
-    [self.instructionLabel setText:NSLocalizedString(@"Tap to capture.", nil)];
-    
-    [UIView animateWithDuration:1 delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.instructionLabel setAlpha:0];
-    } completion:^(BOOL finished) {
-        [self.instructionLabel removeFromSuperview];
-    }];
-    
-    [self.view.layer addSublayer:self.instructionLabel.layer];
     
     self.singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.view addGestureRecognizer:self.singleTapRecognizer];
@@ -46,7 +29,6 @@
     CGRect layerFrame = CGRectMake(0, (self.view.height/2) - (self.view.width/2), self.view.width, self.view.width);
     [[MEModel sharedInstance] previewLayer].frame = layerFrame;
     [self.view.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
-    
 }
 
 #pragma mark -
@@ -72,15 +54,21 @@
     }
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view setBackgroundColor:[UIColor colorWithHex:0xccfffc]];
+}
+
 #pragma mark -
 #pragma mark AVCaptureMovieFileDelegate
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
 {
-    
+    NSLog(@"Started Recording");
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
+    NSLog(@"Finished Recording");
     if (error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
@@ -108,6 +96,7 @@
 
 - (void)finishRecording
 {
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [[[MEModel sharedInstance] fileOutput] stopRecording];
 }
 
@@ -117,9 +106,7 @@
     
     [[MEModel sharedInstance] createEmojiFromMovieURL:url complete:^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [self dismissViewControllerAnimated:YES completion:^{
-            //
-        }];
+        [self.tabBarController setSelectedIndex:0];
     }];
 }
 

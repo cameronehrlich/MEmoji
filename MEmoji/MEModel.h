@@ -10,7 +10,6 @@
 #import <UIImage+Additions.h>
 #import <GPUImage.h>
 
-#import "UIImage+Orientation.h"
 #import "Image.h"
 
 @import AVFoundation;
@@ -18,12 +17,11 @@
 @import ImageIO;
 @import MobileCoreServices;
 
-typedef void (^MemojiCallback)();
+typedef void (^MEmojiCallback)();
 
-#define Emoji_Size 200
-#define Emoji_Padding Emoji_Size*0.75
-
-static CGFloat stepOfGIF = 0.1f;
+static const CGFloat dimensionOfGIF = 300;
+static const CGFloat stepOfGIF = 0.12f;
+static const CGFloat marginOfGIF = 0.40f;
 
 @interface MEModel : NSObject
 
@@ -37,21 +35,16 @@ static CGFloat stepOfGIF = 0.1f;
 @property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 
-@property (nonatomic, strong) NSArray *currentImages; // Coredata Cache
-
 @property (nonatomic, strong) NSMutableArray *currentFrames; //For collecting thumbnail images from MPMediaPlayer
 @property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
 
 @property (nonatomic, strong) NSOperationQueue *loadingQueue;
-@property (nonatomic, strong) NSMutableDictionary *operationCache;
-@property (copy) MemojiCallback completionBlock;
+@property (copy) MEmojiCallback completionBlock;
 
 + (instancetype)sharedInstance;
-
-- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MemojiCallback)callback;
-
-- (NSData *)createGIFwithFrames:(NSArray *)images;
-
 + (NSString *)currentVideoPath;
+
+- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MEmojiCallback)callback;
+- (NSData *)createGIFwithFrames:(NSArray *)images;
 
 @end

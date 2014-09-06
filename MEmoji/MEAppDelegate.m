@@ -7,11 +7,30 @@
 //
 
 #import "MEAppDelegate.h"
+#import "UIColor+Hex.h"
 
 @implementation MEAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [MEModel sharedInstance];
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    UIColor *mainBackgoundColor = [UIColor colorWithHex:0x6bffc9];
+    UIColor *globalTextTint = [UIColor colorWithHex:0x48c1f9];
+
+    [[UINavigationBar appearance] setBarTintColor:mainBackgoundColor];
+    [[UITabBar appearance] setBarTintColor:mainBackgoundColor];
+    
+    [[UITabBar appearance] setTintColor:globalTextTint];
+    [[UITabBar appearance] setSelectedImageTintColor:globalTextTint];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-thin" size:11.0f],
+                                                        NSForegroundColorAttributeName : globalTextTint,
+                                                        NSBackgroundColorAttributeName : globalTextTint
+                                                        } forState:UIControlStateNormal];
     
     return YES;
 }
