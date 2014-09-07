@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.9" systemVersion="14A329r" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bFF-kF-kyA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.9" systemVersion="14A329r" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="uKj-2s-0DT">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -13,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOQ-Sr-BAi">
@@ -79,44 +80,6 @@
             </objects>
             <point key="canvasLocation" x="1358" y="-721"/>
         </scene>
-        <!--Add-->
-        <scene sceneID="o6E-YT-d9F">
-            <objects>
-                <viewController id="B4M-OH-94B" customClass="MECaptureViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="iyd-Tv-nMq"/>
-                        <viewControllerLayoutGuide type="bottom" id="Fn6-gb-yc1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="JIy-zu-pYW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Add" image="plusButton" id="h7k-Wr-J02"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fWZ-TP-kfJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="833" y="-81"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="xGB-gp-fkB">
-            <objects>
-                <tabBarController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="bFF-kF-kyA" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="yCW-Eu-79W">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="uKj-2s-0DT" kind="relationship" relationship="viewControllers" id="Ek3-Ac-S3i"/>
-                        <segue destination="B4M-OH-94B" kind="relationship" relationship="viewControllers" id="a1G-Zp-aZr"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DBY-zo-qMt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="278" y="-592"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="F94-jM-C1M">
             <objects>
@@ -138,12 +101,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="55s-tM-3iQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="825" y="-712"/>
+            <point key="canvasLocation" x="785" y="-721"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="plusButton" width="30" height="30"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

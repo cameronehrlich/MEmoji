@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3216CAB519BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */; };
+		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
 		32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384D199BF26000125DA8 /* MECaptureViewController.m */; };
@@ -42,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3216CAB319BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASHSpringyCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASHSpringyCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		3216CABA19BBF245007F3D46 /* AWCollectionViewDialLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWCollectionViewDialLayout.h; sourceTree = "<group>"; };
+		3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWCollectionViewDialLayout.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
@@ -105,6 +111,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3216CAB619BBEBE2007F3D46 /* Flow Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				32CFCAA819BA94F600CFD996 /* MEFlowLayout.h */,
+				32CFCAA919BA94F600CFD996 /* MEFlowLayout.m */,
+				3216CAB319BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.h */,
+				3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */,
+				3216CABA19BBF245007F3D46 /* AWCollectionViewDialLayout.h */,
+				3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */,
+			);
+			name = "Flow Layouts";
+			sourceTree = "<group>";
+		};
 		32DD887919870B44008E8BCE = {
 			isa = PBXGroup;
 			children = (
@@ -148,8 +167,7 @@
 				32F752691987514300045AFA /* Model */,
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
-				32CFCAA819BA94F600CFD996 /* MEFlowLayout.h */,
-				32CFCAA919BA94F600CFD996 /* MEFlowLayout.m */,
+				3216CAB619BBEBE2007F3D46 /* Flow Layouts */,
 				32A9384C199BF26000125DA8 /* MECaptureViewController.h */,
 				32A9384D199BF26000125DA8 /* MECaptureViewController.m */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
@@ -338,11 +356,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3216CAB519BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m in Sources */,
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
 				32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				32CFCAAA19BA94F600CFD996 /* MEFlowLayout.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
+				3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
 				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
 				32F752681987513000045AFA /* Image.m in Sources */,
