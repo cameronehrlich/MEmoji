@@ -262,38 +262,6 @@
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-        NSLog(@"%s", __FUNCTION__);
-    }
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-//    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    
-    
-//    CGRect cellFrameInSuperview = [self.collectionView convertRect:cellRect toView:[self.collectionView superview]];
-    
-//    CGPoint offset = scrollView.contentOffset;
-    
-//    NSLog(@"%@", NSStringFromCGPoint(offset));
-
-        
-//        
-//        CGFloat centerX = cellFrameInSuperview.origin.y + (cellFrameInSuperview.size.height/2);
-//        NSLog(@"%f", centerX - CGRectGetMidY(self.view.frame));
-        
-//        CALayer *layer = self.header.layer;
-//        CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-//        rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-//        rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 45.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
-//        layer.transform = rotationAndPerspectiveTransform;
-        
-//        self.header.bottom = cellFrameInSuperview.origin.y+cellFrameInSuperview.size.height;
-}
-
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
@@ -325,7 +293,7 @@
         
     }else{
         
-        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init]; // TODO : preload this to speed it up
         [controller setMessageComposeDelegate:self];
         
         [controller addAttachmentData:thisImage.imageData typeIdentifier:@"com.compuserve.gif" filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
