@@ -29,6 +29,11 @@
         [MagicalRecord setupAutoMigratingCoreDataStack];
         
         self.loadingQueue = [[NSOperationQueue alloc] init];
+        [self.loadingQueue setQualityOfService:NSQualityOfServiceUserInteractive];
+        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+
+        self.loadingQueue = [[NSOperationQueue alloc] init];
+        [self.loadingQueue setQualityOfService:NSQualityOfServiceBackground];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -53,6 +58,7 @@
     CMTime duration = asset.duration;
 
     NSMutableArray *outImages = [[NSMutableArray alloc] init];
+    NSMutableArray *outImagesPadded = [[NSMutableArray alloc] init];
     NSError *error;
     
     NSInteger frameRate = 80;
@@ -63,10 +69,12 @@
             
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
-//            NSLog(@"Attempted: %lld / %d, Got: %lld / %d", keyFrame.value, keyFrame.timescale, actualTime.value, actualTime.timescale);
+
             UIImage *tmpFrameImage = [self emojifyFrame:[UIImage imageWithCGImage:refImg]];
-            
             [outImages addObject:tmpFrameImage];
+            
+            UIImage *tmpFrameImagePadded = [self imageWithBorder:tmpFrameImage.size.width*marginOfGIF FromImage:tmpFrameImage];
+            [outImagesPadded addObject:tmpFrameImagePadded];
             
             if (error) {
                 NSLog(@"Frame generation error: %@", error);
@@ -75,13 +83,19 @@
         }
     }
     
-    NSData *gifData = [self createGIFwithFrames:[outImages copy]];
+    NSData *GIFData = [self createGIFwithFrames:[outImages copy]];
+    NSData *paddedGIFdata = [self createGIFwithFrames:[outImagesPadded copy]];
+    
+    if (GIFData == nil || paddedGIFdata == nil) {
+        NSLog(@"Trying to save nil gif!");
+    }
     
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
         
         Image *newImage = [Image MR_createInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
-        [newImage setImageData:gifData];
+        [newImage setImageData:GIFData];
+        [newImage setPaddedImageData:paddedGIFdata];
         [newImage setIsAnimated:@YES];
         
     } completion:^(BOOL success, NSError *error) {
@@ -99,10 +113,7 @@
     CGImageRelease(imageRef);
     
     incomingFrame = [incomingFrame imageWithCornerRadius:incomingFrame.size.width/2];
-    
     incomingFrame = [UIImage imageWithCGImage:incomingFrame.CGImage scale:incomingFrame.scale orientation:incomingFrame.scale];
-    
-    incomingFrame = [self imageWithBorder:incomingFrame.size.width*marginOfGIF FromImage:incomingFrame];
     
     return incomingFrame;
 }

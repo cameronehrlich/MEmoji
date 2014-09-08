@@ -39,6 +39,7 @@ static const CGFloat marginOfGIF = 0.40f;
 @property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
 
 @property (nonatomic, strong) NSOperationQueue *loadingQueue;
+@property (nonatomic, strong) NSOperationQueue *renderingQueue;
 @property (copy) MEmojiCallback completionBlock;
 
 + (instancetype)sharedInstance;
@@ -46,5 +47,6 @@ static const CGFloat marginOfGIF = 0.40f;
 
 - (void)createEmojiFromMovieURL:(NSURL *)url complete:(MEmojiCallback)callback;
 - (NSData *)createGIFwithFrames:(NSArray *)images;
+- (void)toggleCameras;
 
 @end

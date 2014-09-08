@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AEE83C39557B4CC4B838B6A9"
+               BlueprintIdentifier = "13FBC7792FD7458084F8CA45"
                BuildableName = "libPods-MEmoji-UIImage+animatedGif.a"
                BlueprintName = "Pods-MEmoji-UIImage+animatedGif"
                ReferencedContainer = "container:Pods.xcodeproj">

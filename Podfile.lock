@@ -1,10 +1,12 @@
 PODS:
+  - DACircularProgress (2.2.0)
   - FLAnimatedImage (1.0.1)
   - GPUImage (0.1.4)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
   - MBProgressHUD (0.9)
+  - PulsingHalo (0.0.1)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor
     - UIColor+Hex/UIColor
@@ -14,10 +16,12 @@ PODS:
   - UIView+Positioning (1.0.1)
 
 DEPENDENCIES:
+  - DACircularProgress (~> 2.2)
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
   - GPUImage (~> 0.1)
   - MagicalRecord (~> 2.2)
   - MBProgressHUD (~> 0.9)
+  - PulsingHalo
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
   - UIImage+animatedGif (~> 0.1)
@@ -29,10 +33,12 @@ EXTERNAL SOURCES:
     :git: https://github.com/cameronehrlich/FLAnimatedImage
 
 SPEC CHECKSUMS:
+  DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
+  PulsingHalo: 4f5fbc25f9efb9f949e4ddad05ca885a11667aa0
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
   UIImage+animatedGif: dfdff756b010648ee461663c0120c5b2581fc809

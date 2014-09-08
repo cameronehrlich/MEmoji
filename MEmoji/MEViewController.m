@@ -11,11 +11,13 @@
 #import <UIImage+animatedGIF.h>
 #import <FLAnimatedImageView.h>
 #import <FLAnimatedImage.h>
-#import <MBProgressHUD.h>
 #import <UIView+Positioning.h>
 #import <UIColor+Hex.h>
 
-#define ScrollerEmojiSize 250
+
+#define ScrollerEmojiSize 220
+const float AllowedLengthOfGIF = 2.5; // Seconds
+const float UpdateProgress = 0.25;
 
 @implementation MEViewController
 
@@ -23,23 +25,35 @@
 {
     [super viewDidLoad];
     
+    // Collection View
     self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
-                                                   andAngularSpacing:17.0 andCellSize:CGSizeMake(ScrollerEmojiSize, ScrollerEmojiSize)
-                                                        andAlignment:WHEELALIGNMENTCENTER andItemHeight:ScrollerEmojiSize
-                                                          andXOffset:self.view.bounds.size.width/2];
+                                                   andAngularSpacing:18.0
+                                                         andCellSize:CGSizeMake(ScrollerEmojiSize, ScrollerEmojiSize)
+                                                        andAlignment:WHEELALIGNMENTCENTER
+                                                       andItemHeight:ScrollerEmojiSize
+                                                          andXOffset:(self.view.width/2)];
     [self.collectionView setCollectionViewLayout:self.layout];
+    [self.collectionView setAlwaysBounceVertical:YES];
+    [self.collectionView setBackgroundColor:[UIColor colorWithHex:0x11ecfa]];
     self.imageCache = [[NSMutableDictionary alloc] init];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     
+    // Header
     self.header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width)];
     [self.collectionView addSubview:self.header];
+    [self.collectionView sendSubviewToBack:self.header];
     
+    // Gesture
     self.singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.header addGestureRecognizer:self.singleTapRecognizer];
     
     self.longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [self.longPressRecognier setMinimumPressDuration:0.3];
     [self.header addGestureRecognizer:self.longPressRecognier];
     
+    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+    [self.swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight];
+    [self.header addGestureRecognizer:self.swipeGestureRecognizer];
 
 }
 
@@ -55,17 +69,11 @@
         [self.header setAlpha:0];
         [self initializePreviewLayer];
         
-        [UIView animateWithDuration:0.45 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             [self.header setAlpha:1];
         }];
     });
-
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -80,6 +88,20 @@
     CGRect layerFrame = CGRectMake(0, 0, self.header.width, self.header.height);
     [[MEModel sharedInstance] previewLayer].frame = layerFrame;
     [self.header.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
+    
+    CALayer *circleLayer = [CALayer layer];
+    [circleLayer setFrame:layerFrame];
+    [circleLayer setCornerRadius:self.header.width/2];
+    [circleLayer setBackgroundColor:[UIColor whiteColor].CGColor];
+    
+    [[[MEModel sharedInstance] previewLayer] setMask:circleLayer];
+    
+    self.progressView = [[DACircularProgressView alloc] initWithFrame:self.header.bounds];
+    [self.progressView setThicknessRatio:0.07];
+    self.progressView.trackTintColor = [UIColor colorWithWhite:1 alpha:0.2];
+    self.progressView.progressTintColor = [UIColor colorWithHex:0x6bffc9];
+    [self.progressView setAlpha:0];
+    [self.header addSubview:self.progressView];
 }
 
 #pragma mark -
@@ -88,8 +110,7 @@
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
     [self startRecording];
-    [MBProgressHUD showHUDAddedTo:self.view animated:NO];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(stepOfGIF * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(stepOfGIF/2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishRecording];
     });
 }
@@ -97,29 +118,49 @@
 -  (void)handleLongPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
-        [self startRecording];
+        if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
+            [self startRecording];
+        }
     }
     else if (sender.state == UIGestureRecognizerStateEnded){
-        [MBProgressHUD showHUDAddedTo:self.view animated:NO];
-        [self finishRecording];
+        if ([[[MEModel sharedInstance] fileOutput] isRecording]) {
+            [self finishRecording];
+        }
     }
+}
+
+- (void)handleSwipe:(UISwipeGestureRecognizer *)sender
+{
+    [self toggleCameras:self];
+}
+
+- (IBAction)toggleCameras:(id)sender
+{
+    [[MEModel sharedInstance] toggleCameras];
 }
 
 #pragma mark -
 #pragma mark AVCaptureMovieFileDelegate
--(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
 {
-    NSLog(@"Started Recording");
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.progressView setProgress:0.0];
+        [self.progressView setAlpha:1];
+    }];
+    [self updateProgress:UpdateProgress/AllowedLengthOfGIF];
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
-    NSLog(@"Finished Recording");
     if (error) {
         NSLog(@"Error: %@", error);
-        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video could not be converted for some reason!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
     }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.progressView setProgress:0.0];
+            [self.progressView setAlpha:0];
+        }];
+        
         [self captureGIF];
     }
 }
@@ -142,7 +183,28 @@
 
 - (void)finishRecording
 {
-    [[[MEModel sharedInstance] fileOutput] stopRecording];
+    
+    if ([[[MEModel sharedInstance] fileOutput] isRecording]) {
+        [[[MEModel sharedInstance] fileOutput] stopRecording];
+    }
+}
+
+- (void)updateProgress:(float)progress
+{
+    [self.progressView setProgress:progress animated:YES];
+    
+    if (progress >= 1.0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(UpdateProgress * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self finishRecording];
+        });
+        
+    }else{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(UpdateProgress * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if ([[[MEModel sharedInstance] fileOutput] isRecording]) {
+                [self updateProgress:progress + (UpdateProgress/AllowedLengthOfGIF)];
+            }
+        });
+    }
 }
 
 - (void)captureGIF
@@ -150,11 +212,34 @@
     NSURL *url = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
     
     [[MEModel sharedInstance] createEmojiFromMovieURL:url complete:^{
-        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
-        self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
-        [self.collectionView reloadData];
         
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+        self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+        
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.collectionView reloadData];
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (self.inPullMode) {
+                    self.inPullMode = NO;
+                    
+                    Image *thisImage = [self.currentImages firstObject];
+                    
+                    self.messageController = [[MFMessageComposeViewController alloc] init];
+                    [self.messageController setMessageComposeDelegate:self];
+                    
+                    [self.messageController addAttachmentData:thisImage.paddedImageData
+                                               typeIdentifier:@"com.compuserve.gif"
+                                                     filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
+                    
+                    [self presentViewController:self.messageController animated:YES completion:^{
+                        
+                    }];
+                }
+            });
+        });
     }];
 }
 
@@ -204,17 +289,31 @@
     
     if (indexPath.row == 0) {
         MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+        [cell setBackgroundColor:[UIColor clearColor]];
         cell.imageView.animatedImage = nil;
         return cell;
     }
     
     Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
-
+    
     MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    
+    if (!cell.maskLayer) {
+        cell.maskLayer = [CAShapeLayer layer];
+        [cell.maskLayer setBounds:CGRectInset(cell.layer.bounds, 10, 10)];
+        [cell.maskLayer setCornerRadius:cell.maskLayer.bounds.size.width/2];
+        [cell.maskLayer setBackgroundColor:[UIColor whiteColor].CGColor];
+        
+        [cell.layer setMask:cell.maskLayer];
+        [cell.maskLayer setPosition:CGPointMake(cell.layer.bounds.size.width/2, cell.layer.bounds.size.height/2)];
+    }
+    
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    
     if ([self.imageCache objectForKey:thisImage.objectID]) {
         [cell.imageView setAnimatedImage:[self.imageCache objectForKey:thisImage.objectID]];
-        [UIView animateWithDuration:0.1 delay:0.1 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [cell.imageView setAlpha:1];
         } completion:^(BOOL finished) {
             //
@@ -227,11 +326,18 @@
         [loadImageIntoCellOp addExecutionBlock:^(void){
             
             FLAnimatedImage *image = [[FLAnimatedImage alloc] initWithAnimatedGIFData:thisImage.imageData];
-            [self.imageCache setObject:image forKey:thisImage.objectID];
+            
+            if (image) {
+                [self.imageCache setObject:image forKey:thisImage.objectID];
+            }else{
+                NSLog(@"Tried to load nil image");
+            }
+            
+            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
                 //Check for cancelation before proceeding. We use cellForRowAtIndexPath to make sure we get nil for a non-visible cell
                 [cell.imageView setAnimatedImage:image];
-                [UIView animateWithDuration:0.1 delay:0.1 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                     [cell.imageView setAlpha:1];
                 } completion:^(BOOL finished) {
                     //
@@ -254,11 +360,13 @@
             [deleteImageView setContentMode:UIViewContentModeScaleAspectFit];
             [cell addSubview:deleteImageView];
         }
+        
         [deleteImageView setAlpha:1];
+        
     }else{
         [deleteImageView setAlpha:0];
     }
-
+    
     return cell;
 }
 
@@ -272,33 +380,60 @@
     [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    CGFloat parallax = MAX(0, self.collectionView.contentOffset.y+60)/3.5;
+    
+    CGRect newFrame = self.header.frame;
+    newFrame.origin.y = 0 + parallax;
+    [self.header setFrame:newFrame];
+    
+    CGPoint point = [self.collectionView convertPoint:self.collectionView.origin toView:self.view];
+    
+    if (point.y > 160.0 && !self.inPullMode && ![[[MEModel sharedInstance] fileOutput] isRecording]) {
+        if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
+            self.inPullMode = YES;
+            [self startRecording];
+        }
+    }
+    
+    if (point.y < 150.0 && self.inPullMode && [[[MEModel sharedInstance] fileOutput] isRecording]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self finishRecording];
+        });
+
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
-
+    
     if (self.collectionView.allowsMultipleSelection) { // If in editing mode
         [self.collectionView performBatchUpdates:^{
-
+            
             [thisImage MR_deleteEntity];
             [self.currentImages removeObject:thisImage];
             [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
             
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-
-            }];
                 
+            }];
+            
         } completion:^(BOOL finished) {
             self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
         }];
         
     }else{
+        self.messageController = [[MFMessageComposeViewController alloc] init];
+        [self.messageController setMessageComposeDelegate:self];
         
-        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init]; // TODO : preload this to speed it up
-        [controller setMessageComposeDelegate:self];
+        [self.messageController addAttachmentData:thisImage.paddedImageData
+                                   typeIdentifier:@"com.compuserve.gif"
+                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
         
-        [controller addAttachmentData:thisImage.imageData typeIdentifier:@"com.compuserve.gif" filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
-        
-        [self presentViewController:controller animated:YES completion:^{
+        [self presentViewController:self.messageController animated:YES completion:^{
             
         }];
     }

@@ -6,6 +6,12 @@
 // project.
 
 
+// DACircularProgress
+#define COCOAPODS_POD_AVAILABLE_DACircularProgress
+#define COCOAPODS_VERSION_MAJOR_DACircularProgress 2
+#define COCOAPODS_VERSION_MINOR_DACircularProgress 2
+#define COCOAPODS_VERSION_PATCH_DACircularProgress 0
+
 // FLAnimatedImage
 #define COCOAPODS_POD_AVAILABLE_FLAnimatedImage
 #define COCOAPODS_VERSION_MAJOR_FLAnimatedImage 1
@@ -35,6 +41,12 @@
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
+
+// PulsingHalo
+#define COCOAPODS_POD_AVAILABLE_PulsingHalo
+#define COCOAPODS_VERSION_MAJOR_PulsingHalo 0
+#define COCOAPODS_VERSION_MINOR_PulsingHalo 0
+#define COCOAPODS_VERSION_PATCH_PulsingHalo 1
 
 // UIColor+Hex
 #define COCOAPODS_POD_AVAILABLE_UIColor_Hex

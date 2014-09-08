@@ -15,11 +15,9 @@
 {
     
     [MEModel sharedInstance];
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     UIColor *mainBackgoundColor = [UIColor colorWithHex:0x6bffc9];
-    UIColor *globalTextTint = [UIColor colorWithHex:0x48c1f9];
+    UIColor *globalTextTint = [UIColor colorWithHex:0x11ecfa];
 
     [[UINavigationBar appearance] setBarTintColor:mainBackgoundColor];
     [[UITabBar appearance] setBarTintColor:mainBackgoundColor];
@@ -27,10 +25,8 @@
     [[UITabBar appearance] setTintColor:globalTextTint];
     [[UITabBar appearance] setSelectedImageTintColor:globalTextTint];
     
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-thin" size:11.0f],
-                                                        NSForegroundColorAttributeName : globalTextTint,
-                                                        NSBackgroundColorAttributeName : globalTextTint
-                                                        } forState:UIControlStateNormal];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"MarkerFelt-Thin" size:26.0], NSFontAttributeName, nil]];
     
     return YES;
 }

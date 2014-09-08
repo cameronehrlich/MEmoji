@@ -12,6 +12,8 @@ target "MEmoji" do
     pod 'UIImage+animatedGif', '~> 0.1'
     pod 'FLAnimatedImage', :git => 'https://github.com/cameronehrlich/FLAnimatedImage', :branch => 'animatesWhileScrolling'
     pod 'UIView+Positioning', '~> 1.0'
+    pod 'PulsingHalo'
+    pod 'DACircularProgress', '~> 2.2'
 end
 
 target "MEmojiTests" do

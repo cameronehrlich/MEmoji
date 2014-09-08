@@ -10,6 +10,8 @@
 #import "MEFlowLayout.h"
 #import "ASHSpringyCollectionViewFlowLayout.h"
 #import "AWCollectionViewDialLayout.h"
+#import <PulsingHaloLayer.h>
+#import <DACircularProgressView.h>
 
 @import MessageUI;
 @import MobileCoreServices;
@@ -17,12 +19,18 @@
 @interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, strong) DACircularProgressView *progressView;
+@property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressRecognier;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) AWCollectionViewDialLayout *layout;
+
+@property (strong, nonatomic) MFMessageComposeViewController *messageController;
+@property (assign, nonatomic) BOOL inPullMode;
 
 @property (strong, nonatomic) UIView *header;
 

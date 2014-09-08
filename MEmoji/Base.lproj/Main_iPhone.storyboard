@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.9" systemVersion="14A329r" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="uKj-2s-0DT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.9" systemVersion="14A329r" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="mXH-zv-19q">
     <dependencies>
         <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOQ-Sr-BAi">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOQ-Sr-BAi">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bxc-gI-aYW">
                                     <size key="itemSize" width="155" height="144"/>
@@ -35,16 +35,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gMd-cg-7Yk" customClass="FLAnimatedImageView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                                                    <rect key="frame" x="8" y="8" width="124" height="124"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="tintColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="top" secondItem="gdO-C4-ZIM" secondAttribute="top" id="Ok2-ZA-cGj"/>
-                                            <constraint firstAttribute="trailing" secondItem="gMd-cg-7Yk" secondAttribute="trailing" id="P47-xf-giC"/>
-                                            <constraint firstAttribute="bottom" secondItem="gMd-cg-7Yk" secondAttribute="bottom" id="b6A-Dz-s8T"/>
-                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="leading" secondItem="gdO-C4-ZIM" secondAttribute="leading" id="xj8-ym-Ilw"/>
+                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="top" secondItem="gdO-C4-ZIM" secondAttribute="top" constant="8" id="Ok2-ZA-cGj"/>
+                                            <constraint firstAttribute="trailing" secondItem="gMd-cg-7Yk" secondAttribute="trailing" constant="8" id="P47-xf-giC"/>
+                                            <constraint firstAttribute="bottom" secondItem="gMd-cg-7Yk" secondAttribute="bottom" constant="8" id="b6A-Dz-s8T"/>
+                                            <constraint firstItem="gMd-cg-7Yk" firstAttribute="leading" secondItem="gdO-C4-ZIM" secondAttribute="leading" constant="8" id="xj8-ym-Ilw"/>
                                         </constraints>
                                         <size key="customSize" width="140" height="140"/>
                                         <connections>
@@ -59,16 +60,16 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="FOQ-Sr-BAi" secondAttribute="bottom" id="95f-Gg-XfD"/>
-                            <constraint firstItem="FOQ-Sr-BAi" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="fhA-kI-vPv"/>
-                            <constraint firstAttribute="trailing" secondItem="FOQ-Sr-BAi" secondAttribute="trailing" id="ruA-MX-Rkd"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MEmoji" id="kev-ZR-GK6">
                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="Oba-4j-4Ki">
                             <connections>
                                 <action selector="editToggle:" destination="vXZ-lx-hvc" id="vxd-sw-S1M"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="LW1-SF-neI">
+                            <connections>
+                                <action selector="toggleCameras:" destination="vXZ-lx-hvc" id="SDU-Ns-NiQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -78,30 +79,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1358" y="-721"/>
+            <point key="canvasLocation" x="1628" y="-726"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="F94-jM-C1M">
+        <scene sceneID="cgU-OZ-7rx">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uKj-2s-0DT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" systemItem="history" id="VN6-XJ-PME"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mXH-zv-19q" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSr-kV-NEz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="U7q-BV-GCj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1Mg-M7-qSR">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="1" green="1" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
-                    </toolbar>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Na4-Qa-xZ5"/>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="gl3-0N-H67"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="55s-tM-3iQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="41f-6S-tKa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="785" y="-721"/>
+            <point key="canvasLocation" x="1096" y="-726"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

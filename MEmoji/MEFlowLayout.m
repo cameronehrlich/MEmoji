@@ -10,7 +10,8 @@
 
 @implementation MEFlowLayout
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self){
         [self setup];
@@ -18,7 +19,8 @@
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
     if (self){
         [self setup];
@@ -28,13 +30,15 @@
 
 
 
-- (void)setup {
+- (void)setup
+{
     _dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
     _visibleIndexPathsSet = [NSMutableSet set];
     _visibleHeaderAndFooterSet = [[NSMutableSet alloc] init];
 }
 
-- (void)prepareLayout {
+- (void)prepareLayout
+{
     [super prepareLayout];
     
     if ([[UIApplication sharedApplication] statusBarOrientation] != self.interfaceOrientation) {

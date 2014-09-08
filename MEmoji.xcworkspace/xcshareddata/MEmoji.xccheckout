@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6D29A81A-AD85-4DF7-8D09-22A14134C26F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>MEmoji</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</key>
+		<string>ssh://github.com/cameronehrlich/MEmoji.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MEmoji.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/cameronehrlich/MEmoji.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MEmoji</string>
+		</dict>
+	</array>
+</dict>
+</plist>

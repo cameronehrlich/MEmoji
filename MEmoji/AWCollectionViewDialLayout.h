@@ -14,13 +14,15 @@
 @interface AWCollectionViewDialLayout : UICollectionViewLayout
 
 typedef enum WheelAlignmentType : NSInteger WheelAlignmentType;
-enum WheelAlignmentType : NSInteger {
+
+enum WheelAlignmentType : NSInteger
+{
     WHEELALIGNMENTLEFT,
     WHEELALIGNMENTCENTER
 };
 
-@property (readwrite, nonatomic, assign) int cellCount;
-@property (readwrite, nonatomic, assign) int wheelType;
+@property (readwrite, nonatomic, assign) NSInteger cellCount;
+@property (readwrite, nonatomic, assign) NSInteger wheelType;
 @property (readwrite, nonatomic, assign) CGPoint center;
 @property (readwrite, nonatomic, assign) CGFloat offset;
 @property (readwrite, nonatomic, assign) CGFloat itemHeight;
@@ -30,6 +32,6 @@ enum WheelAlignmentType : NSInteger {
 @property (readwrite, nonatomic, assign) CGFloat dialRadius;
 @property (readonly, nonatomic, strong) NSIndexPath *currentIndexPath;
 
--(instancetype)initWithRadius: (CGFloat) radius andAngularSpacing: (CGFloat) spacing andCellSize: (CGSize) cell andAlignment:(WheelAlignmentType)alignment andItemHeight:(CGFloat)height andXOffset: (CGFloat) xOffset;
+- (instancetype)initWithRadius:(CGFloat)radius andAngularSpacing:(CGFloat)spacing andCellSize:(CGSize)cell andAlignment:(WheelAlignmentType)alignment andItemHeight:(CGFloat)height andXOffset:(CGFloat)xOffset;
 
 @end
