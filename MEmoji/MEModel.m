@@ -29,11 +29,9 @@
         [MagicalRecord setupAutoMigratingCoreDataStack];
         
         self.loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setQualityOfService:NSQualityOfServiceUserInteractive];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
 
         self.loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setQualityOfService:NSQualityOfServiceBackground];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
