@@ -16,8 +16,8 @@
 
 
 #define ScrollerEmojiSize 220
-const float AllowedLengthOfGIF = 2.5; // Seconds
-const float UpdateProgress = 0.25;
+const float AllowedLengthOfGIF = 2.0; // Seconds
+const float UpdateProgress = 0.5;
 
 @implementation MEViewController
 
@@ -34,12 +34,16 @@ const float UpdateProgress = 0.25;
                                                           andXOffset:(self.view.width/2)];
     [self.collectionView setCollectionViewLayout:self.layout];
     [self.collectionView setAlwaysBounceVertical:YES];
-    [self.collectionView setBackgroundColor:[UIColor colorWithHex:0x11ecfa]];
+//    [self.collectionView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"binding_dark"]]];
+
+    [self.collectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
     self.imageCache = [[NSMutableDictionary alloc] init];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     
     // Header
-    self.header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width)];
+    CGFloat margin = 60;
+    self.header = [[UIView alloc] initWithFrame:CGRectMake(margin/2, margin/2, self.view.bounds.size.width-margin, self.view.bounds.size.width-margin)];
+    [self.collectionView setContentInset:UIEdgeInsetsMake(margin/2, 0, 0, 0)];
     [self.collectionView addSubview:self.header];
     [self.collectionView sendSubviewToBack:self.header];
     
@@ -99,7 +103,7 @@ const float UpdateProgress = 0.25;
     self.progressView = [[DACircularProgressView alloc] initWithFrame:self.header.bounds];
     [self.progressView setThicknessRatio:0.07];
     self.progressView.trackTintColor = [UIColor colorWithWhite:1 alpha:0.2];
-    self.progressView.progressTintColor = [UIColor colorWithHex:0x6bffc9];
+    self.progressView.progressTintColor = [UIColor colorWithHex:0x5FB3FF];
     [self.progressView setAlpha:0];
     [self.header addSubview:self.progressView];
 }
@@ -194,7 +198,7 @@ const float UpdateProgress = 0.25;
     [self.progressView setProgress:progress animated:YES];
     
     if (progress >= 1.0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(UpdateProgress * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self finishRecording];
         });
         
@@ -219,7 +223,7 @@ const float UpdateProgress = 0.25;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [self.collectionView reloadData];
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 if (self.inPullMode) {
@@ -297,7 +301,7 @@ const float UpdateProgress = 0.25;
     Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
     
     MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell setBackgroundColor:[UIColor colorWithHex:0xcE5E9F7]];
     
     if (!cell.maskLayer) {
         cell.maskLayer = [CAShapeLayer layer];
@@ -383,7 +387,7 @@ const float UpdateProgress = 0.25;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    CGFloat parallax = MAX(0, self.collectionView.contentOffset.y+60)/3.5;
+    CGFloat parallax = MAX(0, self.collectionView.contentOffset.y+60)/2.5;
     
     CGRect newFrame = self.header.frame;
     newFrame.origin.y = 0 + parallax;
@@ -391,14 +395,16 @@ const float UpdateProgress = 0.25;
     
     CGPoint point = [self.collectionView convertPoint:self.collectionView.origin toView:self.view];
     
-    if (point.y > 160.0 && !self.inPullMode && ![[[MEModel sharedInstance] fileOutput] isRecording]) {
+    const CGFloat pullDownLimit = 200.0;
+    
+    if (point.y > pullDownLimit && !self.inPullMode && ![[[MEModel sharedInstance] fileOutput] isRecording]) {
         if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
             self.inPullMode = YES;
             [self startRecording];
         }
     }
     
-    if (point.y < 150.0 && self.inPullMode && [[[MEModel sharedInstance] fileOutput] isRecording]) {
+    if (point.y < (pullDownLimit - 10) && self.inPullMode && [[[MEModel sharedInstance] fileOutput] isRecording]) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self finishRecording];
         });
