@@ -13,6 +13,7 @@
 #import <FLAnimatedImage.h>
 #import <UIView+Positioning.h>
 #import <UIColor+Hex.h>
+#import "MEOverlayCellCollectionViewCell.h"
 
 
 #define ScrollerEmojiSize 220
@@ -32,32 +33,21 @@ const float UpdateProgress = 0.5;
                                                         andAlignment:WHEELALIGNMENTCENTER
                                                        andItemHeight:ScrollerEmojiSize
                                                           andXOffset:(self.view.width/2)];
-    [self.collectionView setCollectionViewLayout:self.layout];
-    [self.collectionView setAlwaysBounceVertical:YES];
-//    [self.collectionView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"binding_dark"]]];
+    
+    [self.libraryCollectionView setCollectionViewLayout:self.layout];
+    [self.libraryCollectionView setAlwaysBounceVertical:YES];
+    [self.libraryCollectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
 
-    [self.collectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
     self.imageCache = [[NSMutableDictionary alloc] init];
-    [self.collectionView setShowsVerticalScrollIndicator:NO];
+    [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
     
-    // Header
-    CGFloat margin = 60;
-    self.header = [[UIView alloc] initWithFrame:CGRectMake(margin/2, margin/2, self.view.bounds.size.width-margin, self.view.bounds.size.width-margin)];
-    [self.collectionView setContentInset:UIEdgeInsetsMake(margin/2, 0, 0, 0)];
-    [self.collectionView addSubview:self.header];
-    [self.collectionView sendSubviewToBack:self.header];
-    
-    // Gesture
+    // Gestures
     self.singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    [self.header addGestureRecognizer:self.singleTapRecognizer];
+    [self.viewFinder addGestureRecognizer:self.singleTapRecognizer];
     
     self.longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [self.longPressRecognier setMinimumPressDuration:0.3];
-    [self.header addGestureRecognizer:self.longPressRecognier];
-    
-    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    [self.swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight];
-    [self.header addGestureRecognizer:self.swipeGestureRecognizer];
+    [self.viewFinder addGestureRecognizer:self.longPressRecognier];
 
 }
 
@@ -66,18 +56,16 @@ const float UpdateProgress = 0.5;
     [super viewWillAppear:animated];
     
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
-    
-    [self.collectionView reloadData];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.header setAlpha:0];
-        [self initializePreviewLayer];
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.header setAlpha:1];
-        }];
+
+    [self.libraryCollectionView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self initializeLayout];
     });
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -87,30 +75,45 @@ const float UpdateProgress = 0.5;
 }
 
 
-- (void)initializePreviewLayer
+- (void)initializeLayout
 {
-    CGRect layerFrame = CGRectMake(0, 0, self.header.width, self.header.height);
+    // Header
+    self.viewFinder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width)];
+    [self.libraryCollectionView addSubview:self.viewFinder];
+    
+    // Preview Layer
+    CGRect layerFrame = CGRectMake(0, 0, self.viewFinder.width, self.viewFinder.height);
     [[MEModel sharedInstance] previewLayer].frame = layerFrame;
-    [self.header.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
+    [self.viewFinder.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
     
     CALayer *circleLayer = [CALayer layer];
     [circleLayer setFrame:layerFrame];
-    [circleLayer setCornerRadius:self.header.width/2];
-    [circleLayer setBackgroundColor:[UIColor whiteColor].CGColor];
+    [circleLayer setOpacity:0.85];
+    [circleLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
+    [[[MEModel sharedInstance] previewLayer] addSublayer:circleLayer];
     
-    [[[MEModel sharedInstance] previewLayer] setMask:circleLayer];
+    // Scroll view
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.viewFinder.bounds];
+    [self.scrollView setContentSize:CGSizeMake(self.viewFinder.size.width*2, self.viewFinder.size.height)];
+    [self.scrollView setPagingEnabled:YES];
+    [self.scrollView setDirectionalLockEnabled:YES];
+    [self.scrollView setShowsHorizontalScrollIndicator:YES];
+    [self.viewFinder addSubview:self.scrollView];
     
-    self.progressView = [[DACircularProgressView alloc] initWithFrame:self.header.bounds];
-    [self.progressView setThicknessRatio:0.07];
-    self.progressView.trackTintColor = [UIColor colorWithWhite:1 alpha:0.2];
-    self.progressView.progressTintColor = [UIColor colorWithHex:0x5FB3FF];
-    [self.progressView setAlpha:0];
-    [self.header addSubview:self.progressView];
+    self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
+                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    [self.overlayCollectionView setDelegate:self];
+    [self.overlayCollectionView setDataSource:self];
+    [self.overlayCollectionView registerClass:[MEOverlayCellCollectionViewCell class] forCellWithReuseIdentifier:@"OverlayCell"];
+    [self.overlayCollectionView setAlwaysBounceVertical:YES];
+    [self.overlayCollectionView setBackgroundColor:[UIColor clearColor]];
+    [self.overlayCollectionView setContentInset:UIEdgeInsetsMake(20, 20, 0, 20)];
+    [self.scrollView addSubview:self.overlayCollectionView];
+
 }
 
 #pragma mark -
 #pragma mark UIGestureRecognizerHandlers
-
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
     [self startRecording];
@@ -131,11 +134,6 @@ const float UpdateProgress = 0.5;
             [self finishRecording];
         }
     }
-}
-
-- (void)handleSwipe:(UISwipeGestureRecognizer *)sender
-{
-    [self toggleCameras:self];
 }
 
 - (IBAction)toggleCameras:(id)sender
@@ -222,8 +220,8 @@ const float UpdateProgress = 0.5;
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            [self.collectionView reloadData];
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+            [self.libraryCollectionView reloadData];
+            [self.libraryCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 if (self.inPullMode) {
@@ -234,7 +232,7 @@ const float UpdateProgress = 0.5;
                     self.messageController = [[MFMessageComposeViewController alloc] init];
                     [self.messageController setMessageComposeDelegate:self];
                     
-                    [self.messageController addAttachmentData:thisImage.paddedImageData
+                    [self.messageController addAttachmentData:thisImage.imageData
                                                typeIdentifier:@"com.compuserve.gif"
                                                      filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
                     
@@ -258,7 +256,7 @@ const float UpdateProgress = 0.5;
     
     _editing = editing;
     
-    self.collectionView.allowsMultipleSelection = editing;
+    self.libraryCollectionView.allowsMultipleSelection = editing;
     
     if (editing) {
         self.editBarButtonItem.title = @"Done";
@@ -266,7 +264,7 @@ const float UpdateProgress = 0.5;
         self.editBarButtonItem.title = @"Edit";
     }
     
-    [self.collectionView reloadData];
+    [self.libraryCollectionView reloadData];
 }
 
 #pragma mark -
@@ -284,15 +282,30 @@ const float UpdateProgress = 0.5;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.currentImages.count + 1;
+    if ([collectionView isEqual:self.libraryCollectionView]) {
+        return self.currentImages.count + 1;
+    }else if ([collectionView isEqual:self.overlayCollectionView]){
+        return [[MEModel allOverlays] count]; // TODO: Do something here
+    }else{
+        NSLog(@"Error in Number of items in section");
+        return 0;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"MEmojiCell";
+    
+    if ([collectionView isEqual:self.overlayCollectionView]) {
+        MEOverlayCellCollectionViewCell *cell = [self.overlayCollectionView dequeueReusableCellWithReuseIdentifier:@"OverlayCell" forIndexPath:indexPath];
+
+        UIImage *cellImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
+        
+        [cell.imageView setImage:cellImage];
+        return cell;
+    }
     
     if (indexPath.row == 0) {
-        MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+        MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.imageView.animatedImage = nil;
         return cell;
@@ -300,18 +313,8 @@ const float UpdateProgress = 0.5;
     
     Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
     
-    MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
     [cell setBackgroundColor:[UIColor colorWithHex:0xcE5E9F7]];
-    
-    if (!cell.maskLayer) {
-        cell.maskLayer = [CAShapeLayer layer];
-        [cell.maskLayer setBounds:CGRectInset(cell.layer.bounds, 10, 10)];
-        [cell.maskLayer setCornerRadius:cell.maskLayer.bounds.size.width/2];
-        [cell.maskLayer setBackgroundColor:[UIColor whiteColor].CGColor];
-        
-        [cell.layer setMask:cell.maskLayer];
-        [cell.maskLayer setPosition:CGPointMake(cell.layer.bounds.size.width/2, cell.layer.bounds.size.height/2)];
-    }
     
     [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
     
@@ -374,11 +377,59 @@ const float UpdateProgress = 0.5;
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([collectionView isEqual:self.overlayCollectionView]) {
+        return;
+    }
+
+    Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
+    
+    if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
+        [self.libraryCollectionView performBatchUpdates:^{
+            
+            [thisImage MR_deleteEntity];
+            [self.currentImages removeObject:thisImage];
+            [self.libraryCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                
+            }];
+            
+        } completion:^(BOOL finished) {
+            self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+        }];
+        
+    }else{
+        self.messageController = [[MFMessageComposeViewController alloc] init];
+        [self.messageController setMessageComposeDelegate:self];
+        
+        [self.messageController addAttachmentData:thisImage.imageData
+                                   typeIdentifier:@"com.compuserve.gif"
+                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
+        
+        [self presentViewController:self.messageController animated:YES completion:^{
+            
+        }];
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([collectionView isEqual:self.overlayCollectionView]) {
+        return CGSizeMake(125, 125); // TODO : Dynamically size these based on screen width
+    }
+    return CGSizeMake(75, 75);
+}
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
+
+#pragma mark - 
+#pragma mark UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
@@ -387,13 +438,13 @@ const float UpdateProgress = 0.5;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    CGFloat parallax = MAX(0, self.collectionView.contentOffset.y+60)/2.5;
+    CGFloat parallax = MAX(0, self.libraryCollectionView.contentOffset.y+60)/2.5;
     
-    CGRect newFrame = self.header.frame;
+    CGRect newFrame = self.viewFinder.frame;
     newFrame.origin.y = 0 + parallax;
-    [self.header setFrame:newFrame];
+    [self.viewFinder setFrame:newFrame];
     
-    CGPoint point = [self.collectionView convertPoint:self.collectionView.origin toView:self.view];
+    CGPoint point = [self.libraryCollectionView convertPoint:self.libraryCollectionView.origin toView:self.view];
     
     const CGFloat pullDownLimit = 200.0;
     
@@ -409,39 +460,6 @@ const float UpdateProgress = 0.5;
             [self finishRecording];
         });
 
-    }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
-    
-    if (self.collectionView.allowsMultipleSelection) { // If in editing mode
-        [self.collectionView performBatchUpdates:^{
-            
-            [thisImage MR_deleteEntity];
-            [self.currentImages removeObject:thisImage];
-            [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                
-            }];
-            
-        } completion:^(BOOL finished) {
-            self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
-        }];
-        
-    }else{
-        self.messageController = [[MFMessageComposeViewController alloc] init];
-        [self.messageController setMessageComposeDelegate:self];
-        
-        [self.messageController addAttachmentData:thisImage.paddedImageData
-                                   typeIdentifier:@"com.compuserve.gif"
-                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
-        
-        [self presentViewController:self.messageController animated:YES completion:^{
-            
-        }];
     }
 }
 

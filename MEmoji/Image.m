@@ -12,7 +12,6 @@
 @implementation Image
 
 @dynamic movieData;
-@dynamic paddedImageData;
 @dynamic imageData;
 @dynamic createdAt;
 @dynamic isAnimated;

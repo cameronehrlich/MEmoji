@@ -10,29 +10,29 @@
 	<string>MEmoji</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</key>
+		<key>F37942615CC1E1044F6712771E301A4EE06AFB1F</key>
 		<string>ssh://github.com/cameronehrlich/MEmoji.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>MEmoji.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</key>
+		<key>F37942615CC1E1044F6712771E301A4EE06AFB1F</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/cameronehrlich/MEmoji.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</string>
+	<string>F37942615CC1E1044F6712771E301A4EE06AFB1F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C1F3C409-FB78-47E1-A4F4-00F2EB1F0BC2</string>
+			<string>F37942615CC1E1044F6712771E301A4EE06AFB1F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MEmoji</string>
 		</dict>

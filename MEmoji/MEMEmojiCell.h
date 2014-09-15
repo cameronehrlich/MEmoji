@@ -11,6 +11,5 @@
 @interface MEMEmojiCell : UICollectionViewCell
 
 @property (strong, nonatomic) IBOutlet FLAnimatedImageView *imageView;
-@property (strong, nonatomic) CAShapeLayer *maskLayer;
 
 @end

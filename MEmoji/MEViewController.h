@@ -7,8 +7,6 @@
 //
 #import <UIView+Positioning.h>
 #import "MEMEmojiCell.h"
-#import "MEFlowLayout.h"
-#import "ASHSpringyCollectionViewFlowLayout.h"
 #import "AWCollectionViewDialLayout.h"
 #import <PulsingHaloLayer.h>
 #import <DACircularProgressView.h>
@@ -24,15 +22,17 @@
 
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressRecognier;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
 
-@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) UIView *viewFinder;
+@property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) UICollectionView *overlayCollectionView;
+
+@property (strong, nonatomic) IBOutlet UICollectionView *libraryCollectionView;
 @property (strong, nonatomic) AWCollectionViewDialLayout *layout;
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
 @property (assign, nonatomic) BOOL inPullMode;
 
-@property (strong, nonatomic) UIView *header;
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editBarButtonItem;
 @property (assign, nonatomic) BOOL editing;

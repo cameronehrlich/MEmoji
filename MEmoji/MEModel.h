@@ -48,4 +48,6 @@ static const CGFloat marginOfGIF = 0.40f;
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;
 
++ (NSArray *)allOverlays;
+
 @end

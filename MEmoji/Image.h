@@ -13,7 +13,6 @@
 @interface Image : NSManagedObject
 
 @property (nonatomic, retain) NSData * movieData;
-@property (nonatomic, retain) NSData * paddedImageData;
 @property (nonatomic, retain) NSData * imageData;
 @property (nonatomic, retain) NSDate * createdAt;
 @property (nonatomic, retain) NSNumber *isAnimated;

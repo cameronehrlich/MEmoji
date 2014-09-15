@@ -60,6 +60,8 @@
     NSError *error;
     
     NSInteger frameRate = 80;
+
+    UIImage *mask = [UIImage imageNamed:@"maskLayer"];
     
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
         @autoreleasepool {
@@ -68,11 +70,10 @@
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
 
-            UIImage *tmpFrameImage = [self emojifyFrame:[UIImage imageWithCGImage:refImg]];
-            [outImages addObject:tmpFrameImage];
+            UIImage *singleFrame = [UIImage imageWithCGImage:refImg];
             
-            UIImage *tmpFrameImagePadded = [self imageWithBorder:tmpFrameImage.size.width*marginOfGIF FromImage:tmpFrameImage];
-            [outImagesPadded addObject:tmpFrameImagePadded];
+            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:@[]];
+            [outImages addObject:tmpFrameImage];
             
             if (error) {
                 NSLog(@"Frame generation error: %@", error);
@@ -93,7 +94,6 @@
         Image *newImage = [Image MR_createInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
-        [newImage setPaddedImageData:paddedGIFdata];
         [newImage setIsAnimated:@YES];
         
     } completion:^(BOOL success, NSError *error) {
@@ -102,18 +102,38 @@
     }];
 }
 
-- (UIImage *)emojifyFrame:(UIImage *)incomingFrame
+- (UIImage *)emojifyFrame:(UIImage *)imgFrame withMask:(UIImage *)mask andOverlays:(NSArray *)overlays
 {
-    CGRect cropRect = CGRectMake(0, (incomingFrame.size.height/2) - (incomingFrame.size.width/2), incomingFrame.size.width, incomingFrame.size.width);
+    CGRect cropRect = CGRectMake(0, (imgFrame.size.height/2) - (imgFrame.size.width/2), imgFrame.size.width, imgFrame.size.width);
     
-    CGImageRef imageRef = CGImageCreateWithImageInRect([incomingFrame CGImage], cropRect);
-    incomingFrame = [UIImage imageWithCGImage:imageRef];
+    CGImageRef imageRef = CGImageCreateWithImageInRect([imgFrame CGImage], cropRect);
+    imgFrame = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     
-    incomingFrame = [incomingFrame imageWithCornerRadius:incomingFrame.size.width/2];
-    incomingFrame = [UIImage imageWithCGImage:incomingFrame.CGImage scale:incomingFrame.scale orientation:incomingFrame.scale];
+    imgFrame = [self image:imgFrame withOverlay:mask];
     
-    return incomingFrame;
+    for (UIImage *overlay in overlays) {
+        imgFrame = [self image:imgFrame withOverlay:overlay];
+    }
+    
+    return imgFrame;
+}
+
+
+- (UIImage *)image:(UIImage *)image withOverlay:(UIImage *)overlay
+{
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+    
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [image drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
+    
+    [overlay drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
+
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return destImage;
 }
 
 - (NSData *)createGIFwithFrames:(NSArray *)images
@@ -260,6 +280,21 @@
     NSString *absolutePath = [directory stringByAppendingPathComponent:@"/current.mov"];
     
     return absolutePath;
+}
+
++ (NSArray *)allOverlays
+{
+    
+    UIImage *bigLaugh = [UIImage imageNamed:@"bigLaugh"];
+    UIImage *bigTears = [UIImage imageNamed:@"bigTears"];
+    UIImage *eyes = [UIImage imageNamed:@"eyes"];
+    UIImage *heartEyes = [UIImage imageNamed:@"heartEyes"];
+    UIImage *oneTear = [UIImage imageNamed:@"oneTear"];
+    UIImage *smallTears = [UIImage imageNamed:@"smallTears"];
+    UIImage *surgicalMask = [UIImage imageNamed:@"sugricalMask"];
+    UIImage *toungeLaugh = [UIImage imageNamed:@"tongueLaugh"];
+    
+    return @[bigLaugh, bigTears, eyes, heartEyes, oneTear, smallTears, surgicalMask, toungeLaugh];
 }
 
 @end

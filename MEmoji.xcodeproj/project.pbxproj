@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3216CAB519BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */; };
+		3212C2A519C774B5007ED774 /* Overlays.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3212C2A419C774B5007ED774 /* Overlays.xcassets */; };
 		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
+		3218C80E19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
 		32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384D199BF26000125DA8 /* MECaptureViewController.m */; };
-		32CFCAAA19BA94F600CFD996 /* MEFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFCAA919BA94F600CFD996 /* MEFlowLayout.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
 		32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
@@ -44,11 +44,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3216CAB319BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASHSpringyCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASHSpringyCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		3212C2A419C774B5007ED774 /* Overlays.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Overlays.xcassets; sourceTree = "<group>"; };
 		3216CABA19BBF245007F3D46 /* AWCollectionViewDialLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWCollectionViewDialLayout.h; sourceTree = "<group>"; };
 		3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWCollectionViewDialLayout.m; sourceTree = "<group>"; };
 		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
+		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
+		3218C80C19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCellCollectionViewCell.h; sourceTree = "<group>"; };
+		3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCellCollectionViewCell.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
@@ -57,8 +59,6 @@
 		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
 		32A9384C199BF26000125DA8 /* MECaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MECaptureViewController.h; sourceTree = "<group>"; };
 		32A9384D199BF26000125DA8 /* MECaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MECaptureViewController.m; sourceTree = "<group>"; };
-		32CFCAA819BA94F600CFD996 /* MEFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEFlowLayout.h; sourceTree = "<group>"; };
-		32CFCAA919BA94F600CFD996 /* MEFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEFlowLayout.m; sourceTree = "<group>"; };
 		32DD888219870B44008E8BCE /* MEmoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEmoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DD888519870B44008E8BCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DD888719870B44008E8BCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -112,13 +112,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3212C2A619C77717007ED774 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				327A02221987542200DF27BC /* MEMEmojiCell.h */,
+				327A02231987542200DF27BC /* MEMEmojiCell.m */,
+				3218C80C19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.h */,
+				3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		3216CAB619BBEBE2007F3D46 /* Flow Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				32CFCAA819BA94F600CFD996 /* MEFlowLayout.h */,
-				32CFCAA919BA94F600CFD996 /* MEFlowLayout.m */,
-				3216CAB319BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.h */,
-				3216CAB419BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m */,
 				3216CABA19BBF245007F3D46 /* AWCollectionViewDialLayout.h */,
 				3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */,
 			);
@@ -168,10 +175,12 @@
 				32F752691987514300045AFA /* Model */,
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
+				3212C2A619C77717007ED774 /* Cells */,
 				3216CAB619BBEBE2007F3D46 /* Flow Layouts */,
 				32A9384C199BF26000125DA8 /* MECaptureViewController.h */,
 				32A9384D199BF26000125DA8 /* MECaptureViewController.m */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
+				3212C2A419C774B5007ED774 /* Overlays.xcassets */,
 				32DD888C19870B44008E8BCE /* Supporting Files */,
 			);
 			path = MEmoji;
@@ -212,8 +221,6 @@
 				32F7526319874FEA00045AFA /* Model.xcdatamodeld */,
 				32F752661987513000045AFA /* Image.h */,
 				32F752671987513000045AFA /* Image.m */,
-				327A02221987542200DF27BC /* MEMEmojiCell.h */,
-				327A02231987542200DF27BC /* MEMEmojiCell.m */,
 				32A93849199BE59E00125DA8 /* MEModel.h */,
 				32A9384A199BE59E00125DA8 /* MEModel.m */,
 			);
@@ -303,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32DD889C19870B44008E8BCE /* Main_iPad.storyboard in Resources */,
+				3212C2A519C774B5007ED774 /* Overlays.xcassets in Resources */,
 				32DD88A119870B44008E8BCE /* Images.xcassets in Resources */,
 				32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */,
 				32DD889019870B44008E8BCE /* InfoPlist.strings in Resources */,
@@ -357,11 +365,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3216CAB519BBEB05007F3D46 /* ASHSpringyCollectionViewFlowLayout.m in Sources */,
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
+				3218C80E19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m in Sources */,
 				32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
-				32CFCAAA19BA94F600CFD996 /* MEFlowLayout.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
 				3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
@@ -508,6 +515,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
@@ -527,6 +535,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
@@ -613,9 +622,10 @@
 				32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */,
 				3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */,
 				3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */,
+				3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */,
 				32F7526419874FEA00045AFA /* Model.xcdatamodel */,
 			);
-			currentVersion = 3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */;
+			currentVersion = 3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
