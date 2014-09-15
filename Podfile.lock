@@ -1,7 +1,9 @@
 PODS:
   - DACircularProgress (2.2.0)
+  - DKLiveBlur (0.0.1)
   - FLAnimatedImage (1.0.1)
   - GPUImage (0.1.4)
+  - JGProgressHUD (1.2.1)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
@@ -17,8 +19,10 @@ PODS:
 
 DEPENDENCIES:
   - DACircularProgress (~> 2.2)
+  - DKLiveBlur (~> 0.0)
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
   - GPUImage (~> 0.1)
+  - JGProgressHUD
   - MagicalRecord (~> 2.2)
   - MBProgressHUD (~> 0.9)
   - PulsingHalo
@@ -34,8 +38,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
+  DKLiveBlur: 2ebf69a05286c0f0d2a6e71af5c70c9153597b6d
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
   GPUImage: ac2bde5f4dbea02a81ced6313964cec1f2043ca9
+  JGProgressHUD: f3c0258684f318bc0009e893fdac0701de5cb75b
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   PulsingHalo: 4f5fbc25f9efb9f949e4ddad05ca885a11667aa0

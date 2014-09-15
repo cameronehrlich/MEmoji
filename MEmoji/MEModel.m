@@ -41,7 +41,7 @@
     return self;
 }
 
-- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MEmojiCallback)callback
+- (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback
 {
     self.completionBlock = callback;
     
@@ -72,7 +72,7 @@
 
             UIImage *singleFrame = [UIImage imageWithCGImage:refImg];
             
-            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:@[]];
+            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:overlays];
             [outImages addObject:tmpFrameImage];
             
             if (error) {

@@ -44,7 +44,7 @@ static const CGFloat marginOfGIF = 0.40f;
 + (instancetype)sharedInstance;
 + (NSString *)currentVideoPath;
 
-- (void)createEmojiFromMovieURL:(NSURL *)url complete:(MEmojiCallback)callback;
+- (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback;
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;
 

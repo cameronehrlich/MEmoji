@@ -10,9 +10,15 @@
 
 @implementation MEMEmojiCell
 
-- (void)awakeFromNib
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    [self.imageView setAnimatesWhileScrolling:YES];
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
+        [self.imageView setAnimatesWhileScrolling:YES];
+        [self addSubview:self.imageView];
+    }
+    return self;
 }
 
 @end

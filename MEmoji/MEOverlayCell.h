@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MEOverlayCellCollectionViewCell : UICollectionViewCell
+@interface MEOverlayCell : UICollectionViewCell
 
+@property (strong, nonatomic) UIImageView *selectedImageView;
+@property (strong, nonatomic) UIImageView *maskingView;
 @property (strong, nonatomic) UIImageView *imageView;
 
 @end

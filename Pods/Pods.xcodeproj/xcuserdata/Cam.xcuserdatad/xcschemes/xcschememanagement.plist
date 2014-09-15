@@ -9,12 +9,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MEmoji-DKLiveBlur.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-FLAnimatedImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-MEmoji-GPUImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-JGProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -62,57 +72,67 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0A11BA4D75C2484C82B12ADD</key>
+		<key>04BBD10A3E374C209363EBF2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>13FBC7792FD7458084F8CA45</key>
+		<key>3907D63574694823BCBB8D4D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>53189B1121D643FBAAAE0B1E</key>
+		<key>41465E43BBAC4B8F85676C33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>57B0A5B3D34D420187836A18</key>
+		<key>6B3F368D01BE4C95A83B3C33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6B290145E1BF47F3B7E7A6D9</key>
+		<key>7541749EF30341888085DD16</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9094CC26F86249DCA7082C8A</key>
+		<key>7A3AB1A8E43B4D8DBC7E5A58</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ACD5C57B784E46BEBE03B95E</key>
+		<key>82215119D6724E65AAE42B88</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D478CA0F46B140E9BC44C4D2</key>
+		<key>9C0D6DBB53DF4192A685CC71</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E660BC9DA83247549B8CA0F1</key>
+		<key>AAE30D94C5BB472CB1753EC2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ECA16F9CEBD04CAD91306272</key>
+		<key>B1B076394DA34403A5283501</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F72689D611AF4B5D96DA26DB</key>
+		<key>D4E80F5225E04FFAA6C29425</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DEC783CDDBF3428BBEFF2E8E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F49155B852E04C6DB66DEBB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

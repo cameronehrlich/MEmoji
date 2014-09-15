@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ACD5C57B784E46BEBE03B95E"
+               BlueprintIdentifier = "7A3AB1A8E43B4D8DBC7E5A58"
                BuildableName = "libPods-MEmoji-DACircularProgress.a"
                BlueprintName = "Pods-MEmoji-DACircularProgress"
                ReferencedContainer = "container:Pods.xcodeproj">

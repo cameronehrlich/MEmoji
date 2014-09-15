@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57B0A5B3D34D420187836A18"
+               BlueprintIdentifier = "F49155B852E04C6DB66DEBB7"
                BuildableName = "libPods-MEmoji-PulsingHalo.a"
                BlueprintName = "Pods-MEmoji-PulsingHalo"
                ReferencedContainer = "container:Pods.xcodeproj">

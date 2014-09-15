@@ -14,6 +14,8 @@ target "MEmoji" do
     pod 'UIView+Positioning', '~> 1.0'
     pod 'PulsingHalo'
     pod 'DACircularProgress', '~> 2.2'
+    pod 'DKLiveBlur', '~> 0.0'
+    pod 'JGProgressHUD'
 end
 
 target "MEmojiTests" do

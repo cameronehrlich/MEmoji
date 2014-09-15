@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ECA16F9CEBD04CAD91306272"
+               BlueprintIdentifier = "04BBD10A3E374C209363EBF2"
                BuildableName = "libPods-MEmoji-MBProgressHUD.a"
                BlueprintName = "Pods-MEmoji-MBProgressHUD"
                ReferencedContainer = "container:Pods.xcodeproj">

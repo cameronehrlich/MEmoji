@@ -9,10 +9,9 @@
 /* Begin PBXBuildFile section */
 		3212C2A519C774B5007ED774 /* Overlays.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3212C2A419C774B5007ED774 /* Overlays.xcassets */; };
 		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
-		3218C80E19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */; };
+		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
-		32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384D199BF26000125DA8 /* MECaptureViewController.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
 		32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
@@ -49,16 +48,14 @@
 		3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWCollectionViewDialLayout.m; sourceTree = "<group>"; };
 		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
-		3218C80C19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCellCollectionViewCell.h; sourceTree = "<group>"; };
-		3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCellCollectionViewCell.m; sourceTree = "<group>"; };
+		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
+		3218C80D19C7691C0035B7BA /* MEOverlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCell.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
 		32A93849199BE59E00125DA8 /* MEModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEModel.h; sourceTree = "<group>"; };
 		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
-		32A9384C199BF26000125DA8 /* MECaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MECaptureViewController.h; sourceTree = "<group>"; };
-		32A9384D199BF26000125DA8 /* MECaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MECaptureViewController.m; sourceTree = "<group>"; };
 		32DD888219870B44008E8BCE /* MEmoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEmoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DD888519870B44008E8BCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DD888719870B44008E8BCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -117,8 +114,8 @@
 			children = (
 				327A02221987542200DF27BC /* MEMEmojiCell.h */,
 				327A02231987542200DF27BC /* MEMEmojiCell.m */,
-				3218C80C19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.h */,
-				3218C80D19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m */,
+				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
+				3218C80D19C7691C0035B7BA /* MEOverlayCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -177,8 +174,6 @@
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
 				3212C2A619C77717007ED774 /* Cells */,
 				3216CAB619BBEBE2007F3D46 /* Flow Layouts */,
-				32A9384C199BF26000125DA8 /* MECaptureViewController.h */,
-				32A9384D199BF26000125DA8 /* MECaptureViewController.m */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
 				3212C2A419C774B5007ED774 /* Overlays.xcassets */,
 				32DD888C19870B44008E8BCE /* Supporting Files */,
@@ -366,8 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
-				3218C80E19C7691C0035B7BA /* MEOverlayCellCollectionViewCell.m in Sources */,
-				32A9384E199BF26000125DA8 /* MECaptureViewController.m in Sources */,
+				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
 				3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */,
