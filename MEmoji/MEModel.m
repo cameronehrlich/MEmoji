@@ -124,12 +124,9 @@
 {
     UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
     
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-    
     [image drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
-    
     [overlay drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
-
+    // TODO: fix flip issue
     UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -255,7 +252,6 @@
     
     self.session.sessionPreset = AVCaptureSessionPresetMedium;
     [self.session startRunning];
-    
 }
 
 - (void)toggleCameras
@@ -287,14 +283,23 @@
     
     UIImage *bigLaugh = [UIImage imageNamed:@"bigLaugh"];
     UIImage *bigTears = [UIImage imageNamed:@"bigTears"];
+    UIImage *blueHalo = [UIImage imageNamed:@"blueHalo"];
     UIImage *eyes = [UIImage imageNamed:@"eyes"];
+    UIImage *goldCrown = [UIImage imageNamed:@"goldCrown"];
+    UIImage *gritTeeth = [UIImage imageNamed:@"gritTeeth"];
     UIImage *heartEyes = [UIImage imageNamed:@"heartEyes"];
+    UIImage *nostrilSmoke = [UIImage imageNamed:@"nostrilSmoke"];
     UIImage *oneTear = [UIImage imageNamed:@"oneTear"];
+    UIImage *santaHatBeard = [UIImage imageNamed:@"santaHatBeard"];
+    UIImage *sexyLips = [UIImage imageNamed:@"sexyLips"];
     UIImage *smallTears = [UIImage imageNamed:@"smallTears"];
     UIImage *surgicalMask = [UIImage imageNamed:@"sugricalMask"];
+    UIImage *sunGlasses = [UIImage imageNamed:@"sunGlasses"];
     UIImage *toungeLaugh = [UIImage imageNamed:@"tongueLaugh"];
+    UIImage *topHat = [UIImage imageNamed:@"topHat"];
+    UIImage *turbanAllah = [UIImage imageNamed:@"turbanAllah"];
     
-    return @[bigLaugh, bigTears, eyes, heartEyes, oneTear, smallTears, surgicalMask, toungeLaugh];
+    return @[bigLaugh, blueHalo, eyes, heartEyes, bigTears, oneTear, smallTears, surgicalMask, toungeLaugh, goldCrown, gritTeeth, nostrilSmoke, santaHatBeard, sexyLips, sunGlasses, topHat, turbanAllah];
 }
 
 @end
