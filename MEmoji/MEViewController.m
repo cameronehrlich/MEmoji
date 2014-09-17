@@ -27,6 +27,8 @@
     
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
     
     // Collection View
     self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
@@ -45,13 +47,14 @@
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
     [self.libraryCollectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
+    
     [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
     
     [self.view addSubview:self.libraryCollectionView];
     
-    CGRect captureButtonFrame = CGRectMake(0, 0, 80, 80);
+    CGRect captureButtonFrame = CGRectMake(0, 0, 75, 75);
     self.captureButtonView = [[UIView alloc] initWithFrame:captureButtonFrame];
-    self.captureButtonView.bottom = self.view.bottom - 30;
+    self.captureButtonView.bottom = self.libraryCollectionView.height - captureButtonFrame.size.height;
     self.captureButtonView.centerX = self.view.centerX;
     [self.captureButtonView setBackgroundColor:[UIColor colorWithHex:0x5FB3FF]];
     [self.captureButtonView.layer setCornerRadius:self.captureButtonView.size.width/2];

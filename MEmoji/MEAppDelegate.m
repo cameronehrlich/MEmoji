@@ -23,9 +23,6 @@
     [[UINavigationBar appearance] setBarTintColor:mainBackgoundColor];
     [[UITabBar appearance] setBarTintColor:mainBackgoundColor];
     
-    [[UITabBar appearance] setTintColor:globalTextTint];
-    [[UITabBar appearance] setSelectedImageTintColor:globalTextTint];
-    
     [[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: globalTextTint, NSFontAttributeName:[UIFont fontWithName:@"AvenirNext-Medium" size:23.0]}];
     
     return YES;
