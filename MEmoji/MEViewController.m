@@ -511,7 +511,7 @@
         
         CGFloat adjustedOffset = (self.libraryCollectionView.contentOffset.y + self.libraryCollectionView.contentInset.top);
         
-        if (adjustedOffset > self.viewFinder.height + self.libraryCollectionView.contentInset.top + [[UIApplication sharedApplication] statusBarFrame].size.height * 2) { // If view Finder is offscreen
+        if (adjustedOffset > 2*self.viewFinder.height) { // If view Finder is offscreen
             [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
         }
     }
