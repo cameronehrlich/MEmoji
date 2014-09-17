@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 #import <UIView+Positioning.h>
+#import <LLARingSpinnerView.h>
 #import "MEMEmojiCell.h"
 #import "AWCollectionViewDialLayout.h"
-#import <PulsingHaloLayer.h>
 
 @import MessageUI;
 @import MobileCoreServices;
@@ -17,14 +17,14 @@
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CALayer *maskingLayer;
-
-@property (nonatomic, strong) UITapGestureRecognizer *singleTapRecognizer;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPressRecognier;
+@property (nonatomic, strong) UIVisualEffectView *visualEffectView;
 
 @property (strong, nonatomic) UIView *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UICollectionView *overlayCollectionView;
 @property (strong, nonatomic) UIView *captureButtonView;
+@property (strong, nonatomic) LLARingSpinnerView *captureButtonSpinnerView;
+@property (strong, nonatomic) UIButton *flipCameraButton;
 
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;
 @property (strong, nonatomic) AWCollectionViewDialLayout *layout;

@@ -10,6 +10,8 @@
 
 @interface MEMEmojiCell : UICollectionViewCell
 
-@property (strong, nonatomic) IBOutlet FLAnimatedImageView *imageView;
+@property (strong, nonatomic) FLAnimatedImageView *imageView;
+@property (strong, nonatomic) UIImageView *deleteImageView;
+@property (assign, nonatomic) BOOL editMode;
 
 @end

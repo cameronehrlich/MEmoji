@@ -8,7 +8,6 @@
 
 #import <CoreData+MagicalRecord.h>
 #import <UIImage+Additions.h>
-#import <GPUImage.h>
 
 #import "Image.h"
 

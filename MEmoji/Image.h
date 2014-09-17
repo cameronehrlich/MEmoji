@@ -15,6 +15,5 @@
 @property (nonatomic, retain) NSData * movieData;
 @property (nonatomic, retain) NSData * imageData;
 @property (nonatomic, retain) NSDate * createdAt;
-@property (nonatomic, retain) NSNumber *isAnimated;
 
 @end

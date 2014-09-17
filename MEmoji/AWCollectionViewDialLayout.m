@@ -56,6 +56,18 @@
     return YES;
 }
 
+- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return nil;
+}
+
+- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:itemIndexPath];
+    attributes.alpha = 0;
+    
+    return attributes;
+}
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {

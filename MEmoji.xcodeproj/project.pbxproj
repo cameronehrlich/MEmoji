@@ -12,6 +12,7 @@
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
+		32D0E8F619C8CF98006D8804 /* MERenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0E8F519C8CF98006D8804 /* MERenderer.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
 		32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
@@ -56,6 +57,9 @@
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
 		32A93849199BE59E00125DA8 /* MEModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEModel.h; sourceTree = "<group>"; };
 		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
+		32D0E8F419C8CF98006D8804 /* MERenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERenderer.h; sourceTree = "<group>"; };
+		32D0E8F519C8CF98006D8804 /* MERenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERenderer.m; sourceTree = "<group>"; };
+		32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 		32DD888219870B44008E8BCE /* MEmoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEmoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DD888519870B44008E8BCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DD888719870B44008E8BCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -218,6 +222,8 @@
 				32F752671987513000045AFA /* Image.m */,
 				32A93849199BE59E00125DA8 /* MEModel.h */,
 				32A9384A199BE59E00125DA8 /* MEModel.m */,
+				32D0E8F419C8CF98006D8804 /* MERenderer.h */,
+				32D0E8F519C8CF98006D8804 /* MERenderer.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -360,6 +366,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32D0E8F619C8CF98006D8804 /* MERenderer.m in Sources */,
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
 				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
@@ -613,13 +620,14 @@
 		32F7526319874FEA00045AFA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */,
 				32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */,
 				3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */,
 				3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */,
 				3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */,
 				32F7526419874FEA00045AFA /* Model.xcdatamodel */,
 			);
-			currentVersion = 3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */;
+			currentVersion = 32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -7,6 +7,8 @@
 //
 
 #import "MEModel.h"
+#import "MERenderer.h"
+@import MessageUI;
 
 @implementation MEModel
 
@@ -30,7 +32,7 @@
         
         self.loadingQueue = [[NSOperationQueue alloc] init];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
-
+        
         self.loadingQueue = [[NSOperationQueue alloc] init];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
@@ -54,13 +56,12 @@
     [generator setMaximumSize:CGSizeMake(dimensionOfGIF, dimensionOfGIF)];
     
     CMTime duration = asset.duration;
-
+    
     NSMutableArray *outImages = [[NSMutableArray alloc] init];
-    NSMutableArray *outImagesPadded = [[NSMutableArray alloc] init];
     NSError *error;
     
     NSInteger frameRate = 80;
-
+    
     UIImage *mask = [UIImage imageNamed:@"maskLayer"];
     
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
@@ -69,7 +70,7 @@
             
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
-
+            
             UIImage *singleFrame = [UIImage imageWithCGImage:refImg];
             
             UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:overlays];
@@ -83,23 +84,23 @@
     }
     
     NSData *GIFData = [self createGIFwithFrames:[outImages copy]];
-    NSData *paddedGIFdata = [self createGIFwithFrames:[outImagesPadded copy]];
     
-    if (GIFData == nil || paddedGIFdata == nil) {
+    if (GIFData == nil) {
         NSLog(@"Trying to save nil gif!");
     }
     
+    //    [MERenderer movieFromImageArray:[outImages copy] completion:^(NSData *data) {
+    
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        
         Image *newImage = [Image MR_createInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
-        [newImage setIsAnimated:@YES];
+        //            [newImage setMovieData:data];
         
     } completion:^(BOOL success, NSError *error) {
-        
         self.completionBlock();
     }];
+    //    }];
 }
 
 - (UIImage *)emojifyFrame:(UIImage *)imgFrame withMask:(UIImage *)mask andOverlays:(NSArray *)overlays
@@ -175,7 +176,7 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-
+    
     CGContextTranslateCTM(context, 0, size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     
@@ -280,26 +281,31 @@
 
 + (NSArray *)allOverlays
 {
+    static NSArray *images = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIImage *bigLaugh = [UIImage imageNamed:@"bigLaugh"];
+        UIImage *bigTears = [UIImage imageNamed:@"bigTears"];
+        UIImage *blueHalo = [UIImage imageNamed:@"blueHalo"];
+        UIImage *eyes = [UIImage imageNamed:@"eyes"];
+        UIImage *goldCrown = [UIImage imageNamed:@"goldCrown"];
+        UIImage *gritTeeth = [UIImage imageNamed:@"gritTeeth"];
+        UIImage *heartEyes = [UIImage imageNamed:@"heartEyes"];
+        UIImage *nostrilSmoke = [UIImage imageNamed:@"nostrilSmoke"];
+        UIImage *oneTear = [UIImage imageNamed:@"oneTear"];
+        UIImage *santaHatBeard = [UIImage imageNamed:@"santaHatBeard"];
+        UIImage *sexyLips = [UIImage imageNamed:@"sexyLips"];
+        UIImage *smallTears = [UIImage imageNamed:@"smallTears"];
+        UIImage *surgicalMask = [UIImage imageNamed:@"sugricalMask"];
+        UIImage *sunGlasses = [UIImage imageNamed:@"sunGlasses"];
+        UIImage *toungeLaugh = [UIImage imageNamed:@"tongueLaugh"];
+        UIImage *topHat = [UIImage imageNamed:@"topHat"];
+        UIImage *turbanAllah = [UIImage imageNamed:@"turbanAllah"];
+        
+        images = @[bigLaugh, blueHalo, eyes, heartEyes, bigTears, oneTear, smallTears, surgicalMask, toungeLaugh, goldCrown, gritTeeth, nostrilSmoke, santaHatBeard, sexyLips, sunGlasses, topHat, turbanAllah];
+    });
     
-    UIImage *bigLaugh = [UIImage imageNamed:@"bigLaugh"];
-    UIImage *bigTears = [UIImage imageNamed:@"bigTears"];
-    UIImage *blueHalo = [UIImage imageNamed:@"blueHalo"];
-    UIImage *eyes = [UIImage imageNamed:@"eyes"];
-    UIImage *goldCrown = [UIImage imageNamed:@"goldCrown"];
-    UIImage *gritTeeth = [UIImage imageNamed:@"gritTeeth"];
-    UIImage *heartEyes = [UIImage imageNamed:@"heartEyes"];
-    UIImage *nostrilSmoke = [UIImage imageNamed:@"nostrilSmoke"];
-    UIImage *oneTear = [UIImage imageNamed:@"oneTear"];
-    UIImage *santaHatBeard = [UIImage imageNamed:@"santaHatBeard"];
-    UIImage *sexyLips = [UIImage imageNamed:@"sexyLips"];
-    UIImage *smallTears = [UIImage imageNamed:@"smallTears"];
-    UIImage *surgicalMask = [UIImage imageNamed:@"sugricalMask"];
-    UIImage *sunGlasses = [UIImage imageNamed:@"sunGlasses"];
-    UIImage *toungeLaugh = [UIImage imageNamed:@"tongueLaugh"];
-    UIImage *topHat = [UIImage imageNamed:@"topHat"];
-    UIImage *turbanAllah = [UIImage imageNamed:@"turbanAllah"];
-    
-    return @[bigLaugh, blueHalo, eyes, heartEyes, bigTears, oneTear, smallTears, surgicalMask, toungeLaugh, goldCrown, gritTeeth, nostrilSmoke, santaHatBeard, sexyLips, sunGlasses, topHat, turbanAllah];
+    return images;
 }
 
 @end

@@ -14,6 +14,5 @@
 @dynamic movieData;
 @dynamic imageData;
 @dynamic createdAt;
-@dynamic isAnimated;
 
 @end

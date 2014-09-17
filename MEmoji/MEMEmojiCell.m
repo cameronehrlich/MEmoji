@@ -17,8 +17,51 @@
         self.imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
         [self.imageView setAnimatesWhileScrolling:YES];
         [self addSubview:self.imageView];
+        
+        CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/3, self.bounds.size.width/3);
+        deleteViewFrame.origin.x = self.bounds.size.width/2 - (deleteViewFrame.size.width/2);
+        deleteViewFrame.origin.y = self.bounds.size.height/2 - (deleteViewFrame.size.height/2);
+        self.deleteImageView = [[UIImageView alloc] initWithFrame:deleteViewFrame];
+        [self.deleteImageView setImage:[UIImage imageNamed:@"deleteX"]];
+        [self.deleteImageView setAlpha:0];
+        [self addSubview:self.deleteImageView];
     }
     return self;
+}
+
+- (void)setEditMode:(BOOL)editMode
+{
+    _editMode = editMode;
+    
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
+        if (editMode) {
+            [self.deleteImageView setAlpha:1];
+            [self.deleteImageView setTransform:CGAffineTransformRotate(self.deleteImageView.transform, M_PI_2)];
+        }else{
+            [self.deleteImageView setTransform:CGAffineTransformIdentity];
+            [self.deleteImageView setAlpha:0];
+        }
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
+        
+        if (highlighted) {
+            if (self.editMode) {
+                [self.deleteImageView setTransform:CGAffineTransformScale(self.deleteImageView.transform, -0.5, -0.5)];
+            }
+        }else{
+            [self.deleteImageView setTransform:CGAffineTransformIdentity];
+        }
+    } completion:^(BOOL finished) {
+        //
+    }];
 }
 
 @end

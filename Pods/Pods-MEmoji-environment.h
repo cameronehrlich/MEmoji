@@ -6,12 +6,6 @@
 // project.
 
 
-// DACircularProgress
-#define COCOAPODS_POD_AVAILABLE_DACircularProgress
-#define COCOAPODS_VERSION_MAJOR_DACircularProgress 2
-#define COCOAPODS_VERSION_MINOR_DACircularProgress 2
-#define COCOAPODS_VERSION_PATCH_DACircularProgress 0
-
 // DKLiveBlur
 #define COCOAPODS_POD_AVAILABLE_DKLiveBlur
 #define COCOAPODS_VERSION_MAJOR_DKLiveBlur 0
@@ -24,23 +18,17 @@
 #define COCOAPODS_VERSION_MINOR_FLAnimatedImage 0
 #define COCOAPODS_VERSION_PATCH_FLAnimatedImage 1
 
-// GPUImage
-#define COCOAPODS_POD_AVAILABLE_GPUImage
-#define COCOAPODS_VERSION_MAJOR_GPUImage 0
-#define COCOAPODS_VERSION_MINOR_GPUImage 1
-#define COCOAPODS_VERSION_PATCH_GPUImage 4
-
 // JGProgressHUD
 #define COCOAPODS_POD_AVAILABLE_JGProgressHUD
 #define COCOAPODS_VERSION_MAJOR_JGProgressHUD 1
 #define COCOAPODS_VERSION_MINOR_JGProgressHUD 2
 #define COCOAPODS_VERSION_PATCH_JGProgressHUD 1
 
-// MBProgressHUD
-#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
-#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
-#define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+// LLARingSpinnerView
+#define COCOAPODS_POD_AVAILABLE_LLARingSpinnerView
+#define COCOAPODS_VERSION_MAJOR_LLARingSpinnerView 0
+#define COCOAPODS_VERSION_MINOR_LLARingSpinnerView 1
+#define COCOAPODS_VERSION_PATCH_LLARingSpinnerView 2
 
 // MagicalRecord
 #define COCOAPODS_POD_AVAILABLE_MagicalRecord
@@ -53,12 +41,6 @@
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
-
-// PulsingHalo
-#define COCOAPODS_POD_AVAILABLE_PulsingHalo
-#define COCOAPODS_VERSION_MAJOR_PulsingHalo 0
-#define COCOAPODS_VERSION_MINOR_PulsingHalo 0
-#define COCOAPODS_VERSION_PATCH_PulsingHalo 1
 
 // UIColor+Hex
 #define COCOAPODS_POD_AVAILABLE_UIColor_Hex
