@@ -468,14 +468,28 @@
         self.messageController = [[MFMessageComposeViewController alloc] init];
         [self.messageController setMessageComposeDelegate:self];
         
-        [self.messageController addAttachmentData:thisImage.imageData
-                                   typeIdentifier:@"com.compuserve.gif"
-                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
+//        [self.messageController addAttachmentData:thisImage.imageData
+//                                   typeIdentifier:@"com.compuserve.gif"
+//                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
+        
+        [self.messageController addAttachmentData:thisImage.movieData
+                                   typeIdentifier:@"com.apple.quicktime-movie"
+                                         filename:[NSString stringWithFormat:@"MEmoji-%@.mov", thisImage.createdAt.description]];
         
         [self presentViewController:self.messageController animated:YES completion:^{
             [HUD dismissAnimated:YES];
         }];
     }
+}
+
+- (void)viewMovieAtUrl:(NSURL *)fileURL
+{
+    MPMoviePlayerViewController *playerController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
+    [playerController.view setFrame:self.view.bounds];
+    [self presentMoviePlayerViewControllerAnimated:playerController];
+    [playerController.moviePlayer prepareToPlay];
+    [playerController.moviePlayer play];
+    [self.view addSubview:playerController.view];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath

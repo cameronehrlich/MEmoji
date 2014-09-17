@@ -7,7 +7,7 @@
 //
 
 #import "MEModel.h"
-#import "MERenderer.h"
+
 @import MessageUI;
 
 @implementation MEModel
@@ -53,7 +53,7 @@
     [generator setRequestedTimeToleranceAfter:kCMTimeZero];
     [generator setRequestedTimeToleranceBefore:kCMTimeZero];
     [generator setAppliesPreferredTrackTransform:YES];
-    [generator setMaximumSize:CGSizeMake(dimensionOfGIF, dimensionOfGIF)];
+    [generator setMaximumSize:CGSizeMake(dimensionOfGIF, 2 * dimensionOfGIF)];
     
     CMTime duration = asset.duration;
     
@@ -66,14 +66,15 @@
     
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
         @autoreleasepool {
-            CMTime keyFrame = CMTimeMake( (Float64)frame ,duration.timescale);
+            CMTime keyFrame = CMTimeMake((Float64)frame ,duration.timescale);
             
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
             
-            UIImage *singleFrame = [UIImage imageWithCGImage:refImg];
+            UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
             
             UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:overlays];
+            
             [outImages addObject:tmpFrameImage];
             
             if (error) {
@@ -83,24 +84,43 @@
         }
     }
     
-    NSData *GIFData = [self createGIFwithFrames:[outImages copy]];
+    NSArray *emojifiedFrames = [outImages copy];
+    
+    NSData *GIFData = [self createGIFwithFrames:emojifiedFrames];
     
     if (GIFData == nil) {
         NSLog(@"Trying to save nil gif!");
     }
     
-    //    [MERenderer movieFromImageArray:[outImages copy] completion:^(NSData *data) {
+    NSDictionary *settings = [CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
+                                                        withWidth:[emojifiedFrames.firstObject size].width
+                                                        andHeight:[emojifiedFrames.firstObject size].height];
+    self.movieMaker = [[CEMovieMaker alloc] initWithSettings:settings];
     
-    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        Image *newImage = [Image MR_createInContext:localContext];
-        [newImage setCreatedAt:[NSDate date]];
-        [newImage setImageData:GIFData];
-        //            [newImage setMovieData:data];
-        
-    } completion:^(BOOL success, NSError *error) {
-        self.completionBlock();
+    NSArray *emojifiedFramesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
+    [self.movieMaker createMovieFromImages:emojifiedFramesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
+ 
+        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+            Image *newImage = [Image MR_createInContext:localContext];
+            [newImage setCreatedAt:[NSDate date]];
+            [newImage setImageData:GIFData];
+            
+            if (success) {
+                NSData *data = [NSData dataWithContentsOfURL:fileURL];
+                [newImage setMovieData:data];
+                
+                if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(fileURL.path)) {
+                    UISaveVideoAtPathToSavedPhotosAlbum(fileURL.path, nil, nil, nil);
+                }
+                
+            }else{
+                NSLog(@"Not successfull at creating the movie.");
+            }
+            
+        } completion:^(BOOL success, NSError *error) {
+            self.completionBlock();
+        }];
     }];
-    //    }];
 }
 
 - (UIImage *)emojifyFrame:(UIImage *)imgFrame withMask:(UIImage *)mask andOverlays:(NSArray *)overlays
@@ -125,8 +145,8 @@
 {
     UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
     
-    [image drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
-    [overlay drawInRect:CGRectMake( 0, 0, image.size.width, image.size.height)];
+    [image drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
+    [overlay drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
     // TODO: fix flip issue
     UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -166,35 +186,6 @@
     
     NSData *gifData = [NSData dataWithContentsOfFile:fileURL.relativePath];
     return gifData;
-}
-
-
-- (UIImage*)imageWithBorder:(CGFloat)margin FromImage:(UIImage*)source
-{
-    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
-    UIGraphicsBeginImageContextWithOptions(size, YES, source.scale);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-    
-    CGContextTranslateCTM(context, 0, size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    
-    CGRect entireRect = CGRectMake(-margin, -margin, size.width + margin*margin, size.height + margin*margin);
-    CGContextClearRect(context, entireRect);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGContextFillRect(context, entireRect);
-    
-    CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
-    [source drawInRect:rect];
-    
-    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
-    
-    CGContextRestoreGState(context);
-    UIGraphicsEndImageContext();
-    
-    return testImg;
 }
 
 #pragma mark -

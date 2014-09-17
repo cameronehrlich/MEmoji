@@ -13,7 +13,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
     [MEModel sharedInstance];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
