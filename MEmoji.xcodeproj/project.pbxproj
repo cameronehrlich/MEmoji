@@ -10,7 +10,7 @@
 		3212C2A519C774B5007ED774 /* Overlays.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3212C2A419C774B5007ED774 /* Overlays.xcassets */; };
 		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
-		325C434919CA313900C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434819CA313900C93DCC /* CEMovieMaker.m */; };
+		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
@@ -20,7 +20,6 @@
 		32DD889219870B44008E8BCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889119870B44008E8BCE /* main.m */; };
 		32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889519870B44008E8BCE /* MEAppDelegate.m */; };
 		32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32DD889719870B44008E8BCE /* Main_iPhone.storyboard */; };
-		32DD889C19870B44008E8BCE /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32DD889A19870B44008E8BCE /* Main_iPad.storyboard */; };
 		32DD889F19870B44008E8BCE /* MEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889E19870B44008E8BCE /* MEViewController.m */; };
 		32DD88A119870B44008E8BCE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32DD88A019870B44008E8BCE /* Images.xcassets */; };
 		32DD88A819870B44008E8BCE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD88A719870B44008E8BCE /* XCTest.framework */; };
@@ -52,8 +51,8 @@
 		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
 		3218C80D19C7691C0035B7BA /* MEOverlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCell.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		325C434719CA313900C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
-		325C434819CA313900C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
+		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
+		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
@@ -71,7 +70,6 @@
 		32DD889419870B44008E8BCE /* MEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEAppDelegate.h; sourceTree = "<group>"; };
 		32DD889519870B44008E8BCE /* MEAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEAppDelegate.m; sourceTree = "<group>"; };
 		32DD889819870B44008E8BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		32DD889B19870B44008E8BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		32DD889D19870B44008E8BCE /* MEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEViewController.h; sourceTree = "<group>"; };
 		32DD889E19870B44008E8BCE /* MEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEViewController.m; sourceTree = "<group>"; };
 		32DD88A019870B44008E8BCE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				32DD889419870B44008E8BCE /* MEAppDelegate.h */,
 				32DD889519870B44008E8BCE /* MEAppDelegate.m */,
 				32DD889719870B44008E8BCE /* Main_iPhone.storyboard */,
-				32DD889A19870B44008E8BCE /* Main_iPad.storyboard */,
 				32F752691987514300045AFA /* Model */,
 				325C434619CA30CF00C93DCC /* Controllers */,
 				3212C2A619C77717007ED774 /* Cells */,
@@ -230,8 +227,8 @@
 				32F752671987513000045AFA /* Image.m */,
 				32A93849199BE59E00125DA8 /* MEModel.h */,
 				32A9384A199BE59E00125DA8 /* MEModel.m */,
-				325C434719CA313900C93DCC /* CEMovieMaker.h */,
-				325C434819CA313900C93DCC /* CEMovieMaker.m */,
+				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
+				325C434B19CA7F8400C93DCC /* CEMovieMaker.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -318,7 +315,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32DD889C19870B44008E8BCE /* Main_iPad.storyboard in Resources */,
 				3212C2A519C774B5007ED774 /* Overlays.xcassets in Resources */,
 				32DD88A119870B44008E8BCE /* Images.xcassets in Resources */,
 				32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */,
@@ -381,7 +377,7 @@
 				3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
 				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
-				325C434919CA313900C93DCC /* CEMovieMaker.m in Sources */,
+				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
 				32F752681987513000045AFA /* Image.m in Sources */,
 				32A9384B199BE59E00125DA8 /* MEModel.m in Sources */,
 			);
@@ -420,14 +416,6 @@
 				32DD889819870B44008E8BCE /* Base */,
 			);
 			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		32DD889A19870B44008E8BCE /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32DD889B19870B44008E8BCE /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		32DD88B019870B44008E8BCE /* InfoPlist.strings */ = {
@@ -473,7 +461,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -506,7 +494,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -524,7 +512,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
@@ -544,7 +532,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";

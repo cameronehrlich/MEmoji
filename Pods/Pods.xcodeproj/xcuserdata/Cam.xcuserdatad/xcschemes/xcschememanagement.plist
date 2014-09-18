@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-MEmoji-DKLiveBlur.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-MEmoji-FLAnimatedImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -39,11 +34,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-UIImage+animatedGif.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-MEmoji-UIView+Positioning.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,52 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>09D84E77871446BD9B8D2D19</key>
+		<key>09CB30EDC9524F398DF67ACC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>31A61F6D64BC48DFB261A53E</key>
+		<key>6325CA1AD88E4133B98534D1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>477C2F2D851743F2A86CE023</key>
+		<key>7AC16A0A3CBB41B187339F9C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6E26A009AF9D4CBEB00BD0E3</key>
+		<key>9892013E837E4030A8DEB92C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>708899D85C4B4FC1BE6301EC</key>
+		<key>A072E1DA35894C0DB5B432E9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>734097469B1240DBAC9F023A</key>
+		<key>AA4660F2C3154AD9B36CD111</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8430E0D8AF3C42628E687B79</key>
+		<key>AD711CDB8DAF4D04BF758E8D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A789C2B984CE4184A982CE87</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B18487CBD88F4C128337B07A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DB14131BA88B49908E13DF7C</key>
+		<key>D0E5CD6BBAF64DC88E1EC9A5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

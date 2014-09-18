@@ -32,6 +32,10 @@
         
         self.selectedImageView = [[UIImageView alloc] initWithFrame:selectedImageFrame];
         [self.selectedImageView setImage:[UIImage imageNamed:@"checkmark"]];
+        [self.selectedImageView.layer setShadowColor:[UIColor blackColor].CGColor];
+        [self.selectedImageView.layer setShadowOffset:CGSizeMake(1, 1)];
+        [self.selectedImageView.layer setShadowOpacity:0.5];
+        [self.selectedImageView.layer setShadowRadius:5];
         [self addSubview:self.selectedImageView];
 
         [self setSelected:NO];

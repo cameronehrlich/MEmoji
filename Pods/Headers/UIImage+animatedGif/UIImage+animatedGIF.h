@@ -1,1 +1,0 @@
-../../UIImage+animatedGif/uiimage-from-animated-gif/UIImage+animatedGIF.h

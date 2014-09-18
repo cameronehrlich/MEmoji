@@ -12,12 +12,15 @@
 
 @import MessageUI;
 @import MobileCoreServices;
+@import AssetsLibrary;
+
 
 @interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CALayer *maskingLayer;
 @property (nonatomic, strong) UIVisualEffectView *visualEffectView;
+@property (nonatomic, strong) UIView *shareView;
 
 @property (strong, nonatomic) UIView *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -25,6 +28,7 @@
 @property (strong, nonatomic) UIView *captureButtonView;
 @property (strong, nonatomic) LLARingSpinnerView *captureButtonSpinnerView;
 @property (strong, nonatomic) UIButton *flipCameraButton;
+@property (strong, nonatomic) UIButton *maskToggleButton;
 
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;
 @property (strong, nonatomic) AWCollectionViewDialLayout *layout;
@@ -33,7 +37,9 @@
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editBarButtonItem;
 @property (assign, nonatomic) BOOL editing;
+@property (assign, nonatomic) BOOL maskEnabled;
 
+@property (strong, nonatomic) Image *currentImage;
 @property (strong, nonatomic) NSMutableArray *currentImages;
 @property (strong, nonatomic) NSMutableDictionary *currentOverlays;
 @property (strong, nonatomic) NSMutableDictionary *imageCache;

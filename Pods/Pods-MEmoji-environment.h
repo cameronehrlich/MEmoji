@@ -6,12 +6,6 @@
 // project.
 
 
-// DKLiveBlur
-#define COCOAPODS_POD_AVAILABLE_DKLiveBlur
-#define COCOAPODS_VERSION_MAJOR_DKLiveBlur 0
-#define COCOAPODS_VERSION_MINOR_DKLiveBlur 0
-#define COCOAPODS_VERSION_PATCH_DKLiveBlur 1
-
 // FLAnimatedImage
 #define COCOAPODS_POD_AVAILABLE_FLAnimatedImage
 #define COCOAPODS_VERSION_MAJOR_FLAnimatedImage 1
@@ -59,12 +53,6 @@
 #define COCOAPODS_VERSION_MAJOR_UIImage_Additions 1
 #define COCOAPODS_VERSION_MINOR_UIImage_Additions 1
 #define COCOAPODS_VERSION_PATCH_UIImage_Additions 0
-
-// UIImage+animatedGif
-#define COCOAPODS_POD_AVAILABLE_UIImage_animatedGif
-#define COCOAPODS_VERSION_MAJOR_UIImage_animatedGif 0
-#define COCOAPODS_VERSION_MINOR_UIImage_animatedGif 1
-#define COCOAPODS_VERSION_PATCH_UIImage_animatedGif 0
 
 // UIView+Positioning
 #define COCOAPODS_POD_AVAILABLE_UIView_Positioning

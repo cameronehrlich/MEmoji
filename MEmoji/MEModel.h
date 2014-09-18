@@ -20,7 +20,6 @@ typedef void (^MEmojiCallback)();
 
 static const CGFloat dimensionOfGIF = 320;
 static const CGFloat stepOfGIF = 0.12f;
-static const CGFloat marginOfGIF = 0.40f;
 
 @interface MEModel : NSObject
 
@@ -34,7 +33,6 @@ static const CGFloat marginOfGIF = 0.40f;
 @property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CEMovieMaker *movieMaker;
-
 
 @property (nonatomic, strong) NSMutableArray *currentFrames; //For collecting thumbnail images from MPMediaPlayer
 @property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
@@ -50,5 +48,6 @@ static const CGFloat marginOfGIF = 0.40f;
 - (void)toggleCameras;
 
 + (NSArray *)allOverlays;
++ (UIColor *)mainColor;
 
 @end

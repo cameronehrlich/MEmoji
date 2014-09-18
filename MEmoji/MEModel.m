@@ -62,8 +62,6 @@
     
     NSInteger frameRate = 80;
     
-    UIImage *mask = [UIImage imageNamed:@"maskLayer"];
-    
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
         @autoreleasepool {
             CMTime keyFrame = CMTimeMake((Float64)frame ,duration.timescale);
@@ -73,7 +71,7 @@
             
             UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
             
-            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame withMask:mask andOverlays:overlays];
+            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame andOverlays:overlays];
             
             [outImages addObject:tmpFrameImage];
             
@@ -92,46 +90,49 @@
         NSLog(@"Trying to save nil gif!");
     }
     
-    NSDictionary *settings = [CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
-                                                        withWidth:[emojifiedFrames.firstObject size].width
-                                                        andHeight:[emojifiedFrames.firstObject size].height];
-    self.movieMaker = [[CEMovieMaker alloc] initWithSettings:settings];
+    __block Image *justSaved;
     
-    NSArray *emojifiedFramesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
-    [self.movieMaker createMovieFromImages:emojifiedFramesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
- 
-        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-            Image *newImage = [Image MR_createInContext:localContext];
-            [newImage setCreatedAt:[NSDate date]];
-            [newImage setImageData:GIFData];
-            
-            if (success) {
-                NSData *data = [NSData dataWithContentsOfURL:fileURL];
-                [newImage setMovieData:data];
-                
-                if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(fileURL.path)) {
-                    UISaveVideoAtPathToSavedPhotosAlbum(fileURL.path, nil, nil, nil);
-                }
-                
-            }else{
-                NSLog(@"Not successfull at creating the movie.");
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        Image *newImage = [Image MR_createInContext:localContext];
+        [newImage setCreatedAt:[NSDate date]];
+        [newImage setImageData:GIFData];
+        justSaved = newImage;
+        
+    } completion:^(BOOL success, NSError *error) {
+
+        self.completionBlock();
+        
+        self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
+                                                                                            withWidth:dimensionOfGIF
+                                                                                            andHeight:dimensionOfGIF]];
+        
+        NSArray *framesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
+        
+        [self.movieMaker createMovieFromImages:framesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
+            if (!success) {
+                NSLog(@"There was an error creating the movie");
             }
-            
-        } completion:^(BOOL success, NSError *error) {
-            self.completionBlock();
+            [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+                NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
+                
+                [[justSaved MR_inContext:localContext] setMovieData:movieData];
+                
+            } completion:^(BOOL success, NSError *error) {
+                NSLog(@"Finished saving movie data.");
+                
+            }];
         }];
+        
     }];
 }
 
-- (UIImage *)emojifyFrame:(UIImage *)imgFrame withMask:(UIImage *)mask andOverlays:(NSArray *)overlays
+- (UIImage *)emojifyFrame:(UIImage *)imgFrame andOverlays:(NSArray *)overlays
 {
     CGRect cropRect = CGRectMake(0, (imgFrame.size.height/2) - (imgFrame.size.width/2), imgFrame.size.width, imgFrame.size.width);
     
     CGImageRef imageRef = CGImageCreateWithImageInRect([imgFrame CGImage], cropRect);
     imgFrame = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
-    
-    imgFrame = [self image:imgFrame withOverlay:mask];
     
     for (UIImage *overlay in overlays) {
         imgFrame = [self image:imgFrame withOverlay:overlay];
@@ -297,6 +298,17 @@
     });
     
     return images;
+}
+
++ (UIColor *)mainColor
+{
+    static UIColor *mainColor = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mainColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"captureButton"]];
+    });
+    
+    return mainColor;
 }
 
 @end

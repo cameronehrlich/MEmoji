@@ -19,19 +19,18 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths firstObject];
         NSString *tempPath = [documentsDirectory stringByAppendingFormat:@"/export.mov"];
-
+        
         
         if ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
             [[NSFileManager defaultManager] removeItemAtPath:tempPath error:&error];
             if (error) {
                 NSLog(@"Error: %@", error.debugDescription);
             }
-            NSLog(@"Removed file at fileURL");
         }
         
         _fileURL = [NSURL fileURLWithPath:tempPath];
         _assetWriter = [[AVAssetWriter alloc] initWithURL:self.fileURL
-                                                     fileType:AVFileTypeQuickTimeMovie error:&error];
+                                                 fileType:AVFileTypeQuickTimeMovie error:&error];
         if (error) {
             NSLog(@"Error: %@", error.debugDescription);
         }
@@ -39,7 +38,7 @@
         
         _videoSettings = videoSettings;
         _writerInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo
-                                                               outputSettings:videoSettings];
+                                                          outputSettings:videoSettings];
         NSParameterAssert(self.writerInput);
         NSParameterAssert([self.assetWriter canAddInput:self.writerInput]);
         
@@ -67,7 +66,7 @@
     
     NSInteger frameNumber = [images count];
     __block BOOL success = YES; // TODO : Implement this
-
+    
     [self.writerInput requestMediaDataWhenReadyOnQueue:mediaInputQueue usingBlock:^{
         while (YES){
             if (i >= frameNumber) {
@@ -90,7 +89,7 @@
                 }
             }
         }
-
+        
         [self.writerInput markAsFinished];
         [self.assetWriter finishWritingWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -135,7 +134,7 @@
                                                  8,
                                                  4 * frameWidth,
                                                  rgbColorSpace,
-                                                 kCGImageAlphaNoneSkipFirst);
+                                                 (CGBitmapInfo)kCGImageAlphaNoneSkipFirst);
     NSParameterAssert(context);
     CGContextConcatCTM(context, CGAffineTransformIdentity);
     CGContextDrawImage(context, CGRectMake(0,
@@ -153,7 +152,6 @@
 
 + (NSDictionary *)videoSettingsWithCodec:(NSString *)codec withWidth:(CGFloat)width andHeight:(CGFloat)height
 {
-    NSLog(@"Setting video settings to %dx%d", (int)width, (int)height);
     
     if ((int)width % 16 != 0 ) {
         NSLog(@"Warning: video settings width must be divisible by 16.");

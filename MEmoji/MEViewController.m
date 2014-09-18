@@ -8,13 +8,11 @@
 
 #import "MEViewController.h"
 #import <UIColor+Hex.h>
-#import <UIImage+animatedGIF.h>
 #import <FLAnimatedImageView.h>
 #import <FLAnimatedImage.h>
 #import <UIView+Positioning.h>
 #import <UIColor+Hex.h>
 #import "MEOverlayCell.h"
-#import <DKLiveBlurView.h>
 #import <JGProgressHUD.h>
 
 #define ScrollerEmojiSize 220
@@ -47,16 +45,21 @@
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
     [self.libraryCollectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
-    
     [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
     
     [self.view addSubview:self.libraryCollectionView];
     
+    // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, 75, 75);
     self.captureButtonView = [[UIView alloc] initWithFrame:captureButtonFrame];
     self.captureButtonView.bottom = self.libraryCollectionView.height - captureButtonFrame.size.height;
     self.captureButtonView.centerX = self.view.centerX;
-    [self.captureButtonView setBackgroundColor:[UIColor colorWithHex:0x5FB3FF]];
+    CALayer *gradientLayer = [CALayer layer];
+    [gradientLayer setCornerRadius:captureButtonFrame.size.width/2];
+    [gradientLayer setFrame:captureButtonFrame];
+    [gradientLayer setContents:(id)[UIImage imageNamed:@"captureButton"].CGImage];
+    [gradientLayer setMasksToBounds:YES];
+    [self.captureButtonView.layer addSublayer:gradientLayer];
     [self.captureButtonView.layer setCornerRadius:self.captureButtonView.size.width/2];
     [self.captureButtonView.layer setShadowColor:[UIColor grayColor].CGColor];
     [self.captureButtonView.layer setShadowOffset:CGSizeMake(0, 5)];
@@ -134,9 +137,8 @@
     
     self.maskingLayer = [CALayer layer];
     [self.maskingLayer setFrame:layerFrame];
-    [self.maskingLayer setOpacity:0.90];
-    [self.maskingLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
     [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
+    [self setMaskEnabled:YES];
     
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     self.visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -165,6 +167,18 @@
     [self.flipCameraButton addTarget:self action:@selector(toggleCameras:) forControlEvents:UIControlEventTouchUpInside];
     [self.viewFinder insertSubview:self.flipCameraButton aboveSubview:self.scrollView];
     
+    // Mask Toggle Button
+    CGRect maskButtonFrame = CGRectMake(0, 0, 30, 30);
+    maskButtonFrame.origin.x += 13;
+    maskButtonFrame.origin.y = self.viewFinder.size.height - maskButtonFrame.size.height - 9;
+    self.maskToggleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.maskToggleButton setFrame:maskButtonFrame];
+    [self.maskToggleButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
+    [self.maskToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.maskToggleButton addTarget:self action:@selector(toggleMask:) forControlEvents:UIControlEventTouchUpInside];
+    [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
+    
+    
     self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.overlayCollectionView setDelegate:self];
@@ -177,7 +191,6 @@
     [self.overlayCollectionView setAllowsMultipleSelection:YES];
     [self.overlayCollectionView setScrollsToTop:NO];
     [self.scrollView addSubview:self.overlayCollectionView];
-    
 }
 
 #pragma mark -
@@ -278,11 +291,16 @@
     NSURL *url = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
     
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
+    
+    if (self.maskEnabled) {
+        [overlaysToRender addObject:[UIImage imageNamed:@"maskLayer"]];
+    }
+    
     for (CALayer *layer in [self.currentOverlays allValues]) {
         [overlaysToRender addObject:[UIImage imageWithCGImage:(CGImageRef)layer.contents]];
     }
     
-    [[MEModel sharedInstance] createEmojiFromMovieURL:url andOverlays:overlaysToRender.copy complete:^{
+    [[MEModel sharedInstance] createEmojiFromMovieURL:url andOverlays:[overlaysToRender copy] complete:^{
         
         [UIView animateWithDuration:0.5 animations:^{
             [self.captureButtonSpinnerView setAlpha:0];
@@ -296,11 +314,6 @@
         [self.libraryCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]
                                            atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     }];
-}
-
-- (IBAction)editToggle:(id)sender
-{
-    [self setEditing:!self.editing animated:YES];
 }
 
 - (void)toggleCameras:(id)sender
@@ -326,17 +339,45 @@
     } completion:nil];
 }
 
+- (IBAction)editToggle:(id)sender
+{
+    [self setEditing:!self.editing animated:YES];
+}
+
+-(void)setMaskEnabled:(BOOL)maskEnabled
+{
+    _maskEnabled = maskEnabled;
+    
+    if (maskEnabled) {
+        [self.maskingLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
+    }else{
+        [self.maskingLayer setContents:nil];
+    }
+}
+
+- (void)toggleMask:(id)sender
+{
+    [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.maskToggleButton setTransform:CGAffineTransformMakeScale(0.75,0.75)];
+        [self.maskingLayer setOpacity:0];
+    }completion:^(BOOL finished) {
+        [self setMaskEnabled:!self.maskEnabled];
+        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [self.maskingLayer setOpacity:0.9];
+            [self.maskToggleButton setTransform:CGAffineTransformIdentity];
+        } completion:nil];
+    }];
+
+
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
-    
     _editing = editing;
-    
-    self.libraryCollectionView.allowsMultipleSelection = editing;
-    
+    [self.libraryCollectionView setAllowsMultipleSelection:editing];
     [self.libraryCollectionView reloadData];
 }
-
 #pragma mark -
 #pragma mark UIMessageComposeViewController Delegate
 
@@ -440,56 +481,29 @@
         tmpLayer.contents = (id)tmpOverlayImage.CGImage;
         [self.maskingLayer addSublayer:tmpLayer];
         [self.currentOverlays setObject:tmpLayer forKey:indexPath];
-        return;
-    }
-    
-    Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
-    
-    if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
-        [self.libraryCollectionView performBatchUpdates:^{
-            
-            [thisImage MR_deleteEntity];
-            [self.currentImages removeObject:thisImage];
-            [self.libraryCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+    }else if ([collectionView isEqual:self.libraryCollectionView]){
+        self.currentImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
+        
+        if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
+            [self.libraryCollectionView performBatchUpdates:^{
                 
+                [self.currentImage MR_deleteEntity];
+                [self.currentImages removeObject:self.currentImage];
+                [self.libraryCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                
+                [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                    
+                }];
+                
+            } completion:^(BOOL finished) {
+                self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
             }];
             
-        } completion:^(BOOL finished) {
-            self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
-        }];
-        
-    }else{
-        
-        JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleLight];
-        [HUD showInView:self.view animated:YES];
-        
-        self.messageController = [[MFMessageComposeViewController alloc] init];
-        [self.messageController setMessageComposeDelegate:self];
-        
-//        [self.messageController addAttachmentData:thisImage.imageData
-//                                   typeIdentifier:@"com.compuserve.gif"
-//                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", thisImage.createdAt.description]];
-        
-        [self.messageController addAttachmentData:thisImage.movieData
-                                   typeIdentifier:@"com.apple.quicktime-movie"
-                                         filename:[NSString stringWithFormat:@"MEmoji-%@.mov", thisImage.createdAt.description]];
-        
-        [self presentViewController:self.messageController animated:YES completion:^{
-            [HUD dismissAnimated:YES];
-        }];
+        }else{
+            
+            [self presentShareView];
+        }
     }
-}
-
-- (void)viewMovieAtUrl:(NSURL *)fileURL
-{
-    MPMoviePlayerViewController *playerController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
-    [playerController.view setFrame:self.view.bounds];
-    [self presentMoviePlayerViewControllerAnimated:playerController];
-    [playerController.moviePlayer prepareToPlay];
-    [playerController.moviePlayer play];
-    [self.view addSubview:playerController.view];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -537,6 +551,7 @@
         CGFloat parallaxFactor = self.scrollView.contentOffset.x / self.scrollView.width;
         [self.visualEffectView setAlpha:parallaxFactor];
         [self.flipCameraButton setAlpha:1.0 - parallaxFactor];
+        [self.maskToggleButton setAlpha:1.0 - parallaxFactor];
         
     }else if ([scrollView isEqual:self.libraryCollectionView]){
         CGFloat parallaxFactor = MAX(0, self.libraryCollectionView.contentOffset.y+self.libraryCollectionView.contentInset.top)/4.0;
@@ -547,6 +562,105 @@
     }else if ([scrollView isEqual:self.overlayCollectionView]){
         
     }
+}
+
+#pragma mark -
+#pragma mark ShareView
+
+- (void)presentShareView
+{
+    if (!self.shareView) {
+        self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 170)];
+        [self.shareView setBackgroundColor:[UIColor colorWithWhite:0.7 alpha:0.5]];
+        
+        UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [saveToLibraryButton setFrame:CGRectMake(1*self.shareView.width/6, self.shareView.height/4, 2*self.shareView.width/6, self.shareView.height/2)];
+        [saveToLibraryButton setImage:[UIImage imageNamed:@"photoLibrary"] forState:UIControlStateNormal];
+        [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [saveToLibraryButton addTarget:self action:@selector(saveToLibrary) forControlEvents:UIControlEventTouchUpInside];
+        [self.shareView addSubview:saveToLibraryButton];
+
+        
+        UIButton *messgesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [messgesButton setFrame:CGRectMake(3*self.shareView.width/6, self.shareView.height/4, 2*(self.shareView.width/6), self.shareView.height/2)];
+        [messgesButton setImage:[UIImage imageNamed:@"messages"] forState:UIControlStateNormal];
+        [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [messgesButton addTarget:self action:@selector(shareToMessages) forControlEvents:UIControlEventTouchUpInside];
+        [self.shareView addSubview:messgesButton];
+    }
+    
+    [self.shareView setY:self.view.height];
+    [self.view addSubview:self.shareView];
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.shareView setY:(self.view.height/2) - self.shareView.height/2];
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void)dismissShareView
+{
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.shareView setBottom:-1*self.view.y ];
+    } completion:^(BOOL finished) {
+        [self.shareView removeFromSuperview];
+    }];
+}
+
+- (void)shareToMessages
+{
+    [self shareTo:@"messages"];
+}
+
+- (void)saveToLibrary
+{
+    [self shareTo:@"saveToLibrary"];
+}
+
+- (void)shareTo:(NSString *)shareOption
+{
+    JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleLight];
+    
+    if ([shareOption isEqualToString:@"messages"]) {
+        
+        [HUD showInView:self.view animated:YES];
+        [self dismissShareView];
+        
+        self.messageController = [[MFMessageComposeViewController alloc] init];
+        [self.messageController setMessageComposeDelegate:self];
+        [self.messageController addAttachmentData:self.currentImage.imageData
+                                   typeIdentifier:@"com.compuserve.gif"
+                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", self.currentImage.createdAt.description]];
+        
+        [self presentViewController:self.messageController animated:YES completion:^{
+            [HUD dismissAnimated:YES];
+        }];
+        
+    }else if ([shareOption isEqualToString:@"saveToLibrary"]){
+        
+        [HUD showInView:self.view animated:YES];
+        [self dismissShareView];
+        
+        NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
+        NSError *error;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
+            [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
+            if (error) {
+                NSLog(@"An Error occured writing to file. %@", error.debugDescription);
+            }
+        }
+        
+        [[self.currentImage movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
+        
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
+            if (error) {
+                NSLog(@"Error saving asset to camera. %@", error.debugDescription);
+            }
+
+            [HUD dismissAnimated:YES];
+        }];
+    };
 }
 
 @end

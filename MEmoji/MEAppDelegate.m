@@ -16,7 +16,7 @@
     [MEModel sharedInstance];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
-    UIColor *mainBackgoundColor = [UIColor colorWithHex:0x5FB3FF];
+    UIColor *mainBackgoundColor = [MEModel mainColor];
     UIColor *globalTextTint = [UIColor colorWithHex:0xE5E9F7];
 
     [[UINavigationBar appearance] setBarTintColor:mainBackgoundColor];
