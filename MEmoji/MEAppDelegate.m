@@ -14,13 +14,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MEModel sharedInstance];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
-    UIColor *mainBackgoundColor = [MEModel mainColor];
     UIColor *globalTextTint = [UIColor colorWithHex:0xE5E9F7];
 
-    [[UINavigationBar appearance] setBarTintColor:mainBackgoundColor];
-    [[UITabBar appearance] setBarTintColor:mainBackgoundColor];
+    [[UINavigationBar appearance] setBarTintColor:[MEModel mainColor]];
+    [self.window  setTintColor:globalTextTint];
     
     [[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: globalTextTint, NSFontAttributeName:[UIFont fontWithName:@"AvenirNext-Medium" size:23.0]}];
     

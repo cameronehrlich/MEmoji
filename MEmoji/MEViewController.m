@@ -137,16 +137,24 @@
     
     self.maskingLayer = [CALayer layer];
     [self.maskingLayer setFrame:layerFrame];
-    [self.maskingLayer setOpacity:0.9];
+    [self.maskingLayer setOpacity:0.8];
     [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
     [self setMaskEnabled:YES];
     
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    self.visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    
-    self.visualEffectView.frame = self.viewFinder.bounds;
-    [self.visualEffectView setAlpha:0];
-    [self.viewFinder addSubview:self.visualEffectView];
+    BOOL isiOS8 = ([[NSProcessInfo processInfo] operatingSystemVersion].majorVersion >= 8);
+    if (isiOS8) {
+        UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        self.previewLayerBlur = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        self.previewLayerBlur.frame = self.viewFinder.bounds;
+        [self.previewLayerBlur setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.2]];
+        [self.previewLayerBlur setAlpha:0];
+        [self.viewFinder addSubview:self.previewLayerBlur];
+    }else{
+        self.previewLayerFade = [[UIView alloc] initWithFrame:self.viewFinder.bounds];
+        [self.previewLayerFade setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.7]];
+        [self.previewLayerFade setAlpha:0];
+        [self.viewFinder addSubview:self.previewLayerFade];
+    }
     
     // Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.viewFinder.bounds];
@@ -187,6 +195,7 @@
     [self.overlayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
     [self.overlayCollectionView setAlwaysBounceVertical:YES];
     [self.overlayCollectionView setShowsHorizontalScrollIndicator:NO];
+    [self.overlayCollectionView setShowsVerticalScrollIndicator:NO];
     [self.overlayCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.overlayCollectionView setContentInset:UIEdgeInsetsMake(15, 20, 15, 20)];
     [self.overlayCollectionView setAllowsMultipleSelection:YES];
@@ -293,8 +302,14 @@
     
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
+    // Add mask first
     if (self.maskEnabled) {
         [overlaysToRender addObject:[UIImage imageNamed:@"maskLayer"]];
+    }
+    
+    // Add watermark layer
+    if (YES) {
+        [overlaysToRender addObject:[UIImage imageNamed:@"waterMark"]];
     }
     
     for (CALayer *layer in [self.currentOverlays allValues]) {
@@ -369,7 +384,7 @@
     }completion:^(BOOL finished) {
         [self setMaskEnabled:!self.maskEnabled];
         [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.maskingLayer setOpacity:0.9];
+            [self.maskingLayer setOpacity:0.8];
             [self.maskToggleButton setTransform:CGAffineTransformIdentity];
         } completion:nil];
     }];
@@ -555,7 +570,8 @@
 {
     if ([scrollView isEqual:self.scrollView]) {
         CGFloat parallaxFactor = self.scrollView.contentOffset.x / self.scrollView.width;
-        [self.visualEffectView setAlpha:parallaxFactor];
+        [self.previewLayerBlur setAlpha:parallaxFactor];
+        [self.previewLayerFade setAlpha:parallaxFactor];
         [self.flipCameraButton setAlpha:1.0 - parallaxFactor];
         [self.maskToggleButton setAlpha:1.0 - parallaxFactor];
         

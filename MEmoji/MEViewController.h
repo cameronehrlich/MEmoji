@@ -19,7 +19,8 @@
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CALayer *maskingLayer;
-@property (nonatomic, strong) UIVisualEffectView *visualEffectView;
+@property (nonatomic, strong) UIVisualEffectView *previewLayerBlur;
+@property (nonatomic, strong) UIView *previewLayerFade;
 @property (nonatomic, strong) UIView *shareView;
 
 @property (strong, nonatomic) UIView *viewFinder;
