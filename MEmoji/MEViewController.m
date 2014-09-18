@@ -137,6 +137,7 @@
     
     self.maskingLayer = [CALayer layer];
     [self.maskingLayer setFrame:layerFrame];
+    [self.maskingLayer setOpacity:0.9];
     [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
     [self setMaskEnabled:YES];
     
@@ -312,7 +313,7 @@
         
         [self.libraryCollectionView reloadData];
         [self.libraryCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]
-                                           atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+                                           atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     }];
 }
 
@@ -330,7 +331,12 @@
 
 - (IBAction)showOverlaysAction:(id)sender
 {
-    [UIView animateWithDuration:0.55 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+
+    [self.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    
+    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        
+
         if (self.scrollView.contentOffset.x > 0) {
             [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
         }else{
@@ -537,11 +543,11 @@
     if ([scrollView isEqual:self.libraryCollectionView]) {
         [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
         
-        CGFloat adjustedOffset = (self.libraryCollectionView.contentOffset.y + self.libraryCollectionView.contentInset.top);
+//        CGFloat adjustedOffset = (self.libraryCollectionView.contentOffset.y + self.libraryCollectionView.contentInset.top);
         
-        if (adjustedOffset > 1.5*self.viewFinder.height) { // If view Finder is offscreen
-            [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
-        }
+//        if (adjustedOffset > 1.5*self.viewFinder.height) { // If view Finder is offscreen
+//            [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
+//        }
     }
 }
 
@@ -570,11 +576,11 @@
 - (void)presentShareView
 {
     if (!self.shareView) {
-        self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 170)];
-        [self.shareView setBackgroundColor:[UIColor colorWithWhite:0.7 alpha:0.5]];
+        self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 150)];
+        [self.shareView setBackgroundColor:[UIColor colorWithWhite:0.6 alpha:0.5]];
         
         UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [saveToLibraryButton setFrame:CGRectMake(1*self.shareView.width/6, self.shareView.height/4, 2*self.shareView.width/6, self.shareView.height/2)];
+        [saveToLibraryButton setFrame:CGRectMake(1*self.shareView.width/6, 2*self.shareView.height/6, 2*self.shareView.width/6, 2*self.shareView.height/6)];
         [saveToLibraryButton setImage:[UIImage imageNamed:@"photoLibrary"] forState:UIControlStateNormal];
         [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [saveToLibraryButton addTarget:self action:@selector(saveToLibrary) forControlEvents:UIControlEventTouchUpInside];
@@ -582,7 +588,7 @@
 
         
         UIButton *messgesButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [messgesButton setFrame:CGRectMake(3*self.shareView.width/6, self.shareView.height/4, 2*(self.shareView.width/6), self.shareView.height/2)];
+        [messgesButton setFrame:CGRectMake(3*self.shareView.width/6, 2*self.shareView.height/6, 2*(self.shareView.width/6), 2*self.shareView.height/6)];
         [messgesButton setImage:[UIImage imageNamed:@"messages"] forState:UIControlStateNormal];
         [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [messgesButton addTarget:self action:@selector(shareToMessages) forControlEvents:UIControlEventTouchUpInside];
@@ -600,7 +606,7 @@
 
 - (void)dismissShareView
 {
-    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [UIView animateWithDuration:0.7 delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseIn animations:^{
         [self.shareView setBottom:-1*self.view.y ];
     } completion:^(BOOL finished) {
         [self.shareView removeFromSuperview];

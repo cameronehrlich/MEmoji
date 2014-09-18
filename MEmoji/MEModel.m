@@ -7,6 +7,7 @@
 //
 
 #import "MEModel.h"
+#import <UIColor+Hex.h>
 
 @import MessageUI;
 
@@ -305,7 +306,7 @@
     static UIColor *mainColor = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mainColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"captureButton"]];
+        mainColor = [UIColor colorWithHex:0x5fb5f7];
     });
     
     return mainColor;
