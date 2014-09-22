@@ -5,6 +5,7 @@ PODS:
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
+  - UIAlertView+Blocks (0.8.1)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor
     - UIColor+Hex/UIColor
@@ -18,6 +19,7 @@ DEPENDENCIES:
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
   - MagicalRecord (~> 2.2)
+  - UIAlertView+Blocks (~> 0.8)
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
   - UIView+Positioning (~> 1.0)
@@ -33,6 +35,7 @@ SPEC CHECKSUMS:
   JGProgressHUD: f3c0258684f318bc0009e893fdac0701de5cb75b
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
   UIView+Positioning: 870af80983bf495af2cb8a3a15b20e26fcc57ebb

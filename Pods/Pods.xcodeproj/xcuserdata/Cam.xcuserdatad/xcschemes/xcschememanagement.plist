@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MEmoji-UIAlertView+Blocks.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-UIColor+Hex.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,47 +57,52 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>18777AB4200041EAA446CC22</key>
+		<key>0A91328F089541F8BB2A85E6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>33CE01CA689444CEBEEF4ACB</key>
+		<key>11122EA18E24462C840EB0BE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>465E9347ECD34312BCE12E17</key>
+		<key>226624EA471B4F5FBB505358</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>512DBB6F9741416A822BF098</key>
+		<key>45E05CECFBE04421AC668D24</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C766C88F1784179839100EC</key>
+		<key>53A60A647BF342CEB936F83B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7CF5E9B1A080438185EE7F2C</key>
+		<key>63F973DF695142949C71A85E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CB01D66AF8CE4F02978EF66B</key>
+		<key>69831B9EB00B47009BB9C388</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DBBB76D7CDA54F2BAC697176</key>
+		<key>710AE310F2784160BD71CB04</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EEC980782B7A4EAF94DBB618</key>
+		<key>872734B1EB0B48FDBAA1C47C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F4A68D9249294FCB9242D062</key>
 		<dict>
 			<key>primary</key>
 			<true/>

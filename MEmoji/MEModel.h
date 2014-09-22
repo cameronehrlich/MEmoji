@@ -21,6 +21,14 @@ typedef void (^MEmojiCallback)();
 static const CGFloat dimensionOfGIF = 320;
 static const CGFloat stepOfGIF = 0.12f;
 
+typedef NS_ENUM(NSUInteger, MEShareOption) {
+    MEShareOptionSaveToLibrary,
+    MEShareOptionInstagram,
+    MEShareOptionFacebook,
+    MEShareOptionTwitter,
+    MEShareOptionMessages
+};
+
 @interface MEModel : NSObject
 
 @property (nonatomic, strong) AVCaptureSession *session;

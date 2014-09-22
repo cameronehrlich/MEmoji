@@ -14,6 +14,7 @@
 #import <UIColor+Hex.h>
 #import <JGProgressHUD.h>
 #import <UIView+Shimmer.h>
+#import <UIAlertView+Blocks.h>
 #import "MEOverlayCell.h"
 
 #define ScrollerEmojiSize 220
@@ -641,11 +642,17 @@
         self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 150)];
         [self.shareView setBackgroundColor:[UIColor colorWithWhite:0.6 alpha:0.5]];
         
+        CGFloat numberOfDivisions = 8;
+        CGFloat buttonSideLength = self.shareView.width/numberOfDivisions;
+        CGRect shareButtonRect = CGRectMake(0, 0, buttonSideLength, buttonSideLength);
+        
         UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [saveToLibraryButton setFrame:CGRectMake(1*self.shareView.width/6, 2*self.shareView.height/6, 2*self.shareView.width/6, 2*self.shareView.height/6)];
+        [saveToLibraryButton setFrame:shareButtonRect];
+        [saveToLibraryButton setCenter:CGPointMake(self.shareView.height/2, 2*(self.shareView.width/numberOfDivisions))];
         [saveToLibraryButton setImage:[UIImage imageNamed:@"photoLibrary"] forState:UIControlStateNormal];
         [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [saveToLibraryButton addTarget:self action:@selector(saveToLibrary) forControlEvents:UIControlEventTouchUpInside];
+        [saveToLibraryButton setTag:MEShareOptionSaveToLibrary];
+        [saveToLibraryButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.shareView addSubview:saveToLibraryButton];
 
         
@@ -653,7 +660,7 @@
         [messgesButton setFrame:CGRectMake(3*self.shareView.width/6, 2*self.shareView.height/6, 2*(self.shareView.width/6), 2*self.shareView.height/6)];
         [messgesButton setImage:[UIImage imageNamed:@"messages"] forState:UIControlStateNormal];
         [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [messgesButton addTarget:self action:@selector(shareToMessages) forControlEvents:UIControlEventTouchUpInside];
+        [messgesButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.shareView addSubview:messgesButton];
     }
     
@@ -675,60 +682,102 @@
     }];
 }
 
-- (void)shareToMessages
-{
-    [self shareTo:@"messages"];
-}
 
-- (void)saveToLibrary
-{
-    [self shareTo:@"saveToLibrary"];
-}
-
-- (void)shareTo:(NSString *)shareOption
+- (void)shareAction:(UIButton *)sender
 {
     JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleLight];
     
-    if ([shareOption isEqualToString:@"messages"]) {
-        
-        [HUD showInView:self.view animated:YES];
-        [self dismissShareView];
-        
-        self.messageController = [[MFMessageComposeViewController alloc] init];
-        [self.messageController setMessageComposeDelegate:self];
-        [self.messageController addAttachmentData:self.currentImage.imageData
-                                   typeIdentifier:@"com.compuserve.gif"
-                                         filename:[NSString stringWithFormat:@"MEmoji-%@.gif", self.currentImage.createdAt.description]];
-        
-        [self presentViewController:self.messageController animated:YES completion:^{
-            [HUD dismissAnimated:YES];
-        }];
-        
-    }else if ([shareOption isEqualToString:@"saveToLibrary"]){
-        
-        [HUD showInView:self.view animated:YES];
-        [self dismissShareView];
-        
-        NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
-        NSError *error;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
-            [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
-            if (error) {
-                NSLog(@"An Error occured writing to file. %@", error.debugDescription);
-            }
-        }
-        
-        [[self.currentImage movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
-        
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
-            if (error) {
-                NSLog(@"Error saving asset to camera. %@", error.debugDescription);
-            }
+    switch (sender.tag) {
+        case MEShareOptionSaveToLibrary: {
+            
+            [UIAlertView showWithTitle:@"Save to Library"
+                               message:@"Select how you would like to save your MEmoji."
+                     cancelButtonTitle:@"Cancel"
+                     otherButtonTitles:@[@"Save as GIF", @"Save as Video"]
+                              tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                  
+                                  [self dismissShareView];
+                                  if (buttonIndex > 0) {
+                                      
+                                      [HUD showInView:self.view animated:YES];
+                                      
+                                      if (buttonIndex == 1) { // Save as GIF
 
+                                          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                                          [library writeImageDataToSavedPhotosAlbum:[self.currentImage imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                                              [HUD dismissAnimated:YES];
+                                              // TODO : Confirm saved as Video
+                                          }];
+                                          
+                                      }else if (buttonIndex == 2){ // Save as Video
+                                          
+                                          NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
+                                          NSError *error;
+                                          if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
+                                              [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
+                                              if (error) {
+                                                  NSLog(@"An Error occured writing to file. %@", error.debugDescription);
+                                              }
+                                          }
+                                          
+                                          [[self.currentImage movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
+                                          
+                                          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                                          [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
+                                              if (error) {
+                                                  NSLog(@"Error saving asset to camera. %@", error.debugDescription);
+                                              }
+                                              [HUD dismissAnimated:YES];
+                                              // TODO : Confirm saved as Video
+                                          }];
+                                      }
+                                  }
+                              }];
+            break;
+        }
+        case MEShareOptionMessages: {
+            [self dismissShareView];
+            
+            [HUD showInView:self.view animated:YES];
+            self.messageController = [[MFMessageComposeViewController alloc] init];
+            [self.messageController setMessageComposeDelegate:self];
+            [self.messageController addAttachmentData:self.currentImage.imageData
+                                       typeIdentifier:@"com.compuserve.gif"
+                                             filename:[NSString stringWithFormat:@"MEmoji-%@.gif", self.currentImage.createdAt.description]];
+            
+            [self presentViewController:self.messageController animated:YES completion:^{
+                [HUD dismissAnimated:YES];
+            }];
+            break;
+        }case MEShareOptionInstagram: {
+            // TODO : Instagram
             [HUD dismissAnimated:YES];
-        }];
-    };
+            
+            NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
+            if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+                [[UIApplication sharedApplication] openURL:instagramURL];
+            }
+            break;
+        }case MEShareOptionFacebook: {
+            // TODO : Facebook
+            [HUD dismissAnimated:YES];
+            NSURL *url = [NSURL URLWithString:@"fb://post/"];
+            [[UIApplication sharedApplication] openURL:url];
+            break;
+        }case MEShareOptionTwitter: {
+            // TODO : Twitter
+            [HUD dismissAnimated:YES];
+            NSString *stringURL = @"twitter://post?message=#memoji";
+            NSURL *url = [NSURL URLWithString:stringURL];
+            [[UIApplication sharedApplication] openURL:url];
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
+
 }
 
 #pragma mark -
