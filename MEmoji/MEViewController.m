@@ -12,8 +12,9 @@
 #import <FLAnimatedImage.h>
 #import <UIView+Positioning.h>
 #import <UIColor+Hex.h>
-#import "MEOverlayCell.h"
 #import <JGProgressHUD.h>
+#import <UIView+Shimmer.h>
+#import "MEOverlayCell.h"
 
 #define ScrollerEmojiSize 220
 
@@ -81,6 +82,25 @@
     [self.captureButtonSpinnerView setAlpha:0];
     [self.captureButtonView addSubview:self.captureButtonSpinnerView];
     
+    
+    // Setup instruction Labels
+    self.textLabelLeftOfButton = [[UILabel alloc] initWithFrame:CGRectMake(0, self.captureButtonView.frame.origin.y, self.captureButtonView.frame.origin.x, self.captureButtonView.height)];
+    [self.textLabelLeftOfButton setTextAlignment:NSTextAlignmentCenter];
+    [self.textLabelLeftOfButton setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:15]];
+    [self.textLabelLeftOfButton setNumberOfLines:2];
+    [self.textLabelLeftOfButton setTextColor:[UIColor grayColor]];
+    [self.textLabelLeftOfButton setText:@"Tap circle\nfor still."];
+    
+    self.textLabelRightOfButton = [[UILabel alloc] initWithFrame:CGRectMake(self.captureButtonView.right, self.captureButtonView.frame.origin.y, self.captureButtonView.frame.origin.x, self.captureButtonView.height)];
+    [self.textLabelRightOfButton setTextAlignment:NSTextAlignmentCenter];
+    [self.textLabelRightOfButton setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:15]];
+    [self.textLabelRightOfButton setNumberOfLines:2];
+    [self.textLabelRightOfButton setTextColor:[UIColor grayColor]];
+    [self.textLabelRightOfButton setText:@"Press and hold\nfor GIF."];
+    
+    [self.view addSubview:self.textLabelLeftOfButton];
+    [self.view addSubview:self.textLabelRightOfButton];
+    
     // Gestures
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.captureButtonView addGestureRecognizer:singleTapRecognizer];
@@ -131,7 +151,6 @@
     CGRect layerFrame = CGRectMake(0, 0, self.viewFinder.width, self.viewFinder.height);
     CGRect clipedFrame = layerFrame;
     clipedFrame.size.height -= 1; // To stop the jittery line unter the viewFinder
-    
     [[[MEModel sharedInstance] previewLayer] setFrame:clipedFrame];
     [self.viewFinder.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
     
@@ -141,6 +160,7 @@
     [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
     [self setMaskEnabled:YES];
     
+    // Blur or Fade view
     BOOL isiOS8 = ([[NSProcessInfo processInfo] operatingSystemVersion].majorVersion >= 8);
     if (isiOS8) {
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
@@ -188,6 +208,7 @@
     [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
     
     
+    // Overlay/Accessories Collection View
     self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.overlayCollectionView setDelegate:self];
@@ -207,9 +228,9 @@
 #pragma mark UIGestureRecognizerHandlers
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
+    [self setShowingOverlays:NO];
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.4, 1.4)];
-        [self.scrollView setContentOffset:CGPointMake(0, 0)];
     } completion:nil];
     
     [self startRecording];
@@ -227,9 +248,9 @@
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
             
+            [self setShowingOverlays:NO];
             [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                 [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.4,1.4)];
-                [self.scrollView setContentOffset:CGPointMake(0, 0)];
             } completion:nil];
             
             [self startRecording];
@@ -344,22 +365,6 @@
     }];
 }
 
-- (IBAction)showOverlaysAction:(id)sender
-{
-
-    [self.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-    
-    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        
-
-        if (self.scrollView.contentOffset.x > 0) {
-            [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
-        }else{
-            [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, self.scrollView.contentOffset.y)];
-        }
-    } completion:nil];
-}
-
 - (IBAction)editToggle:(id)sender
 {
     [self setEditing:!self.editing animated:YES];
@@ -388,8 +393,6 @@
             [self.maskToggleButton setTransform:CGAffineTransformIdentity];
         } completion:nil];
     }];
-
-
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -399,9 +402,40 @@
     [self.libraryCollectionView setAllowsMultipleSelection:editing];
     [self.libraryCollectionView reloadData];
 }
+
+#pragma mark -
+#pragma mark OverlayTogelingMethods
+- (IBAction)toggleOverlaysAction:(id)sender
+{
+    [self.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+
+    if (self.scrollView.contentOffset.x > 0) {
+        [self setShowingOverlays:NO];
+    }else {
+        [self setShowingOverlays:YES];
+    }
+}
+
+- (void)setShowingOverlays:(BOOL)showingOverlays
+{
+    _showingOverlays = showingOverlays;
+    if (showingOverlays) {
+        [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, self.scrollView.contentOffset.y)];
+        } completion:^(BOOL finished) {
+            _showingOverlays = YES;
+        }];
+    }else{
+        [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseIn animations:^{
+            [self.scrollView setContentOffset:CGPointMake(0, 0)];
+        } completion:^(BOOL finished) {
+            _showingOverlays = NO;
+        }];
+    }
+}
+
 #pragma mark -
 #pragma mark UIMessageComposeViewController Delegate
-
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     [self dismissViewControllerAnimated:YES completion:^{
@@ -413,6 +447,19 @@
 #pragma mark UICollectionViewDataSource and Delegate Methods
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    // Hook in here to determine whether to show the instructions
+    if (self.currentImages.count == 0) {
+        [self.textLabelLeftOfButton setHidden:NO];
+        [self.textLabelRightOfButton setHidden:NO];
+        [self.textLabelLeftOfButton startShimmering];
+        [self.textLabelRightOfButton startShimmering];
+    }else{
+        [self.textLabelLeftOfButton setHidden:YES];
+        [self.textLabelRightOfButton setHidden:YES];
+        [self.textLabelLeftOfButton stopShimmering];
+        [self.textLabelRightOfButton stopShimmering];
+    }
+    
     if ([collectionView isEqual:self.libraryCollectionView]) {
         return self.currentImages.count + 1;
     }else if ([collectionView isEqual:self.overlayCollectionView]){
@@ -496,12 +543,17 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.overlayCollectionView]) {
+        // TODO : HACKY, FIXME!
         UIImage *tmpOverlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
         CALayer *tmpLayer = [CALayer layer];
         tmpLayer.frame = self.viewFinder.layer.bounds;
         tmpLayer.contents = (id)tmpOverlayImage.CGImage;
         [self.maskingLayer addSublayer:tmpLayer];
         [self.currentOverlays setObject:tmpLayer forKey:indexPath];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self setShowingOverlays:NO];
+        });
+
     }else if ([collectionView isEqual:self.libraryCollectionView]){
         self.currentImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
         
@@ -556,13 +608,7 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual:self.libraryCollectionView]) {
-        [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
-        
-//        CGFloat adjustedOffset = (self.libraryCollectionView.contentOffset.y + self.libraryCollectionView.contentInset.top);
-        
-//        if (adjustedOffset > 1.5*self.viewFinder.height) { // If view Finder is offscreen
-//            [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
-//        }
+        [[[MEModel sharedInstance] loadingQueue] cancelAllOperations]; // TODO: Test if this makes things better for real.
     }
 }
 
@@ -683,6 +729,24 @@
             [HUD dismissAnimated:YES];
         }];
     };
+}
+
+#pragma mark -
+#pragma mark Other Delegate methods
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        [self setShowingOverlays:NO];
+
+        for (CALayer *layer in self.currentOverlays.allValues) {
+            [layer removeFromSuperlayer];
+        }
+        
+        [self.currentOverlays removeAllObjects];
+        [self.overlayCollectionView reloadData];
+    }
 }
 
 @end

@@ -11,6 +11,7 @@ target "MEmoji" do
     pod 'UIView+Positioning', '~> 1.0'
     pod 'JGProgressHUD', '~> 1.2'
     pod 'LLARingSpinnerView', '~> 0.1'
+    pod 'UIView+Shimmer', '~> 1.0'
 end
 
 target "MEmojiTests" do

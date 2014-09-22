@@ -60,3 +60,9 @@
 #define COCOAPODS_VERSION_MINOR_UIView_Positioning 0
 #define COCOAPODS_VERSION_PATCH_UIView_Positioning 1
 
+// UIView+Shimmer
+#define COCOAPODS_POD_AVAILABLE_UIView_Shimmer
+#define COCOAPODS_VERSION_MAJOR_UIView_Shimmer 1
+#define COCOAPODS_VERSION_MINOR_UIView_Shimmer 0
+#define COCOAPODS_VERSION_PATCH_UIView_Shimmer 0
+

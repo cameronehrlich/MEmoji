@@ -14,7 +14,6 @@
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-
 @interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -27,6 +26,8 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UICollectionView *overlayCollectionView;
 @property (strong, nonatomic) UIView *captureButtonView;
+@property (strong, nonatomic) UILabel *textLabelLeftOfButton;
+@property (strong, nonatomic) UILabel *textLabelRightOfButton;
 @property (strong, nonatomic) LLARingSpinnerView *captureButtonSpinnerView;
 @property (strong, nonatomic) UIButton *flipCameraButton;
 @property (strong, nonatomic) UIButton *maskToggleButton;
@@ -39,6 +40,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *editBarButtonItem;
 @property (assign, nonatomic) BOOL editing;
 @property (assign, nonatomic) BOOL maskEnabled;
+@property (assign, nonatomic) BOOL showingOverlays;
 
 @property (strong, nonatomic) Image *currentImage;
 @property (strong, nonatomic) NSMutableArray *currentImages;
@@ -46,6 +48,6 @@
 @property (strong, nonatomic) NSMutableDictionary *imageCache;
 
 - (IBAction)editToggle:(id)sender;
-- (IBAction)showOverlaysAction:(id)sender;
+- (IBAction)toggleOverlaysAction:(id)sender;
 
 @end

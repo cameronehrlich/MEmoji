@@ -22,6 +22,8 @@
     
     [[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: globalTextTint, NSFontAttributeName:[UIFont fontWithName:@"AvenirNext-Medium" size:23.0]}];
     
+    [application setApplicationSupportsShakeToEdit:YES];
+    
     return YES;
 }
 							

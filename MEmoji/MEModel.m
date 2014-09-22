@@ -132,7 +132,7 @@
     CGRect cropRect = CGRectMake(0, (imgFrame.size.height/2) - (imgFrame.size.width/2), imgFrame.size.width, imgFrame.size.width);
     
     CGImageRef imageRef = CGImageCreateWithImageInRect([imgFrame CGImage], cropRect);
-    imgFrame = [UIImage imageWithCGImage:imageRef];
+    imgFrame = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:UIImageOrientationUpMirrored];
     CGImageRelease(imageRef);
     
     for (UIImage *overlay in overlays) {
@@ -145,11 +145,11 @@
 
 - (UIImage *)image:(UIImage *)image withOverlay:(UIImage *)overlay
 {
-    UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, 0.0);
     
     [image drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
     [overlay drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
-    // TODO: fix flip issue
+
     UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

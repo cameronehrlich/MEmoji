@@ -11,6 +11,7 @@ PODS:
   - UIColor+Hex/UIColor (1.0.1)
   - UIImage+Additions (1.1.0)
   - UIView+Positioning (1.0.1)
+  - UIView+Shimmer (1.0.0)
 
 DEPENDENCIES:
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
   - UIView+Positioning (~> 1.0)
+  - UIView+Shimmer (~> 1.0)
 
 EXTERNAL SOURCES:
   FLAnimatedImage:
@@ -34,5 +36,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
   UIView+Positioning: 870af80983bf495af2cb8a3a15b20e26fcc57ebb
+  UIView+Shimmer: 344d5826166c0f2a3040a4cb78b4dc2b3914aaab
 
 COCOAPODS: 0.33.1
