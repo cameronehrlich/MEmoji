@@ -34,8 +34,8 @@
         self.loadingQueue = [[NSOperationQueue alloc] init];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
-        self.loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+        self.movieRenderingQueue = [[NSOperationQueue alloc] init];
+        [self.movieRenderingQueue setMaxConcurrentOperationCount:1];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self initializeCaptureSession];
@@ -65,12 +65,12 @@
     
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
         @autoreleasepool {
-            CMTime keyFrame = CMTimeMake((Float64)frame ,duration.timescale);
+            CMTime keyFrame = CMTimeMake((Float64)frame, duration.timescale);
             
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
             
-            UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
+            UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:0.0 orientation:UIImageOrientationUp];
             
             UIImage *tmpFrameImage = [self emojifyFrame:singleFrame andOverlays:overlays];
             
@@ -100,30 +100,33 @@
         justSaved = newImage;
         
     } completion:^(BOOL success, NSError *error) {
-
         self.completionBlock();
-        
-        self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
-                                                                                            withWidth:dimensionOfGIF
-                                                                                            andHeight:dimensionOfGIF]];
-        
-        NSArray *framesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
-        
-        [self.movieMaker createMovieFromImages:framesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
-            if (!success) {
-                NSLog(@"There was an error creating the movie");
-            }
-            [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-                NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
                 
-                [[justSaved MR_inContext:localContext] setMovieData:movieData];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.movieRenderingQueue addOperationWithBlock:^{
+                self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
+                                                                                                    withWidth:dimensionOfGIF
+                                                                                                    andHeight:dimensionOfGIF]];
                 
-            } completion:^(BOOL success, NSError *error) {
-                NSLog(@"Finished saving movie data.");
+                NSArray *framesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
                 
+                [self.movieMaker createMovieFromImages:framesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
+                    if (!success) {
+                        NSLog(@"There was an error creating the movie");
+                    }
+                    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+                        NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
+                        
+                        [[justSaved MR_inContext:localContext] setMovieData:movieData];
+                        
+                    } completion:^(BOOL success, NSError *error) {
+                        NSLog(@"Finished saving movie data.");
+                        
+                    }];
+                }];
             }];
-        }];
-        
+            
+        });
     }];
 }
 
