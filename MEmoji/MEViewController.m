@@ -32,9 +32,8 @@
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"backgroundImage"]]];
+    [self.view setBackgroundColor:[MEModel mainColor]];
     [self.navigationItem setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"headerLogo"]]];
-
     
     // Library Collection View
     self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
@@ -84,7 +83,7 @@
     [self.view addSubview:self.captureButtonView];
     
     self.captureButtonSpinnerView = [[LLARingSpinnerView alloc] initWithFrame:self.captureButtonView.bounds];
-    [self.captureButtonSpinnerView setLineWidth:6];
+    [self.captureButtonSpinnerView setLineWidth:3];
     [self.captureButtonSpinnerView setAlpha:0];
     [self.captureButtonView addSubview:self.captureButtonSpinnerView];
     
@@ -243,14 +242,18 @@
     [self.viewFinder insertSubview:self.smileyFaceButton aboveSubview:self.scrollView];
     
     // Overlay/Accessories Collection View
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    
     self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
-                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+                                                    collectionViewLayout:layout];
     [self.overlayCollectionView setDelegate:self];
     [self.overlayCollectionView setDataSource:self];
     [self.overlayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
     [self.overlayCollectionView setAlwaysBounceVertical:YES];
+    [self.overlayCollectionView setShowsVerticalScrollIndicator:YES];
     [self.overlayCollectionView setShowsHorizontalScrollIndicator:NO];
-    [self.overlayCollectionView setShowsVerticalScrollIndicator:NO];
+
     [self.overlayCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.overlayCollectionView setContentInset:UIEdgeInsetsMake(15, 20, 15, 20)];
     [self.overlayCollectionView setAllowsMultipleSelection:YES];
@@ -264,7 +267,7 @@
 {
     [self setShowingOverlays:NO];
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.4, 1.4)];
+        [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.3, 1.3)];
     } completion:nil];
     
     [self startRecording];
@@ -284,7 +287,7 @@
             
             [self setShowingOverlays:NO];
             [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.4,1.4)];
+                [self.captureButtonView setTransform:CGAffineTransformMakeScale(1.3,1.3)];
             } completion:nil];
             
             [self startRecording];

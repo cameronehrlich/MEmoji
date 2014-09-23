@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3201656C19D225CE00B3ECB1 /* Accessories.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* Accessories.xcassets */; };
 		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
-		3245999019D1020C00E7F518 /* Accessories.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3245998F19D1020C00E7F518 /* Accessories.xcassets */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
@@ -44,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3201656B19D225CE00B3ECB1 /* Accessories.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accessories.xcassets; sourceTree = "<group>"; };
 		3216CABA19BBF245007F3D46 /* AWCollectionViewDialLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWCollectionViewDialLayout.h; sourceTree = "<group>"; };
 		3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWCollectionViewDialLayout.m; sourceTree = "<group>"; };
 		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -53,7 +54,6 @@
 		3226033519D1F4F00082625F /* MEOverlayImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayImage.h; sourceTree = "<group>"; };
 		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		3245998F19D1020C00E7F518 /* Accessories.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accessories.xcassets; sourceTree = "<group>"; };
 		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
 		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 				3212C2A619C77717007ED774 /* Cells */,
 				3216CAB619BBEBE2007F3D46 /* Flow Layouts */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
-				3245998F19D1020C00E7F518 /* Accessories.xcassets */,
+				3201656B19D225CE00B3ECB1 /* Accessories.xcassets */,
 				32DD888C19870B44008E8BCE /* Supporting Files */,
 			);
 			path = MEmoji;
@@ -320,7 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3245999019D1020C00E7F518 /* Accessories.xcassets in Resources */,
+				3201656C19D225CE00B3ECB1 /* Accessories.xcassets in Resources */,
 				32DD88A119870B44008E8BCE /* Images.xcassets in Resources */,
 				32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */,
 				32DD889019870B44008E8BCE /* InfoPlist.strings in Resources */,

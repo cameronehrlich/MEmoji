@@ -69,6 +69,12 @@
             
             UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
             
+            BOOL isBackFacing = (self.inputDevice.device == self.backCamera);
+            if (isBackFacing) {
+                // Flip image only if using back camera
+                singleFrame = [self flippedImageAxis:singleFrame];
+            }
+            
             UIImage *tmpFrameImage = [self emojifyFrame:singleFrame andOverlays:overlays];
             
             [outImages addObject:tmpFrameImage];
@@ -190,6 +196,27 @@
     return gifData;
 }
 
+- (UIImage *)flippedImageAxis:(UIImage *)image
+{
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, 1);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    // flip x
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0f, -1.0f);
+
+    // then flip Y axis
+    CGContextTranslateCTM(context, image.size.width, 0);
+    CGContextScaleCTM(context, -1.0f, 1.0f);
+    
+    CGContextDrawImage(context, CGRectMake(0.0, 0.0, image.size.width, image.size.height), [image CGImage]);
+    
+    UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return flipedImage;
+}
+
 #pragma mark -
 #pragma mark AVFoundation Setup
 - (void)initializeCaptureSession
@@ -278,59 +305,102 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
-        NSArray *imageNames = @[@"creepyEyes",
-                                @"faceMom",
-                                @"policeHat",
-                                @"ambiguosHands",
-                                @"daBomb",
-                                @"faceMustache",
-                                @"rightThumb",
-                                @"babyBottle",
-                                @"darkGun",
-                                @"faceNO",
-                                @"santaHatBeard",
-                                @"beerMug",
-                                @"donaldTrumpet",
-                                @"faceQueen",
-                                @"sexyLips",
-                                @"bigFist",
-                                @"doubleFist",
-                                @"goldCrown",
-                                @"smallTears",
-                                @"bigLaugh",
-                                @"downThumb",
-                                @"gritTeeth",
-                                @"sugricalMask",
-                                @"bigPhone",
-                                @"dropBass",
-                                @"halfCigarette",
-                                @"sunGlasses",
-                                @"bigTears",
-                                @"eyes",
-                                @"heartEyes",
-                                @"thumbLeft",
-                                @"blueHalo",
-                                @"faceBaby",
-                                @"itsDoodoo",
-                                @"tongueLaugh",
+        NSArray *imageNames = @[
+                                @"Fistwhite",
                                 @"cartoonOuchie",
-                                @"faceBoy",
-                                @"kittyWhiskers",
-                                @"topHat",
-                                @"cheekKiss",
-                                @"faceDemon",
-                                @"leftFist",
-                                @"turbanAllah",
-                                @"cheerCone",
-                                @"faceGirl",
-                                @"moneyBag",
-                                @"waterfallTears",
-                                @"clapHands",
-                                @"faceGramma",
-                                @"nostrilSmoke",
-                                @"clapMarker",
+                                @"doubleFist",
                                 @"faceGrampa",
-                                @"oneTear"];
+                                @"halfCigarette",
+                                @"maitaiGlass",
+                                @"playViola",
+                                @"sexyLips",
+                                @"thumbLeft",
+                                @"cheekKiss",
+                                @"downThumb",
+                                @"faceMom",
+                                @"handsPalms",
+                                @"martiniGlass",
+                                @"pointOut",
+                                @"sexySaxy",
+                                @"toiletFace",
+                                @"ambiguosHands",
+                                @"cheerCone",
+                                @"dropBass",
+                                @"faceMustache",
+                                @"heartEyes",
+                                @"medicalHat",
+                                @"pointUp",
+                                @"showerHead",
+                                @"tongueLaugh",
+                                @"babyBottle",
+                                @"cherriesSex",
+                                @"embrellaRain",
+                                @"faceNO",
+                                @"itsDoodoo",
+                                @"moneyBag",
+                                @"policeHat",
+                                @"sleepZees",
+                                @"topHat",
+                                @"balloonRed",
+                                @"chinaHat",
+                                @"exclamationPoint",
+                                @"faceQueen",
+                                @"kittyWhiskers",
+                                @"monkeySpeak",
+                                @"prayingHands",
+                                @"smallCamera",
+                                @"turbanAllah",
+                                @"beerMug",
+                                @"clapHands",
+                                @"eyes",
+                                @"faceSkull",
+                                @"knifeParty",
+                                @"musicNotes",
+                                @"pumkinHead",
+                                @"smallTears",
+                                @"waterMelon",
+                                @"bigFist",
+                                @"clapMarker",
+                                @"faceBaby",
+                                @"fireFire",
+                                @"leftFist",
+                                @"nostrilSmoke",
+                                @"questionMark",
+                                @"soundMic",
+                                @"waterfallTears",
+                                @"bigLaugh",
+                                @"creepyEyes",
+                                @"faceBoy",
+                                @"ghostEyes",
+                                @"lightBulb",
+                                @"oneTear",
+                                @"rightThumb",
+                                @"strongArms",
+                                @"wineGlass",
+                                @"bigPhone",
+                                @"daBomb",
+                                @"faceDemon",
+                                @"goldCrown",
+                                @"lightningBolt",
+                                @"peaceHand",
+                                @"roseRed",
+                                @"surgicalMask",
+                                @"bigTears",
+                                @"darkGun",
+                                @"faceGirl",
+                                @"graduationCap",
+                                @"lolliPop",
+                                @"pigNose",
+                                @"russianHat",
+                                @"sunGlasses",
+                                @"blueHalo",
+                                @"donaldTrumpet",
+                                @"faceGramma",
+                                @"gritTeeth",
+                                @"loudSpeaker",
+                                @"pinkBow",
+                                @"santaHatBeard",
+                                @"theTrophy"];
         
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
 
@@ -352,7 +422,7 @@
     static UIColor *mainColor = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mainColor = [UIColor colorWithHex:0x01f5ff];
+        mainColor = [UIColor colorWithHex:0x0076b1];
     });
     
     return mainColor;

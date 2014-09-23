@@ -15,10 +15,10 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        [self.backgroundView.layer setContents:(id)[UIImage imageNamed:@"maskLayer"]];
+
         self.maskingView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self.maskingView setImage:[UIImage imageNamed:@"maskLayerSmall"]];
-        [self.maskingView setAlpha:0.6];
+        [self.maskingView setAlpha:0.2];
         [self addSubview:self.maskingView];
         
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -26,7 +26,7 @@
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
         [self addSubview:self.imageView];
         
-        CGRect selectedImageFrame = CGRectMake(0, 0, 30, 30);
+        CGRect selectedImageFrame = CGRectMake(0, 0, 35, 35);
         selectedImageFrame.origin.y += (frame.size.height/2) - (selectedImageFrame.size.height/2);
         selectedImageFrame.origin.x += (frame.size.width/2) - (selectedImageFrame.size.width/2);
         
