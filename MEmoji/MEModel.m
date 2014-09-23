@@ -339,7 +339,7 @@
 
         for (NSString *name in imageNames) {
             @autoreleasepool {
-                UIImage *tmpImage = [UIImage imageNamed:name];
+                MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImage:[UIImage imageNamed:name]];
                 [outputImages addObject:tmpImage];
             }
         }
@@ -355,7 +355,7 @@
     static UIColor *mainColor = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mainColor = [UIColor colorWithHex:0x5fb5f7];
+        mainColor = [UIColor colorWithHex:0x01f5ff];
     });
     
     return mainColor;

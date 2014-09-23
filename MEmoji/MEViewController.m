@@ -19,9 +19,6 @@
 
 #define ScrollerEmojiSize 220
 
-@import Social;
-@import Accounts;
-
 @implementation MEViewController
 
 - (void)viewDidLoad
@@ -32,6 +29,8 @@
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout = UIRectEdgeBottom;
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"backgroundImage"]]];
+    [self.navigationItem setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"headerLogo"]]];
     
     // Collection View
     self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
@@ -49,7 +48,7 @@
     [self.libraryCollectionView setCollectionViewLayout:self.layout];
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
-    [self.libraryCollectionView setBackgroundColor:[UIColor colorWithHex:0xE5E9F7]];
+    [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
     
     [self.view addSubview:self.libraryCollectionView];
@@ -62,7 +61,7 @@
     CALayer *gradientLayer = [CALayer layer];
     [gradientLayer setCornerRadius:captureButtonFrame.size.width/2];
     [gradientLayer setFrame:captureButtonFrame];
-    [gradientLayer setContents:(id)[UIImage imageNamed:@"captureButton3"].CGImage];
+    [gradientLayer setContents:(id)[UIImage imageNamed:@"captureButtonRed"].CGImage];
     [gradientLayer setMasksToBounds:YES];
     [self.captureButtonView.layer addSublayer:gradientLayer];
     [self.captureButtonView.layer setCornerRadius:self.captureButtonView.size.width/2];
@@ -115,7 +114,7 @@
     
     // Additional Setup
     self.imageCache = [[NSMutableDictionary alloc] init];
-    self.currentOverlays = [[NSMutableDictionary alloc] init];
+    self.currentOverlays = [[NSMutableArray alloc] initWithCapacity:[MEModel allOverlays].count];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,25 +189,35 @@
     [self.viewFinder addSubview:self.scrollView];
     
     // Flip Camera Button
-    CGRect cameraButtonFrame = CGRectMake(0, 0, 37, 37);
+    CGRect cameraButtonFrame = CGRectMake(0, 0, 44, 44);
     cameraButtonFrame.origin.x = self.viewFinder.width - cameraButtonFrame.size.width - 13;
-    cameraButtonFrame.origin.y = self.viewFinder.size.height - cameraButtonFrame.size.height - 5;
+    cameraButtonFrame.origin.y = self.viewFinder.size.height - cameraButtonFrame.size.height - 6;
     self.flipCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.flipCameraButton setFrame:cameraButtonFrame];
     [self.flipCameraButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
     [self.flipCameraButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.flipCameraButton addTarget:self action:@selector(toggleCameras:) forControlEvents:UIControlEventTouchUpInside];
+    [self.flipCameraButton.imageView setAlpha:0.7];
+    [self.flipCameraButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.flipCameraButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.flipCameraButton.imageView.layer setShadowOpacity:0.8];
+    [self.flipCameraButton.imageView.layer setShadowRadius:0.5];
     [self.viewFinder insertSubview:self.flipCameraButton aboveSubview:self.scrollView];
     
     // Mask Toggle Button
-    CGRect maskButtonFrame = CGRectMake(0, 0, 30, 30);
-    maskButtonFrame.origin.x += 13;
+    CGRect maskButtonFrame = CGRectMake(0, 0, 35, 35);
+    maskButtonFrame.origin.x += 11;
     maskButtonFrame.origin.y = self.viewFinder.size.height - maskButtonFrame.size.height - 9;
     self.maskToggleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.maskToggleButton setFrame:maskButtonFrame];
     [self.maskToggleButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
     [self.maskToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.maskToggleButton addTarget:self action:@selector(toggleMask:) forControlEvents:UIControlEventTouchUpInside];
+    [self.maskToggleButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.maskToggleButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.maskToggleButton.imageView.layer setShadowOpacity:1];
+    [self.maskToggleButton.imageView.layer setShadowRadius:1];
+
     [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
     
     
@@ -332,14 +341,16 @@
         [overlaysToRender addObject:[UIImage imageNamed:@"maskLayer"]];
     }
     
-    // Add watermark layer
+
+    for (MEOverlayImage *overlayImage in self.currentOverlays) {
+        [overlaysToRender addObject:overlayImage.image];
+    }
+    
+    // Finally, add watermark layer
     if (YES) {
         [overlaysToRender addObject:[UIImage imageNamed:@"waterMark"]];
     }
     
-    for (CALayer *layer in [self.currentOverlays allValues]) {
-        [overlaysToRender addObject:[UIImage imageWithCGImage:(CGImageRef)layer.contents]];
-    }
     
     [[MEModel sharedInstance] createEmojiFromMovieURL:url andOverlays:[overlaysToRender copy] complete:^{
         
@@ -374,7 +385,7 @@
     [self setEditing:!self.editing animated:YES];
 }
 
--(void)setMaskEnabled:(BOOL)maskEnabled
+- (void)setMaskEnabled:(BOOL)maskEnabled
 {
     _maskEnabled = maskEnabled;
     
@@ -465,7 +476,7 @@
     if ([collectionView isEqual:self.libraryCollectionView]) {
         return self.currentImages.count + 1;
     }else if ([collectionView isEqual:self.overlayCollectionView]){
-        return [[MEModel allOverlays] count]; // TODO: Do something here
+        return [[MEModel allOverlays] count];
     }else{
         NSLog(@"Error in Number of items in section");
         return 0;
@@ -477,9 +488,7 @@
     
     if ([collectionView isEqual:self.overlayCollectionView]) {
         MEOverlayCell *cell = [self.overlayCollectionView dequeueReusableCellWithReuseIdentifier:@"OverlayCell" forIndexPath:indexPath];
-        
-        UIImage *cellImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
-        
+        UIImage *cellImage = [(MEOverlayImage *)[[MEModel allOverlays] objectAtIndex:indexPath.item] image];
         [cell.imageView setImage:cellImage];
         return cell;
     }else if ([collectionView isEqual:self.libraryCollectionView]){
@@ -545,13 +554,13 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.overlayCollectionView]) {
-        // TODO : HACKY, FIXME!
-        UIImage *tmpOverlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
-        CALayer *tmpLayer = [CALayer layer];
-        tmpLayer.frame = self.viewFinder.layer.bounds;
-        tmpLayer.contents = (id)tmpOverlayImage.CGImage;
-        [self.maskingLayer addSublayer:tmpLayer];
-        [self.currentOverlays setObject:tmpLayer forKey:indexPath];
+
+        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
+        [overlayImage.layer setFrame:self.viewFinder.layer.bounds]; // MUST SET FRAME OR IT WONT WORK
+        
+        [self.maskingLayer addSublayer:overlayImage.layer];
+        [self.currentOverlays addObject:overlayImage];
+ 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self setShowingOverlays:NO];
         });
@@ -584,9 +593,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.overlayCollectionView]) {
-        CALayer *overlayLayer = [self.currentOverlays objectForKey:indexPath];
-        [overlayLayer removeFromSuperlayer];
-        [self.currentOverlays removeObjectForKey:indexPath];
+        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
+        [overlayImage.layer removeFromSuperlayer];
+        [self.currentOverlays removeObject:overlayImage];
     }
 }
 
@@ -603,7 +612,6 @@
 {
     return 1;
 }
-
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate
@@ -866,8 +874,8 @@
     {
         [self setShowingOverlays:NO];
         
-        for (CALayer *layer in self.currentOverlays.allValues) {
-            [layer removeFromSuperlayer];
+        for (MEOverlayImage *overlayImage in self.currentOverlays) {
+            [overlayImage.layer removeFromSuperlayer];
         }
         
         [self.currentOverlays removeAllObjects];

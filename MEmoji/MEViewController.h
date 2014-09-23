@@ -44,7 +44,7 @@
 
 @property (strong, nonatomic) Image *currentImage;
 @property (strong, nonatomic) NSMutableArray *currentImages;
-@property (strong, nonatomic) NSMutableDictionary *currentOverlays;
+@property (strong, nonatomic) NSMutableArray *currentOverlays;
 @property (strong, nonatomic) NSMutableDictionary *imageCache;
 
 - (IBAction)editToggle:(id)sender;

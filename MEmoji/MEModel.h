@@ -10,6 +10,7 @@
 #import <UIImage+Additions.h>
 #import "CEMovieMaker.h"
 #import "Image.h"
+#import "MEOverlayImage.h"
 
 @import AVFoundation;
 @import MediaPlayer;

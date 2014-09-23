@@ -14,13 +14,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MEModel sharedInstance];
-    
-    UIColor *globalTextTint = [UIColor colorWithHex:0xE5E9F7];
 
-    [[UINavigationBar appearance] setBarTintColor:[MEModel mainColor]];
-    [self.window  setTintColor:globalTextTint];
-    
-    [[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: globalTextTint, NSFontAttributeName:[UIFont fontWithName:@"AvenirNext-Medium" size:23.0]}];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+    [self.window  setTintColor:[UIColor whiteColor]];
     
     [application setApplicationSupportsShakeToEdit:YES];
     

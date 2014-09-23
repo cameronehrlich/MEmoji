@@ -132,7 +132,7 @@
     }
     
     CGAffineTransform scaleT = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
-    theAttributes.alpha = scaleFactor;
+//    theAttributes.alpha = scaleFactor;
     
     theAttributes.transform = CGAffineTransformConcat(scaleT, CGAffineTransformConcat(translationT, rotationT));
     theAttributes.zIndex = indexPath.item;

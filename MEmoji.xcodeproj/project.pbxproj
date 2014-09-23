@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216CABB19BBF245007F3D46 /* AWCollectionViewDialLayout.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
+		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		3245999019D1020C00E7F518 /* Accessories.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3245998F19D1020C00E7F518 /* Accessories.xcassets */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
@@ -49,6 +50,8 @@
 		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
 		3218C80D19C7691C0035B7BA /* MEOverlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCell.m; sourceTree = "<group>"; };
+		3226033519D1F4F00082625F /* MEOverlayImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayImage.h; sourceTree = "<group>"; };
+		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3245998F19D1020C00E7F518 /* Accessories.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accessories.xcassets; sourceTree = "<group>"; };
 		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
@@ -136,6 +139,8 @@
 			children = (
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
+				3226033519D1F4F00082625F /* MEOverlayImage.h */,
+				3226033619D1F4F00082625F /* MEOverlayImage.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
+				3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */,
 				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,

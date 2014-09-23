@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "instagram.png"
+      "filename" : "captureButtonRed.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "instagram@2x.png"
+      "filename" : "captureButtonRed@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "instagram@3x.png"
+      "filename" : "captureButtonRed@3x.png"
     }
   ],
   "info" : {
