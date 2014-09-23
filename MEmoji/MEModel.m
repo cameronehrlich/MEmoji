@@ -335,7 +335,7 @@
                                 @"faceGrampa",
                                 @"oneTear"];
         
-        NSMutableArray *outputImages =[[NSMutableArray alloc] initWithCapacity:outputImages.count];
+        NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
 
         for (NSString *name in imageNames) {
             @autoreleasepool {
