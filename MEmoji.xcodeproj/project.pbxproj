@@ -139,8 +139,6 @@
 			children = (
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
-				3226033519D1F4F00082625F /* MEOverlayImage.h */,
-				3226033619D1F4F00082625F /* MEOverlayImage.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -228,10 +226,12 @@
 			isa = PBXGroup;
 			children = (
 				32F7526319874FEA00045AFA /* Model.xcdatamodeld */,
-				32F752661987513000045AFA /* Image.h */,
-				32F752671987513000045AFA /* Image.m */,
 				32A93849199BE59E00125DA8 /* MEModel.h */,
 				32A9384A199BE59E00125DA8 /* MEModel.m */,
+				32F752661987513000045AFA /* Image.h */,
+				32F752671987513000045AFA /* Image.m */,
+				3226033519D1F4F00082625F /* MEOverlayImage.h */,
+				3226033619D1F4F00082625F /* MEOverlayImage.m */,
 				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
 				325C434B19CA7F8400C93DCC /* CEMovieMaker.m */,
 			);

@@ -1,5 +1,5 @@
 #include "Pods-MEmoji-JGProgressHUD.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/JGProgressHUD" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/FLAnimatedImage" "${PODS_ROOT}/Headers/JGProgressHUD" "${PODS_ROOT}/Headers/LLARingSpinnerView" "${PODS_ROOT}/Headers/MagicalRecord" "${PODS_ROOT}/Headers/UIAlertView+Blocks" "${PODS_ROOT}/Headers/UIColor+Hex" "${PODS_ROOT}/Headers/UIImage+Additions" "${PODS_ROOT}/Headers/UIView+Positioning" "${PODS_ROOT}/Headers/UIView+Shimmer"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/JGProgressHUD" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/FLAnimatedImage" "${PODS_ROOT}/Headers/GoogleAnalytics-iOS-SDK" "${PODS_ROOT}/Headers/JGProgressHUD" "${PODS_ROOT}/Headers/LLARingSpinnerView" "${PODS_ROOT}/Headers/MagicalRecord" "${PODS_ROOT}/Headers/UIAlertView+Blocks" "${PODS_ROOT}/Headers/UIColor+Hex" "${PODS_ROOT}/Headers/UIImage+Additions" "${PODS_ROOT}/Headers/UIView+Positioning" "${PODS_ROOT}/Headers/UIView+Shimmer"
 OTHER_LDFLAGS = -ObjC ${PODS_MEMOJI_JGPROGRESSHUD_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}

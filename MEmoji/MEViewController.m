@@ -7,7 +7,7 @@
 //
 
 #import "MEViewController.h"
-#import <UIColor+Hex.h>
+
 #import <FLAnimatedImageView.h>
 #import <FLAnimatedImage.h>
 #import <UIView+Positioning.h>
@@ -25,14 +25,18 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    // Setup
+    self.imageCache = [[NSMutableDictionary alloc] init];
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+    self.currentOverlays = [[NSMutableArray alloc] initWithCapacity:[MEModel allOverlays].count];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"backgroundImage"]]];
     [self.navigationItem setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"headerLogo"]]];
+
     
-    // Collection View
+    // Library Collection View
     self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
                                                    andAngularSpacing:18.0
                                                          andCellSize:CGSizeMake(ScrollerEmojiSize, ScrollerEmojiSize)
@@ -50,7 +54,6 @@
     [self.libraryCollectionView setScrollsToTop:YES];
     [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
-    
     [self.view addSubview:self.libraryCollectionView];
     
     // Capture Button
@@ -81,7 +84,7 @@
     [self.view addSubview:self.captureButtonView];
     
     self.captureButtonSpinnerView = [[LLARingSpinnerView alloc] initWithFrame:self.captureButtonView.bounds];
-    [self.captureButtonSpinnerView setLineWidth:6.5];
+    [self.captureButtonSpinnerView setLineWidth:6];
     [self.captureButtonSpinnerView setAlpha:0];
     [self.captureButtonView addSubview:self.captureButtonSpinnerView];
     
@@ -91,14 +94,14 @@
     [self.textLabelLeftOfButton setTextAlignment:NSTextAlignmentCenter];
     [self.textLabelLeftOfButton setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:15]];
     [self.textLabelLeftOfButton setNumberOfLines:2];
-    [self.textLabelLeftOfButton setTextColor:[UIColor grayColor]];
+    [self.textLabelLeftOfButton setTextColor:[UIColor lightTextColor]];
     [self.textLabelLeftOfButton setText:@"Tap button\nfor still."];
     
     self.textLabelRightOfButton = [[UILabel alloc] initWithFrame:CGRectMake(self.captureButtonView.right, self.captureButtonView.frame.origin.y, self.captureButtonView.frame.origin.x, self.captureButtonView.height)];
     [self.textLabelRightOfButton setTextAlignment:NSTextAlignmentCenter];
     [self.textLabelRightOfButton setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:15]];
     [self.textLabelRightOfButton setNumberOfLines:2];
-    [self.textLabelRightOfButton setTextColor:[UIColor grayColor]];
+    [self.textLabelRightOfButton setTextColor:[UIColor lightTextColor]];
     [self.textLabelRightOfButton setText:@"Press and hold\nfor GIF."];
     
     [self.view addSubview:self.textLabelLeftOfButton];
@@ -111,10 +114,7 @@
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [longPressRecognier setMinimumPressDuration:0.2];
     [self.captureButtonView addGestureRecognizer:longPressRecognier];
-    
-    // Additional Setup
-    self.imageCache = [[NSMutableDictionary alloc] init];
-    self.currentOverlays = [[NSMutableArray alloc] initWithCapacity:[MEModel allOverlays].count];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -126,6 +126,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
+    [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (!self.viewFinder) {
             [self initializeLayout];
@@ -188,38 +192,55 @@
     [self.scrollView setScrollsToTop:NO];
     [self.viewFinder addSubview:self.scrollView];
     
-    // Flip Camera Button
-    CGRect cameraButtonFrame = CGRectMake(0, 0, 44, 44);
-    cameraButtonFrame.origin.x = self.viewFinder.width - cameraButtonFrame.size.width - 13;
-    cameraButtonFrame.origin.y = self.viewFinder.size.height - cameraButtonFrame.size.height - 6;
-    self.flipCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.flipCameraButton setFrame:cameraButtonFrame];
-    [self.flipCameraButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
-    [self.flipCameraButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    [self.flipCameraButton addTarget:self action:@selector(toggleCameras:) forControlEvents:UIControlEventTouchUpInside];
-    [self.flipCameraButton.imageView setAlpha:0.7];
-    [self.flipCameraButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.flipCameraButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [self.flipCameraButton.imageView.layer setShadowOpacity:0.8];
-    [self.flipCameraButton.imageView.layer setShadowRadius:0.5];
-    [self.viewFinder insertSubview:self.flipCameraButton aboveSubview:self.scrollView];
     
     // Mask Toggle Button
-    CGRect maskButtonFrame = CGRectMake(0, 0, 35, 35);
-    maskButtonFrame.origin.x += 11;
+    CGRect maskButtonFrame = CGRectMake(0, 0, 20, 20);
+    maskButtonFrame.origin.x += 12;
     maskButtonFrame.origin.y = self.viewFinder.size.height - maskButtonFrame.size.height - 9;
     self.maskToggleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.maskToggleButton setFrame:maskButtonFrame];
     [self.maskToggleButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
     [self.maskToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.maskToggleButton addTarget:self action:@selector(toggleMask:) forControlEvents:UIControlEventTouchUpInside];
+    [self.maskToggleButton setAlpha:0.5];
     [self.maskToggleButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
     [self.maskToggleButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [self.maskToggleButton.imageView.layer setShadowOpacity:1];
+    [self.maskToggleButton.imageView.layer setShadowOpacity:0.5];
     [self.maskToggleButton.imageView.layer setShadowRadius:1];
-
-    [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
     
+    [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
+        
+    // Flip Camera Button
+    CGRect cameraButtonFrame = CGRectMake(0, 0, 26, 26);
+    cameraButtonFrame.origin.x = (self.viewFinder.width/2) - (cameraButtonFrame.size.width/2);
+    cameraButtonFrame.origin.y = self.viewFinder.size.height - cameraButtonFrame.size.height - 9;
+    self.flipCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.flipCameraButton setFrame:cameraButtonFrame];
+    [self.flipCameraButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
+    [self.flipCameraButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.flipCameraButton addTarget:self action:@selector(toggleCameras:) forControlEvents:UIControlEventTouchUpInside];
+    [self.flipCameraButton setAlpha:0.5];
+    [self.flipCameraButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.flipCameraButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.flipCameraButton.imageView.layer setShadowOpacity:0.8];
+    [self.flipCameraButton.imageView.layer setShadowRadius:0.5];
+    [self.viewFinder insertSubview:self.flipCameraButton aboveSubview:self.scrollView];
+    
+    //  Smile Face Button
+    CGRect smileButtonFrame = CGRectMake(0, 0, 25, 25);
+    smileButtonFrame.origin.x = self.viewFinder.width - smileButtonFrame.size.width - 12;
+    smileButtonFrame.origin.y = self.viewFinder.size.height - smileButtonFrame.size.height - 9;
+    self.smileyFaceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.smileyFaceButton setFrame:smileButtonFrame];
+    [self.smileyFaceButton setImage:[UIImage imageNamed:@"smileFace"] forState:UIControlStateNormal];
+    [self.smileyFaceButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.smileyFaceButton addTarget:self action:@selector(toggleOverlaysAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.smileyFaceButton setAlpha:0.5];
+    [self.smileyFaceButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.smileyFaceButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.smileyFaceButton.imageView.layer setShadowOpacity:0.5];
+    [self.smileyFaceButton.imageView.layer setShadowRadius:1];
+    [self.viewFinder insertSubview:self.smileyFaceButton aboveSubview:self.scrollView];
     
     // Overlay/Accessories Collection View
     self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
@@ -628,8 +649,9 @@
         CGFloat parallaxFactor = self.scrollView.contentOffset.x / self.scrollView.width;
         [self.previewLayerBlur setAlpha:parallaxFactor];
         [self.previewLayerFade setAlpha:parallaxFactor];
-        [self.flipCameraButton setAlpha:1.0 - parallaxFactor];
-        [self.maskToggleButton setAlpha:1.0 - parallaxFactor];
+        [self.flipCameraButton setAlpha:0.5 - parallaxFactor];
+        [self.maskToggleButton setAlpha:0.5 - parallaxFactor];
+        [self.smileyFaceButton setAlpha:0.5 - parallaxFactor];
         
     }else if ([scrollView isEqual:self.libraryCollectionView]){
         CGFloat parallaxFactor = MAX(0, self.libraryCollectionView.contentOffset.y+self.libraryCollectionView.contentInset.top)/4.0;
@@ -881,6 +903,12 @@
         [self.currentOverlays removeAllObjects];
         [self.overlayCollectionView reloadData];
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [self.imageCache removeAllObjects];
+    [super didReceiveMemoryWarning];
 }
 
 @end

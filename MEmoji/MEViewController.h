@@ -29,8 +29,10 @@
 @property (strong, nonatomic) UILabel *textLabelLeftOfButton;
 @property (strong, nonatomic) UILabel *textLabelRightOfButton;
 @property (strong, nonatomic) LLARingSpinnerView *captureButtonSpinnerView;
-@property (strong, nonatomic) UIButton *flipCameraButton;
+
 @property (strong, nonatomic) UIButton *maskToggleButton;
+@property (strong, nonatomic) UIButton *flipCameraButton;
+@property (strong, nonatomic) UIButton *smileyFaceButton;
 
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;
 @property (strong, nonatomic) AWCollectionViewDialLayout *layout;

@@ -13,6 +13,7 @@ target "MEmoji" do
     pod 'LLARingSpinnerView', '~> 0.1'
     pod 'UIView+Shimmer', '~> 1.0'
     pod 'UIAlertView+Blocks', '~> 0.8'
+    pod 'GoogleAnalytics-iOS-SDK', '~> 3.0'
 end
 
 target "MEmojiTests" do

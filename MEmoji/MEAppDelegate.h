@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface MEAppDelegate : UIResponder <UIApplicationDelegate>
 

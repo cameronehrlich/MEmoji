@@ -7,9 +7,6 @@
 //
 
 #import "MEModel.h"
-#import <UIColor+Hex.h>
-
-@import MessageUI;
 
 @implementation MEModel
 

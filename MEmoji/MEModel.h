@@ -8,13 +8,18 @@
 
 #import <CoreData+MagicalRecord.h>
 #import <UIImage+Additions.h>
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 #import "CEMovieMaker.h"
 #import "Image.h"
 #import "MEOverlayImage.h"
+#import "UIColor+Hex.h"
 
 @import AVFoundation;
 @import MediaPlayer;
 @import ImageIO;
+@import MessageUI;
 @import MobileCoreServices;
 
 typedef void (^MEmojiCallback)();

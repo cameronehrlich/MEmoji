@@ -1,5 +1,6 @@
 PODS:
   - FLAnimatedImage (1.0.1)
+  - GoogleAnalytics-iOS-SDK (3.0.9)
   - JGProgressHUD (1.2.1)
   - LLARingSpinnerView (0.1.2)
   - MagicalRecord (2.2):
@@ -16,6 +17,7 @@ PODS:
 
 DEPENDENCIES:
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
+  - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
   - MagicalRecord (~> 2.2)
@@ -32,6 +34,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
+  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JGProgressHUD: f3c0258684f318bc0009e893fdac0701de5cb75b
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
