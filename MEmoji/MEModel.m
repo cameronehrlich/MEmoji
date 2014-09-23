@@ -70,7 +70,7 @@
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
             
-            UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:0.0 orientation:UIImageOrientationUp];
+            UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
             
             UIImage *tmpFrameImage = [self emojifyFrame:singleFrame andOverlays:overlays];
             
@@ -135,7 +135,7 @@
     CGRect cropRect = CGRectMake(0, (imgFrame.size.height/2) - (imgFrame.size.width/2), imgFrame.size.width, imgFrame.size.width);
     
     CGImageRef imageRef = CGImageCreateWithImageInRect([imgFrame CGImage], cropRect);
-    imgFrame = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:UIImageOrientationUpMirrored];
+    imgFrame = [UIImage imageWithCGImage:imageRef scale:1 orientation:UIImageOrientationUpMirrored];
     CGImageRelease(imageRef);
     
     for (UIImage *overlay in overlays) {
@@ -148,7 +148,7 @@
 
 - (UIImage *)image:(UIImage *)image withOverlay:(UIImage *)overlay
 {
-    UIGraphicsBeginImageContextWithOptions(image.size, YES, 0.0);
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, 1);
     
     [image drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
     [overlay drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
@@ -277,31 +277,77 @@
 
 + (NSArray *)allOverlays
 {
-    static NSArray *images = nil;
+    static NSArray *allImages = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        UIImage *bigLaugh = [UIImage imageNamed:@"bigLaugh"];
-        UIImage *bigTears = [UIImage imageNamed:@"bigTears"];
-        UIImage *blueHalo = [UIImage imageNamed:@"blueHalo"];
-        UIImage *eyes = [UIImage imageNamed:@"eyes"];
-        UIImage *goldCrown = [UIImage imageNamed:@"goldCrown"];
-        UIImage *gritTeeth = [UIImage imageNamed:@"gritTeeth"];
-        UIImage *heartEyes = [UIImage imageNamed:@"heartEyes"];
-        UIImage *nostrilSmoke = [UIImage imageNamed:@"nostrilSmoke"];
-        UIImage *oneTear = [UIImage imageNamed:@"oneTear"];
-        UIImage *santaHatBeard = [UIImage imageNamed:@"santaHatBeard"];
-        UIImage *sexyLips = [UIImage imageNamed:@"sexyLips"];
-        UIImage *smallTears = [UIImage imageNamed:@"smallTears"];
-        UIImage *surgicalMask = [UIImage imageNamed:@"sugricalMask"];
-        UIImage *sunGlasses = [UIImage imageNamed:@"sunGlasses"];
-        UIImage *toungeLaugh = [UIImage imageNamed:@"tongueLaugh"];
-        UIImage *topHat = [UIImage imageNamed:@"topHat"];
-        UIImage *turbanAllah = [UIImage imageNamed:@"turbanAllah"];
+
+        NSArray *imageNames = @[@"creepyEyes",
+                                @"faceMom",
+                                @"policeHat",
+                                @"ambiguosHands",
+                                @"daBomb",
+                                @"faceMustache",
+                                @"rightThumb",
+                                @"babyBottle",
+                                @"darkGun",
+                                @"faceNO",
+                                @"santaHatBeard",
+                                @"beerMug",
+                                @"donaldTrumpet",
+                                @"faceQueen",
+                                @"sexyLips",
+                                @"bigFist",
+                                @"doubleFist",
+                                @"goldCrown",
+                                @"smallTears",
+                                @"bigLaugh",
+                                @"downThumb",
+                                @"gritTeeth",
+                                @"sugricalMask",
+                                @"bigPhone",
+                                @"dropBass",
+                                @"halfCigarette",
+                                @"sunGlasses",
+                                @"bigTears",
+                                @"eyes",
+                                @"heartEyes",
+                                @"thumbLeft",
+                                @"blueHalo",
+                                @"faceBaby",
+                                @"itsDoodoo",
+                                @"tongueLaugh",
+                                @"cartoonOuchie",
+                                @"faceBoy",
+                                @"kittyWhiskers",
+                                @"topHat",
+                                @"cheekKiss",
+                                @"faceDemon",
+                                @"leftFist",
+                                @"turbanAllah",
+                                @"cheerCone",
+                                @"faceGirl",
+                                @"moneyBag",
+                                @"waterfallTears",
+                                @"clapHands",
+                                @"faceGramma",
+                                @"nostrilSmoke",
+                                @"clapMarker",
+                                @"faceGrampa",
+                                @"oneTear"];
         
-        images = @[bigLaugh, blueHalo, eyes, heartEyes, bigTears, oneTear, smallTears, surgicalMask, toungeLaugh, goldCrown, gritTeeth, nostrilSmoke, santaHatBeard, sexyLips, sunGlasses, topHat, turbanAllah];
+        NSMutableArray *outputImages =[[NSMutableArray alloc] initWithCapacity:outputImages.count];
+
+        for (NSString *name in imageNames) {
+            @autoreleasepool {
+                UIImage *tmpImage = [UIImage imageNamed:name];
+                [outputImages addObject:tmpImage];
+            }
+        }
+        
+        allImages = [outputImages copy];
     });
     
-    return images;
+    return allImages;
 }
 
 + (UIColor *)mainColor

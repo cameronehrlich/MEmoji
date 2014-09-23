@@ -19,6 +19,9 @@
 
 #define ScrollerEmojiSize 220
 
+@import Social;
+@import Accounts;
+
 @implementation MEViewController
 
 - (void)viewDidLoad
@@ -59,7 +62,7 @@
     CALayer *gradientLayer = [CALayer layer];
     [gradientLayer setCornerRadius:captureButtonFrame.size.width/2];
     [gradientLayer setFrame:captureButtonFrame];
-    [gradientLayer setContents:(id)[UIImage imageNamed:@"captureButton"].CGImage];
+    [gradientLayer setContents:(id)[UIImage imageNamed:@"captureButton3"].CGImage];
     [gradientLayer setMasksToBounds:YES];
     [self.captureButtonView.layer addSublayer:gradientLayer];
     [self.captureButtonView.layer setCornerRadius:self.captureButtonView.size.width/2];
@@ -70,16 +73,16 @@
     [self.captureButtonView.layer setShadowPath:[UIBezierPath bezierPathWithOvalInRect:captureButtonFrame].CGPath];
     UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
     UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    [effectX setMinimumRelativeValue:@(-20.0)];
-    [effectX setMaximumRelativeValue:@(20.0)];
-    [effectY setMinimumRelativeValue:@(-20.0)];
-    [effectY setMaximumRelativeValue:@(20.0)];
+    [effectX setMinimumRelativeValue:@(-15.0)];
+    [effectX setMaximumRelativeValue:@(15.0)];
+    [effectY setMinimumRelativeValue:@(-15.0)];
+    [effectY setMaximumRelativeValue:@(15.0)];
     [self.captureButtonView addMotionEffect:effectX];
     [self.captureButtonView addMotionEffect:effectY];
     [self.view addSubview:self.captureButtonView];
     
     self.captureButtonSpinnerView = [[LLARingSpinnerView alloc] initWithFrame:self.captureButtonView.bounds];
-    [self.captureButtonSpinnerView setLineWidth:5];
+    [self.captureButtonSpinnerView setLineWidth:6.5];
     [self.captureButtonSpinnerView setAlpha:0];
     [self.captureButtonView addSubview:self.captureButtonSpinnerView];
     
@@ -90,7 +93,7 @@
     [self.textLabelLeftOfButton setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:15]];
     [self.textLabelLeftOfButton setNumberOfLines:2];
     [self.textLabelLeftOfButton setTextColor:[UIColor grayColor]];
-    [self.textLabelLeftOfButton setText:@"Tap circle\nfor still."];
+    [self.textLabelLeftOfButton setText:@"Tap button\nfor still."];
     
     self.textLabelRightOfButton = [[UILabel alloc] initWithFrame:CGRectMake(self.captureButtonView.right, self.captureButtonView.frame.origin.y, self.captureButtonView.frame.origin.x, self.captureButtonView.height)];
     [self.textLabelRightOfButton setTextAlignment:NSTextAlignmentCenter];
@@ -384,13 +387,11 @@
 
 - (void)toggleMask:(id)sender
 {
+    [self setMaskEnabled:!self.maskEnabled];
     [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self.maskToggleButton setTransform:CGAffineTransformMakeScale(0.75,0.75)];
-        [self.maskingLayer setOpacity:0];
     }completion:^(BOOL finished) {
-        [self setMaskEnabled:!self.maskEnabled];
         [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.maskingLayer setOpacity:0.8];
             [self.maskToggleButton setTransform:CGAffineTransformIdentity];
         } completion:nil];
     }];
@@ -409,7 +410,7 @@
 - (IBAction)toggleOverlaysAction:(id)sender
 {
     [self.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-
+    
     if (self.scrollView.contentOffset.x > 0) {
         [self setShowingOverlays:NO];
     }else {
@@ -554,7 +555,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self setShowingOverlays:NO];
         });
-
+        
     }else if ([collectionView isEqual:self.libraryCollectionView]){
         self.currentImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
         
@@ -639,29 +640,70 @@
 - (void)presentShareView
 {
     if (!self.shareView) {
-        self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 150)];
-        [self.shareView setBackgroundColor:[UIColor colorWithWhite:0.6 alpha:0.5]];
+        self.shareView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 180)];
+        [self.shareView setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.7]];
         
         CGFloat numberOfDivisions = 8;
         CGFloat buttonSideLength = self.shareView.width/numberOfDivisions;
         CGRect shareButtonRect = CGRectMake(0, 0, buttonSideLength, buttonSideLength);
         
+        // Save to Library
         UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [saveToLibraryButton setFrame:shareButtonRect];
-        [saveToLibraryButton setCenter:CGPointMake(self.shareView.height/2, 2*(self.shareView.width/numberOfDivisions))];
-        [saveToLibraryButton setImage:[UIImage imageNamed:@"photoLibrary"] forState:UIControlStateNormal];
+        [saveToLibraryButton setCenter:CGPointMake(1*(self.shareView.width/numberOfDivisions), self.shareView.height/2)];
+        [saveToLibraryButton setImage:[UIImage imageNamed:@"saveToCameraRoll"] forState:UIControlStateNormal];
         [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [saveToLibraryButton setTag:MEShareOptionSaveToLibrary];
         [saveToLibraryButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [saveToLibraryButton setShowsTouchWhenHighlighted:YES];
         [self.shareView addSubview:saveToLibraryButton];
-
         
+        // Instagram
+        UIButton *instagramButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [instagramButton setFrame:shareButtonRect];
+        [instagramButton setCenter:CGPointMake(3*(self.shareView.width/numberOfDivisions), self.shareView.height/2)];
+        [instagramButton setImage:[UIImage imageNamed:@"instagram"] forState:UIControlStateNormal];
+        [instagramButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [instagramButton setTag:MEShareOptionInstagram];
+        [instagramButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [instagramButton setShowsTouchWhenHighlighted:YES];
+        [self.shareView addSubview:instagramButton];
+        
+        
+        // Twitter
+        UIButton *twitterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [twitterButton setFrame:shareButtonRect];
+        [twitterButton setCenter:CGPointMake(5*(self.shareView.width/numberOfDivisions), self.shareView.height/2)];
+        [twitterButton setImage:[UIImage imageNamed:@"twitter"] forState:UIControlStateNormal];
+        [twitterButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [twitterButton setTag:MEShareOptionTwitter];
+        [twitterButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [twitterButton setShowsTouchWhenHighlighted:YES];
+        [self.shareView addSubview:twitterButton];
+        
+        // Save to Messages
         UIButton *messgesButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [messgesButton setFrame:CGRectMake(3*self.shareView.width/6, 2*self.shareView.height/6, 2*(self.shareView.width/6), 2*self.shareView.height/6)];
-        [messgesButton setImage:[UIImage imageNamed:@"messages"] forState:UIControlStateNormal];
+        [messgesButton setFrame:shareButtonRect];
+        [messgesButton setTransform:CGAffineTransformMakeScale(1.25, 1.25)];
+        [messgesButton setCenter:CGPointMake(7*(self.shareView.width/numberOfDivisions), self.shareView.height/2)];
+        [messgesButton setImage:[UIImage imageNamed:@"sms"] forState:UIControlStateNormal];
+        [messgesButton setTag:MEShareOptionMessages];
         [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [messgesButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [messgesButton setShowsTouchWhenHighlighted:YES];
         [self.shareView addSubview:messgesButton];
+        
+        UIButton *closeXButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [closeXButton setFrame:shareButtonRect];
+        [closeXButton setRight:self.shareView.right];
+        [closeXButton setY:0];
+        [closeXButton setTransform:CGAffineTransformMakeScale(0.65, 0.65)];
+        [closeXButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
+        [closeXButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [closeXButton addTarget:self action:@selector(dismissShareView) forControlEvents:UIControlEventTouchUpInside];
+        [closeXButton setShowsTouchWhenHighlighted:YES];
+        [self.shareView addSubview:closeXButton];
+        
     }
     
     [self.shareView setY:self.view.height];
@@ -688,10 +730,11 @@
     JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleLight];
     
     switch (sender.tag) {
-        case MEShareOptionSaveToLibrary: {
             
+        case MEShareOptionSaveToLibrary:
+        {
             [UIAlertView showWithTitle:@"Save to Library"
-                               message:@"Select how you would like to save your MEmoji."
+                               message:@"Select how you would like to\nsave your MEmoji."
                      cancelButtonTitle:@"Cancel"
                      otherButtonTitles:@[@"Save as GIF", @"Save as Video"]
                               tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -702,11 +745,11 @@
                                       [HUD showInView:self.view animated:YES];
                                       
                                       if (buttonIndex == 1) { // Save as GIF
-
+                                          
                                           ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                                           [library writeImageDataToSavedPhotosAlbum:[self.currentImage imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
                                               [HUD dismissAnimated:YES];
-                                              // TODO : Confirm saved as Video
+                                              // TODO : Confirm saved as GIF
                                           }];
                                           
                                       }else if (buttonIndex == 2){ // Save as Video
@@ -735,9 +778,10 @@
                               }];
             break;
         }
-        case MEShareOptionMessages: {
+
+        case MEShareOptionMessages:
+        {
             [self dismissShareView];
-            
             [HUD showInView:self.view animated:YES];
             self.messageController = [[MFMessageComposeViewController alloc] init];
             [self.messageController setMessageComposeDelegate:self];
@@ -749,46 +793,79 @@
                 [HUD dismissAnimated:YES];
             }];
             break;
-        }case MEShareOptionInstagram: {
-            // TODO : Instagram
-            [HUD dismissAnimated:YES];
+        }
+        
+        case MEShareOptionInstagram:
+        {
+            [self dismissShareView];
+            [HUD showInView:self.view animated:YES];
             
-            NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
-            if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
-                [[UIApplication sharedApplication] openURL:instagramURL];
+            NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
+            NSError *error;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
+                [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
+                if (error) {
+                    NSLog(@"An Error occured writing to file. %@", error.debugDescription);
+                }
             }
-            break;
-        }case MEShareOptionFacebook: {
-            // TODO : Facebook
-            [HUD dismissAnimated:YES];
-            NSURL *url = [NSURL URLWithString:@"fb://post/"];
-            [[UIApplication sharedApplication] openURL:url];
-            break;
-        }case MEShareOptionTwitter: {
-            // TODO : Twitter
-            [HUD dismissAnimated:YES];
-            NSString *stringURL = @"twitter://post?message=#memoji";
-            NSURL *url = [NSURL URLWithString:stringURL];
-            [[UIApplication sharedApplication] openURL:url];
-            break;
-        }
             
-        default: {
+            [[self.currentImage movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
+            
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
+                if (error) {
+                    NSLog(@"Error saving asset to camera. %@", error.debugDescription);
+                }
+                [HUD dismissAnimated:YES];
+                [UIAlertView showWithTitle:@"Saved Video to Library"
+                                   message:@"You can post your MEmoji by selecting it from your library once in Instagram."
+                         cancelButtonTitle:@"Let's go!"
+                         otherButtonTitles:nil
+                                  tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                      NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
+                                      if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+                                          [[UIApplication sharedApplication] openURL:instagramURL];
+                                      }
+                                  }];
+            }];
             break;
         }
+        
+        case MEShareOptionTwitter:
+        {
+            [self dismissShareView];
+            [HUD showInView:self.view animated:YES];
+            
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library writeImageDataToSavedPhotosAlbum:[self.currentImage imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                [HUD dismissAnimated:YES];
+                
+                [UIAlertView showWithTitle:@"Saved GIF to Library"
+                                   message:@"You can tweet your MEmoji by selecting it from your library once in Twitter."
+                         cancelButtonTitle:@"Let's go!"
+                         otherButtonTitles:nil
+                                  tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                      
+                                      NSString *stringURL = @"twitter://post";
+                                      NSURL *url = [NSURL URLWithString:stringURL];
+                                      [[UIApplication sharedApplication] openURL:url];
+                                  }];
+            }];
+            break;
+        }
+        default:
+            break;
     }
-
 }
 
 #pragma mark -
 #pragma mark Other Delegate methods
-
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
     if (motion == UIEventSubtypeMotionShake)
     {
         [self setShowingOverlays:NO];
-
+        
         for (CALayer *layer in self.currentOverlays.allValues) {
             [layer removeFromSuperlayer];
         }
