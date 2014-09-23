@@ -422,7 +422,7 @@
     static UIColor *mainColor = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mainColor = [UIColor colorWithHex:0x0076b1];
+        mainColor = [UIColor colorWithHex:0x49a5db];
     });
     
     return mainColor;
