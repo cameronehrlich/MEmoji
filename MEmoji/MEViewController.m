@@ -16,6 +16,7 @@
 #import <UIView+Shimmer.h>
 #import <UIAlertView+Blocks.h>
 #import "MEOverlayCell.h"
+#import "MESectionHeaderReusableView.h"
 
 #define ScrollerEmojiSize 220
 
@@ -29,37 +30,62 @@
     self.imageCache = [[NSMutableDictionary alloc] init];
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
     self.currentOverlays = [[NSMutableArray alloc] initWithCapacity:[MEModel allOverlays].count];
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     [self.view setBackgroundColor:[MEModel mainColor]];
-    [self.navigationItem setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"headerLogo"]]];
+    
+    self.viewFinder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.width)];
+    [self.view addSubview:self.viewFinder];
+    
+    // Scroll view
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.viewFinder.bottom, self.view.width, self.view.height - self.viewFinder.height)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*2, self.scrollView.height)];
+    [self.scrollView setBackgroundColor:[MEModel mainColor]];
+    [self.scrollView setDelegate:self];
+    [self.scrollView setPagingEnabled:YES];
+    [self.scrollView setScrollsToTop:NO];
+    [self.scrollView setDirectionalLockEnabled:YES];
+    [self.view addSubview:self.scrollView];
+    
     
     // Library Collection View
-    self.layout = [[AWCollectionViewDialLayout alloc] initWithRadius:self.view.bounds.size.height
-                                                   andAngularSpacing:18.0
-                                                         andCellSize:CGSizeMake(ScrollerEmojiSize, ScrollerEmojiSize)
-                                                        andAlignment:WHEELALIGNMENTCENTER
-                                                       andItemHeight:ScrollerEmojiSize
-                                                          andXOffset:(self.view.width/2)];
-    
-    self.libraryCollectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.layout];
+    self.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)
+                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.libraryCollectionView setDelegate:self];
     [self.libraryCollectionView setDataSource:self];
     [self.libraryCollectionView registerClass:[MEMEmojiCell class] forCellWithReuseIdentifier:@"MEmojiCell"];
-    [self.libraryCollectionView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    [self.libraryCollectionView setCollectionViewLayout:self.layout];
+    [self.libraryCollectionView registerClass:[MESectionHeaderReusableView class]
+                   forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                          withReuseIdentifier:@"HeaderView"];
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
     [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.libraryCollectionView setShowsVerticalScrollIndicator:NO];
-    [self.view addSubview:self.libraryCollectionView];
+    [self.scrollView addSubview:self.libraryCollectionView];
+    
+    self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width, 0, self.scrollView.width, self.scrollView.height)
+                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    [self.overlayCollectionView setDelegate:self];
+    [self.overlayCollectionView setDataSource:self];
+    [self.overlayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
+    [self.overlayCollectionView registerClass:[MESectionHeaderReusableView class]
+                   forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                          withReuseIdentifier:@"HeaderView"];
+    [self.overlayCollectionView setBackgroundColor:[UIColor clearColor]];
+    [self.overlayCollectionView setAlwaysBounceVertical:YES];
+    [self.overlayCollectionView setShowsHorizontalScrollIndicator:NO];
+    [self.overlayCollectionView setAllowsMultipleSelection:YES];
+    [self.overlayCollectionView setScrollsToTop:NO];
+    [self.scrollView addSubview:self.overlayCollectionView];
     
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, 75, 75);
     self.captureButtonView = [[UIView alloc] initWithFrame:captureButtonFrame];
-    self.captureButtonView.bottom = self.libraryCollectionView.height - captureButtonFrame.size.height;
-    self.captureButtonView.centerX = self.view.centerX;
+    self.captureButtonView.centerY = self.viewFinder.bottom;
+    self.captureButtonView.centerX = self.viewFinder.centerX;
     CALayer *gradientLayer = [CALayer layer];
     [gradientLayer setCornerRadius:captureButtonFrame.size.width/2];
     [gradientLayer setFrame:captureButtonFrame];
@@ -74,10 +100,10 @@
     [self.captureButtonView.layer setShadowPath:[UIBezierPath bezierPathWithOvalInRect:captureButtonFrame].CGPath];
     UIInterpolatingMotionEffect *effectX = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
     UIInterpolatingMotionEffect *effectY = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    [effectX setMinimumRelativeValue:@(-15.0)];
-    [effectX setMaximumRelativeValue:@(15.0)];
-    [effectY setMinimumRelativeValue:@(-15.0)];
-    [effectY setMaximumRelativeValue:@(15.0)];
+    [effectX setMinimumRelativeValue:@(-20.0)];
+    [effectX setMaximumRelativeValue:@(20.0)];
+    [effectY setMinimumRelativeValue:@(-20.0)];
+    [effectY setMaximumRelativeValue:@(20.0)];
     [self.captureButtonView addMotionEffect:effectX];
     [self.captureButtonView addMotionEffect:effectY];
     [self.view addSubview:self.captureButtonView];
@@ -86,7 +112,14 @@
     [self.captureButtonSpinnerView setLineWidth:3];
     [self.captureButtonSpinnerView setAlpha:0];
     [self.captureButtonView addSubview:self.captureButtonSpinnerView];
+
+    // Gestures
+    UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [self.captureButtonView addGestureRecognizer:singleTapRecognizer];
     
+    UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [longPressRecognier setMinimumPressDuration:0.2];
+    [self.captureButtonView addGestureRecognizer:longPressRecognier];
     
     // Setup instruction Labels
     self.textLabelLeftOfButton = [[UILabel alloc] initWithFrame:CGRectMake(0, self.captureButtonView.frame.origin.y, self.captureButtonView.frame.origin.x, self.captureButtonView.height)];
@@ -106,20 +139,8 @@
     [self.view addSubview:self.textLabelLeftOfButton];
     [self.view addSubview:self.textLabelRightOfButton];
     
-    // Gestures
-    UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    [self.captureButtonView addGestureRecognizer:singleTapRecognizer];
-    
-    UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    [longPressRecognier setMinimumPressDuration:0.2];
-    [self.captureButtonView addGestureRecognizer:longPressRecognier];
 
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.libraryCollectionView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -128,12 +149,8 @@
     
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (!self.viewFinder) {
-            [self initializeLayout];
-        }
-    });
+
+    [self initializeLayout];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -144,20 +161,9 @@
 
 - (void)initializeLayout
 {
-    // View Finder
-    self.viewFinder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width)];
-    [self.viewFinder.layer setShadowColor:[UIColor grayColor].CGColor];
-    [self.viewFinder.layer setShadowOffset:CGSizeMake(0, 4)];
-    [self.viewFinder.layer setShadowOpacity:0.3];
-    [self.viewFinder.layer setShadowRadius:6];
-    [self.viewFinder.layer setShadowPath:[UIBezierPath bezierPathWithRect:self.viewFinder.bounds].CGPath];
-    [self.libraryCollectionView addSubview:self.viewFinder];
-    
     // Preview Layer
     CGRect layerFrame = CGRectMake(0, 0, self.viewFinder.width, self.viewFinder.height);
-    CGRect clipedFrame = layerFrame;
-    clipedFrame.size.height -= 1; // To stop the jittery line unter the viewFinder
-    [[[MEModel sharedInstance] previewLayer] setFrame:clipedFrame];
+    [[[MEModel sharedInstance] previewLayer] setFrame:layerFrame];
     [self.viewFinder.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
     
     self.maskingLayer = [CALayer layer];
@@ -166,35 +172,9 @@
     [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
     [self setMaskEnabled:YES];
     
-    // Blur or Fade view
-    BOOL isiOS8 = ([[NSProcessInfo processInfo] operatingSystemVersion].majorVersion >= 8);
-    if (isiOS8) {
-        UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-        self.previewLayerBlur = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        self.previewLayerBlur.frame = self.viewFinder.bounds;
-        [self.previewLayerBlur setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.2]];
-        [self.previewLayerBlur setAlpha:0];
-        [self.viewFinder addSubview:self.previewLayerBlur];
-    }else{
-        self.previewLayerFade = [[UIView alloc] initWithFrame:self.viewFinder.bounds];
-        [self.previewLayerFade setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.7]];
-        [self.previewLayerFade setAlpha:0];
-        [self.viewFinder addSubview:self.previewLayerFade];
-    }
-    
-    // Scroll view
-    self.scrollView = [[UIScrollView alloc] initWithFrame:self.viewFinder.bounds];
-    [self.scrollView setContentSize:CGSizeMake(self.viewFinder.size.width*2, self.viewFinder.size.height)];
-    [self.scrollView setDelegate:self];
-    [self.scrollView setPagingEnabled:YES];
-    [self.scrollView setShowsHorizontalScrollIndicator:NO];
-    [self.scrollView setScrollsToTop:NO];
-    [self.viewFinder addSubview:self.scrollView];
-    
-    
     // Mask Toggle Button
     CGRect maskButtonFrame = CGRectMake(0, 0, 20, 20);
-    maskButtonFrame.origin.x += 12;
+    maskButtonFrame.origin.x = self.viewFinder.width - maskButtonFrame.size.width - 9;
     maskButtonFrame.origin.y = self.viewFinder.size.height - maskButtonFrame.size.height - 9;
     self.maskToggleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.maskToggleButton setFrame:maskButtonFrame];
@@ -211,8 +191,8 @@
         
     // Flip Camera Button
     CGRect cameraButtonFrame = CGRectMake(0, 0, 26, 26);
-    cameraButtonFrame.origin.x = (self.viewFinder.width/2) - (cameraButtonFrame.size.width/2);
-    cameraButtonFrame.origin.y = self.viewFinder.size.height - cameraButtonFrame.size.height - 9;
+    cameraButtonFrame.origin.x = self.viewFinder.width - cameraButtonFrame.size.width - 9;
+    cameraButtonFrame.origin.y += 9;
     self.flipCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.flipCameraButton setFrame:cameraButtonFrame];
     [self.flipCameraButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
@@ -227,7 +207,7 @@
     
     //  Smile Face Button
     CGRect smileButtonFrame = CGRectMake(0, 0, 25, 25);
-    smileButtonFrame.origin.x = self.viewFinder.width - smileButtonFrame.size.width - 12;
+    smileButtonFrame.origin.x += 12;
     smileButtonFrame.origin.y = self.viewFinder.size.height - smileButtonFrame.size.height - 9;
     self.smileyFaceButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.smileyFaceButton setFrame:smileButtonFrame];
@@ -240,25 +220,6 @@
     [self.smileyFaceButton.imageView.layer setShadowOpacity:0.5];
     [self.smileyFaceButton.imageView.layer setShadowRadius:1];
     [self.viewFinder insertSubview:self.smileyFaceButton aboveSubview:self.scrollView];
-    
-    // Overlay/Accessories Collection View
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    
-    self.overlayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.viewFinder.width, 0, self.viewFinder.width, self.viewFinder.height)
-                                                    collectionViewLayout:layout];
-    [self.overlayCollectionView setDelegate:self];
-    [self.overlayCollectionView setDataSource:self];
-    [self.overlayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.overlayCollectionView setAlwaysBounceVertical:YES];
-    [self.overlayCollectionView setShowsVerticalScrollIndicator:YES];
-    [self.overlayCollectionView setShowsHorizontalScrollIndicator:NO];
-
-    [self.overlayCollectionView setBackgroundColor:[UIColor clearColor]];
-    [self.overlayCollectionView setContentInset:UIEdgeInsetsMake(15, 20, 15, 20)];
-    [self.overlayCollectionView setAllowsMultipleSelection:YES];
-    [self.overlayCollectionView setScrollsToTop:NO];
-    [self.scrollView addSubview:self.overlayCollectionView];
 }
 
 #pragma mark -
@@ -456,17 +417,18 @@
 - (void)setShowingOverlays:(BOOL)showingOverlays
 {
     _showingOverlays = showingOverlays;
+    NSLog(@"%s", __FUNCTION__);
     if (showingOverlays) {
         [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, self.scrollView.contentOffset.y)];
+            [self.scrollView setContentOffset:CGPointMake(0, self.scrollView.contentOffset.y)];
         } completion:^(BOOL finished) {
             _showingOverlays = YES;
         }];
     }else{
-        [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseIn animations:^{
-            [self.scrollView setContentOffset:CGPointMake(0, 0)];
+        [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.4 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, self.scrollView.contentOffset.y)];
         } completion:^(BOOL finished) {
-            _showingOverlays = NO;
+            _showingOverlays = YES;
         }];
     }
 }
@@ -498,7 +460,7 @@
     }
     
     if ([collectionView isEqual:self.libraryCollectionView]) {
-        return self.currentImages.count + 1;
+        return self.currentImages.count;
     }else if ([collectionView isEqual:self.overlayCollectionView]){
         return [[MEModel allOverlays] count];
     }else{
@@ -516,16 +478,9 @@
         [cell.imageView setImage:cellImage];
         return cell;
     }else if ([collectionView isEqual:self.libraryCollectionView]){
-        
-        if (indexPath.row == 0) {
-            MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
-            [cell setBackgroundColor:[UIColor clearColor]];
-            cell.imageView.animatedImage = nil;
-            return cell;
-        }
-        
-        Image *thisImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
-        
+
+        Image *thisImage = [self.currentImages objectAtIndex:indexPath.row];
+
         MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
         
         [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
@@ -579,18 +534,14 @@
 {
     if ([collectionView isEqual:self.overlayCollectionView]) {
 
-        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
+        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.row];
         [overlayImage.layer setFrame:self.viewFinder.layer.bounds]; // MUST SET FRAME OR IT WONT WORK
         
         [self.maskingLayer addSublayer:overlayImage.layer];
         [self.currentOverlays addObject:overlayImage];
- 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self setShowingOverlays:NO];
-        });
         
     }else if ([collectionView isEqual:self.libraryCollectionView]){
-        self.currentImage = [self.currentImages objectAtIndex:MIN(indexPath.item - 1, self.currentImages.count - 1)];
+        self.currentImage = [self.currentImages objectAtIndex:indexPath.item];
         
         if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
             [self.libraryCollectionView performBatchUpdates:^{
@@ -625,17 +576,45 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([collectionView isEqual:self.overlayCollectionView]) {
-        CGFloat sideLength = self.viewFinder.width/4;
-        return CGSizeMake(sideLength, sideLength);
-    }
-    return CGSizeZero;
+
+    CGFloat sideLength = self.scrollView.width/5;
+    return CGSizeMake(sideLength, sideLength);
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+//    if ([collectionView isEqual:self.libraryCollectionView]) {
+    MESectionHeaderReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    return view;
+
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    return CGSizeMake(self.scrollView.width, self.captureButtonView.height/2);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 5;
+}
+
+-(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 5;
+}
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10,10, 10, 10);
+}
+
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate
@@ -649,21 +628,15 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual:self.scrollView]) {
-        CGFloat parallaxFactor = self.scrollView.contentOffset.x / self.scrollView.width;
-        [self.previewLayerBlur setAlpha:parallaxFactor];
-        [self.previewLayerFade setAlpha:parallaxFactor];
-        [self.flipCameraButton setAlpha:0.5 - parallaxFactor];
-        [self.maskToggleButton setAlpha:0.5 - parallaxFactor];
-        [self.smileyFaceButton setAlpha:0.5 - parallaxFactor];
+//        CGFloat parallaxFactor = self.scrollView.contentOffset.x / self.scrollView.width;
+//        [self.flipCameraButton setAlpha:0.5 - parallaxFactor];
+//        [self.maskToggleButton setAlpha:0.5 - parallaxFactor];
+//        [self.smileyFaceButton setAlpha:0.5 - parallaxFactor];
         
     }else if ([scrollView isEqual:self.libraryCollectionView]){
-        CGFloat parallaxFactor = MAX(0, self.libraryCollectionView.contentOffset.y+self.libraryCollectionView.contentInset.top)/4.0;
-        CGRect newFrame = self.viewFinder.frame;
-        newFrame.origin.y = 0 + parallaxFactor;
-        [self.viewFinder setFrame:newFrame];
-        
+        //
     }else if ([scrollView isEqual:self.overlayCollectionView]){
-        
+        //
     }
 }
 
@@ -726,10 +699,11 @@
         [messgesButton setShowsTouchWhenHighlighted:YES];
         [self.shareView addSubview:messgesButton];
         
+        // Close menu
         UIButton *closeXButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [closeXButton setFrame:shareButtonRect];
-        [closeXButton setRight:self.shareView.right];
-        [closeXButton setY:0];
+        [closeXButton setX:9];
+        [closeXButton setY:9];
         [closeXButton setTransform:CGAffineTransformMakeScale(0.65, 0.65)];
         [closeXButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
         [closeXButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
@@ -914,5 +888,9 @@
     [super didReceiveMemoryWarning];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 @end
 

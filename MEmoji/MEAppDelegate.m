@@ -14,7 +14,6 @@
 {
     [MEModel sharedInstance];
 
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarBlue"] forBarMetrics:UIBarMetricsDefault];
     [self.window  setTintColor:[UIColor whiteColor]];
     
     [application setApplicationSupportsShakeToEdit:YES];

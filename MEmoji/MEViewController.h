@@ -14,12 +14,10 @@
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AVCaptureFileOutputRecordingDelegate>
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CALayer *maskingLayer;
-@property (nonatomic, strong) UIVisualEffectView *previewLayerBlur;
-@property (nonatomic, strong) UIView *previewLayerFade;
 @property (nonatomic, strong) UIView *shareView;
 
 @property (strong, nonatomic) UIView *viewFinder;
@@ -35,7 +33,6 @@
 @property (strong, nonatomic) UIButton *smileyFaceButton;
 
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;
-@property (strong, nonatomic) AWCollectionViewDialLayout *layout;
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
 

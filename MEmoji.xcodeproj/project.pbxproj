@@ -13,6 +13,8 @@
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
+		329B189A19D4E526002B42BF /* MESectionHeaderReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */; };
+		329B189D19D4F52C002B42BF /* MESectionsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 329B189C19D4F52C002B42BF /* MESectionsScrollView.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
@@ -59,6 +61,10 @@
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
+		329B189819D4E526002B42BF /* MESectionHeaderReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionHeaderReusableView.h; sourceTree = "<group>"; };
+		329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionHeaderReusableView.m; sourceTree = "<group>"; };
+		329B189B19D4F52C002B42BF /* MESectionsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionsScrollView.h; sourceTree = "<group>"; };
+		329B189C19D4F52C002B42BF /* MESectionsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionsScrollView.m; sourceTree = "<group>"; };
 		32A93849199BE59E00125DA8 /* MEModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEModel.h; sourceTree = "<group>"; };
 		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
 		32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -121,6 +127,10 @@
 				327A02231987542200DF27BC /* MEMEmojiCell.m */,
 				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
 				3218C80D19C7691C0035B7BA /* MEOverlayCell.m */,
+				329B189819D4E526002B42BF /* MESectionHeaderReusableView.h */,
+				329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */,
+				329B189B19D4F52C002B42BF /* MESectionsScrollView.h */,
+				329B189C19D4F52C002B42BF /* MESectionsScrollView.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -377,11 +387,13 @@
 			files = (
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
 				3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */,
+				329B189A19D4E526002B42BF /* MESectionHeaderReusableView.m in Sources */,
 				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
 				3216CABC19BBF245007F3D46 /* AWCollectionViewDialLayout.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
+				329B189D19D4F52C002B42BF /* MESectionsScrollView.m in Sources */,
 				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
 				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
 				32F752681987513000045AFA /* Image.m in Sources */,
