@@ -27,14 +27,6 @@ typedef void (^MEmojiCallback)();
 static const CGFloat dimensionOfGIF = 320;
 static const CGFloat stepOfGIF = 0.12f;
 
-typedef NS_ENUM(NSUInteger, MEShareOption) {
-    MEShareOptionSaveToLibrary,
-    MEShareOptionInstagram,
-    MEShareOptionFacebook,
-    MEShareOptionTwitter,
-    MEShareOptionMessages
-};
-
 @interface MEModel : NSObject
 
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -47,6 +39,10 @@ typedef NS_ENUM(NSUInteger, MEShareOption) {
 @property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CEMovieMaker *movieMaker;
+
+@property (nonatomic, strong) NSMutableArray *currentImages;
+@property (nonatomic, strong) NSMutableArray *currentOverlays;
+@property (nonatomic, strong) Image *selectedImage;
 
 @property (nonatomic, strong) NSMutableArray *currentFrames; //For collecting thumbnail images from MPMediaPlayer
 @property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
@@ -62,8 +58,10 @@ typedef NS_ENUM(NSUInteger, MEShareOption) {
 - (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback;
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;
+- (void)reloadCurrentImages;
 
 + (NSArray *)allOverlays;
 + (UIColor *)mainColor;
++ (UIFont *)mainFontWithSize:(NSInteger)size;
 
 @end

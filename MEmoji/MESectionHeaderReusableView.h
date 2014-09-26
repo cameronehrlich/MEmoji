@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface MESectionHeaderReusableView : UICollectionReusableView
 
+@property (nonatomic, strong) UIButton *leftButton;
+@property (nonatomic, strong) UIButton *rightButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *purchaseButton;
 

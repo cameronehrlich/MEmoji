@@ -28,17 +28,23 @@
     if (self) {
         [MagicalRecord setupAutoMigratingCoreDataStack];
         
+        self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+        self.currentOverlays = [[NSMutableArray alloc] init];
+        
         self.loadingQueue = [[NSOperationQueue alloc] init];
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         self.movieRenderingQueue = [[NSOperationQueue alloc] init];
         [self.movieRenderingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self initializeCaptureSession];
-        });
+        [self initializeCaptureSession];
     }
     return self;
+}
+
+- (void)reloadCurrentImages
+{
+    self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
 }
 
 - (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback
@@ -101,10 +107,11 @@
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
         justSaved = newImage;
-        
+
     } completion:^(BOOL success, NSError *error) {
+        self.selectedImage = justSaved;
         self.completionBlock();
-                
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.movieRenderingQueue addOperationWithBlock:^{
                 self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
@@ -123,8 +130,11 @@
                         [[justSaved MR_inContext:localContext] setMovieData:movieData];
                         
                     } completion:^(BOOL success, NSError *error) {
-                        NSLog(@"Finished saving movie data.");
-                        
+                        if (error || !success) {
+                            NSLog(@"Error while saving movie: %@", error);
+                        }else{
+                            NSLog(@"Finished saving movie data.");
+                        }
                     }];
                 }];
             }];
@@ -426,6 +436,12 @@
     });
     
     return mainColor;
+}
+
++ (UIFont *)mainFontWithSize:(NSInteger)size
+{
+    // Make static?
+    return [UIFont fontWithName:@"AvenirNext-Medium" size:size];
 }
 
 @end

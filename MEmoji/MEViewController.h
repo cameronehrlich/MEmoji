@@ -8,45 +8,38 @@
 #import <UIView+Positioning.h>
 #import <LLARingSpinnerView.h>
 #import "MEMEmojiCell.h"
-#import "AWCollectionViewDialLayout.h"
+#import "MECollectionViewController.h"
+#import "MECaptureButton.h"
+#import "MEShareView.h"
+
 
 @import MessageUI;
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, AVCaptureFileOutputRecordingDelegate>
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MECollectionViewControllerDelegate, MEShareViewDelegate>
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CALayer *maskingLayer;
-@property (nonatomic, strong) UIView *shareView;
 
 @property (strong, nonatomic) UIView *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UICollectionView *overlayCollectionView;
-@property (strong, nonatomic) UIView *captureButtonView;
-@property (strong, nonatomic) UILabel *textLabelLeftOfButton;
-@property (strong, nonatomic) UILabel *textLabelRightOfButton;
-@property (strong, nonatomic) LLARingSpinnerView *captureButtonSpinnerView;
+@property (strong, nonatomic) MECollectionViewController *collectionViewController;
+@property (strong, nonatomic) UICollectionView *libraryCollectionView;
+@property (strong, nonatomic) UICollectionView *standardCollectionView;
+@property (strong, nonatomic) MECaptureButton *captureButton;
 
 @property (strong, nonatomic) UIButton *maskToggleButton;
 @property (strong, nonatomic) UIButton *flipCameraButton;
 @property (strong, nonatomic) UIButton *smileyFaceButton;
 
-@property (strong, nonatomic) UICollectionView *libraryCollectionView;
+@property (strong, nonatomic) MEShareView *shareView;
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *editBarButtonItem;
-@property (assign, nonatomic) BOOL editing;
 @property (assign, nonatomic) BOOL maskEnabled;
-@property (assign, nonatomic) BOOL showingOverlays;
 
-@property (strong, nonatomic) Image *currentImage;
-@property (strong, nonatomic) NSMutableArray *currentImages;
-@property (strong, nonatomic) NSMutableArray *currentOverlays;
-@property (strong, nonatomic) NSMutableDictionary *imageCache;
-
-- (IBAction)editToggle:(id)sender;
-- (IBAction)toggleOverlaysAction:(id)sender;
+- (void)moveSectionsRight;
+- (void)moveSectionsLeft;
 
 @end

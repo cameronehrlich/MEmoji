@@ -14,8 +14,11 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        [self setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
+        
         self.imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
-        [self.imageView setAnimatesWhileScrolling:YES];
+        [self.imageView setAnimatesWhileScrolling:NO];
         [self addSubview:self.imageView];
         
         CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/3, self.bounds.size.width/3);
