@@ -36,7 +36,4 @@
 
 @property (assign, nonatomic) BOOL maskEnabled;
 
-- (void)moveSectionsRight;
-- (void)moveSectionsLeft;
-
 @end
