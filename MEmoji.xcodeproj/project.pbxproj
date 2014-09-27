@@ -11,6 +11,7 @@
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
+		325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C9CA719D61E4B00E426E9 /* MEViewFinder.m */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		328F63A219D5220F0010CF1C /* MECollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A119D5220F0010CF1C /* MECollectionViewController.m */; };
 		328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A419D5333F0010CF1C /* MECaptureButton.m */; };
@@ -57,6 +58,8 @@
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
 		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
+		325C9CA619D61E4B00E426E9 /* MEViewFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEViewFinder.h; sourceTree = "<group>"; };
+		325C9CA719D61E4B00E426E9 /* MEViewFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEViewFinder.m; sourceTree = "<group>"; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
@@ -179,6 +182,8 @@
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
 				328F63A019D5220F0010CF1C /* MECollectionViewController.h */,
 				328F63A119D5220F0010CF1C /* MECollectionViewController.m */,
+				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
+				325C9CA719D61E4B00E426E9 /* MEViewFinder.m */,
 				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
 				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
 				328F63A619D561CD0010CF1C /* MEShareView.h */,
@@ -379,6 +384,7 @@
 				3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */,
 				329B189A19D4E526002B42BF /* MESectionHeaderReusableView.m in Sources */,
 				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
+				325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
 				328F63A819D561CD0010CF1C /* MEShareView.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,

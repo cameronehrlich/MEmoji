@@ -26,7 +26,12 @@
     
     // Setup
     [self.view setBackgroundColor:[MEModel mainColor]];
-    self.viewFinder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.width)];
+    self.viewFinder = [[MEViewFinder alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.width) previewLayer:[[MEModel sharedInstance] previewLayer]];
+    [self.viewFinder setDelegate:self];
+    [self.viewFinder.topRightButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
+    [self.viewFinder.bottomRightButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
+    [self.viewFinder.bottomLeftButton setImage:[UIImage imageNamed:@"recentButton"] forState:UIControlStateNormal];
+    [self.viewFinder.topLeftButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
     [self.view addSubview:self.viewFinder];
     
     // Scroll view
@@ -76,8 +81,7 @@
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, captureButtonDiameter, captureButtonDiameter);
     self.captureButton = [[MECaptureButton alloc] initWithFrame:captureButtonFrame];
-    self.captureButton.centerY = self.viewFinder.bottom;
-    self.captureButton.centerX = self.viewFinder.centerX;
+    [self.captureButton setCenter:CGPointMake(self.viewFinder.centerX, self.viewFinder.bottom)];
     self.captureButton.alpha = 0.90;
     [self.view addSubview:self.captureButton];
 
@@ -87,92 +91,46 @@
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
-    [self initializeLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    [UIView animateWithDuration:0.75 delay:0.75 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+    } completion:nil];
+
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
-- (void)initializeLayout
+#pragma mark -
+#pragma mark MEViewFinderDelegate
+
+- (void)viewFinder:(MEViewFinder *)viewFinder didTapButton:(UIButton *)button
 {
-    // Preview Layer
-    CGRect layerFrame = CGRectMake(0, 0, self.viewFinder.width, self.viewFinder.height);
-    [[[MEModel sharedInstance] previewLayer] setFrame:layerFrame];
-    [self.viewFinder.layer addSublayer:[[MEModel sharedInstance] previewLayer]];
-    
-    self.maskingLayer = [CALayer layer];
-    [self.maskingLayer setFrame:layerFrame];
-    [self.maskingLayer setOpacity:0.8];
-    [[[MEModel sharedInstance] previewLayer] addSublayer:self.maskingLayer];
-    [self setMaskEnabled:YES];
-    
-    // Mask Toggle Button
-    CGRect maskButtonFrame = CGRectMake(0, 0, 20, 20);
-    maskButtonFrame.origin.x = self.viewFinder.width - maskButtonFrame.size.width - 9;
-    maskButtonFrame.origin.y = self.viewFinder.size.height - maskButtonFrame.size.height - 9;
-    self.maskToggleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.maskToggleButton setFrame:maskButtonFrame];
-    [self.maskToggleButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
-    [self.maskToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    [self.maskToggleButton addTarget:self action:@selector(toggleMask:) forControlEvents:UIControlEventTouchUpInside];
-    [self.maskToggleButton setAlpha:0.5];
-    [self.maskToggleButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.maskToggleButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [self.maskToggleButton.imageView.layer setShadowOpacity:0.5];
-    [self.maskToggleButton.imageView.layer setShadowRadius:1];
-    
-    [self.viewFinder insertSubview:self.maskToggleButton aboveSubview:self.scrollView];
+    if ([button isEqual:self.viewFinder.topRightButton])
+    {
+        [[MEModel sharedInstance] toggleCameras];
+    }else if ([button isEqual:self.viewFinder.bottomRightButton])
+    {
+        [self.viewFinder setShowingMask:!self.viewFinder.showingMask];
+    }else if ([button isEqual:self.viewFinder.bottomLeftButton])
+    {
+        [self.libraryCollectionView setContentOffset:CGPointMake(0, 0) animated:(self.scrollView.contentOffset.x == 0)];
         
-    // Flip Camera Button
-    CGRect cameraButtonFrame = CGRectMake(0, 0, 26, 26);
-    cameraButtonFrame.origin.x = self.viewFinder.width - cameraButtonFrame.size.width - 9;
-    cameraButtonFrame.origin.y += 9;
-    self.flipCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.flipCameraButton setFrame:cameraButtonFrame];
-    [self.flipCameraButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
-    [self.flipCameraButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    [self.flipCameraButton addTarget:self action:@selector(toggleCameras:) forControlEvents:UIControlEventTouchUpInside];
-    [self.flipCameraButton setAlpha:0.5];
-    [self.flipCameraButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.flipCameraButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [self.flipCameraButton.imageView.layer setShadowOpacity:0.8];
-    [self.flipCameraButton.imageView.layer setShadowRadius:0.5];
-    [self.viewFinder insertSubview:self.flipCameraButton aboveSubview:self.scrollView];
-    
-    //  Smile Face Button
-    CGRect smileButtonFrame = CGRectMake(0, 0, 25, 25);
-    smileButtonFrame.origin.x += 12;
-    smileButtonFrame.origin.y = self.viewFinder.size.height - smileButtonFrame.size.height - 9;
-    self.smileyFaceButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.smileyFaceButton setFrame:smileButtonFrame];
-    [self.smileyFaceButton setImage:[UIImage imageNamed:@"smileFace"] forState:UIControlStateNormal];
-    [self.smileyFaceButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-//    [self.smileyFaceButton addTarget:self action:@selector(toggleOverlaysAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.smileyFaceButton setAlpha:0.5];
-    [self.smileyFaceButton.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.smileyFaceButton.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [self.smileyFaceButton.imageView.layer setShadowOpacity:0.5];
-    [self.smileyFaceButton.imageView.layer setShadowRadius:1];
-    [self.viewFinder insertSubview:self.smileyFaceButton aboveSubview:self.scrollView];
-}
-
-- (void)moveSectionsLeft
-{
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self.scrollView setContentOffset:CGPointMake(MAX(0,self.scrollView.contentOffset.x - self.scrollView.width), 0)];
-    } completion:nil];
-}
-
-- (void)moveSectionsRight
-{
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self.scrollView setContentOffset:CGPointMake(MIN(self.scrollView.contentSize.width - self.scrollView.width, self.scrollView.contentOffset.x + self.scrollView.width), 0)];
-    } completion:nil];
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionAllowAnimatedContent animations:^{
+            [self.scrollView setContentOffset:CGPointMake(0, 0)];
+        } completion:nil];
+    }else if ([button isEqual:self.viewFinder.topLeftButton])
+    {
+        for (MEOverlayImage *overlayImage in [[MEModel sharedInstance] currentOverlays]) {
+            [overlayImage.layer removeFromSuperlayer];
+        }
+        [[[MEModel sharedInstance] currentOverlays] removeAllObjects];
+        [self.standardCollectionView reloadData];
+    }
 }
 
 #pragma mark -
@@ -270,41 +228,6 @@
     }];
 }
 
-- (void)toggleCameras:(id)sender
-{
-    [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self.flipCameraButton setTransform:CGAffineTransformMakeScale(0.75, 0.75)];
-    } completion:^(BOOL finished) {
-        [[MEModel sharedInstance] toggleCameras];
-        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.flipCameraButton setTransform:CGAffineTransformIdentity];
-        } completion:nil];
-    }];
-}
-
-- (void)setMaskEnabled:(BOOL)maskEnabled
-{
-    _maskEnabled = maskEnabled;
-    
-    if (maskEnabled) {
-        [self.maskingLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
-    }else{
-        [self.maskingLayer setContents:nil];
-    }
-}
-
-- (void)toggleMask:(id)sender
-{
-    [self setMaskEnabled:!self.maskEnabled];
-    [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self.maskToggleButton setTransform:CGAffineTransformMakeScale(0.75, 0.75)];
-    }completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.maskToggleButton setTransform:CGAffineTransformIdentity];
-        } completion:nil];
-    }];
-}
-
 #pragma mark -
 #pragma mark UIMessageComposeViewController Delegate
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
@@ -314,12 +237,46 @@
 
 #pragma mark -
 #pragma mark MECollectionViewControllerDelegate
-
-- (CALayer *)maskingLayerForViewFinder
+- (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay
 {
-    return self.maskingLayer;
+    [[[MEModel sharedInstance] currentOverlays] addObject:overlay];
+    [overlay.layer setFrame:self.viewFinder.bounds];
+    [self.viewFinder.layer addSublayer:overlay.layer];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
+{
+    [[[MEModel sharedInstance] currentOverlays] removeObject:overlay];
+    [overlay.layer removeFromSuperlayer];
+}
+
+- (void)headerButtonWasTapped:(UIButton *)sender
+{
+    switch (sender.tag) {
+        case MEHeaderButtonTypeLeftArrow: {
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [self.scrollView setContentOffset:CGPointMake(MAX(0,self.scrollView.contentOffset.x - self.scrollView.width), 0)];
+            } completion:nil];
+            break;
+        }
+        case MEHeaderButtonTypeRightArrow:{
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [self.scrollView setContentOffset:CGPointMake(MIN(self.scrollView.contentSize.width - self.scrollView.width, self.scrollView.contentOffset.x + self.scrollView.width), 0)];
+            } completion:nil];
+            break;
+        }
+        case MEHeaderButtonTypeDelete:
+            [self.libraryCollectionView setAllowsMultipleSelection:!self.libraryCollectionView.allowsMultipleSelection];
+            [self.libraryCollectionView reloadData];
+            break;
+            
+        case MEHeaderButtonTypePurchase:
+            NSLog(@"Purchase button pressed.");
+            break;
+        default:
+            break;
+    }
+}
 
 #pragma mark -
 #pragma mark MEShareViewDelegate
@@ -482,23 +439,6 @@
 }
 
 #pragma mark -
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    if ([scrollView isEqual:self.scrollView]) {
-        //
-    }
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    if ([scrollView isEqual:self.scrollView]) {
-        //
-    }
-}
-
-#pragma mark -
 #pragma mark Other Delegate methods
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
@@ -515,6 +455,8 @@
 
 - (void)didReceiveMemoryWarning
 {
+    [[self.collectionViewController imageCache] removeAllObjects];
+    [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
     [super didReceiveMemoryWarning];
 }
 

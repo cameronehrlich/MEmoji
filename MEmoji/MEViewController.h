@@ -11,18 +11,15 @@
 #import "MECollectionViewController.h"
 #import "MECaptureButton.h"
 #import "MEShareView.h"
-
+#import "MEViewFinder.h"
 
 @import MessageUI;
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MECollectionViewControllerDelegate, MEShareViewDelegate>
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MECollectionViewControllerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
 
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, strong) CALayer *maskingLayer;
-
-@property (strong, nonatomic) UIView *viewFinder;
+@property (strong, nonatomic) MEViewFinder *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) MECollectionViewController *collectionViewController;
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;

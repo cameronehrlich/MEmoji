@@ -21,7 +21,7 @@
         [self.imageView setAnimatesWhileScrolling:NO];
         [self addSubview:self.imageView];
         
-        CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/3, self.bounds.size.width/3);
+        CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/2, self.bounds.size.width/2);
         deleteViewFrame.origin.x = self.bounds.size.width/2 - (deleteViewFrame.size.width/2);
         deleteViewFrame.origin.y = self.bounds.size.height/2 - (deleteViewFrame.size.height/2);
         self.deleteImageView = [[UIImageView alloc] initWithFrame:deleteViewFrame];

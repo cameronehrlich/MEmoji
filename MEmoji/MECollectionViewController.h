@@ -14,12 +14,19 @@
 
 @import Foundation;
 
+typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
+    MEHeaderButtonTypeRightArrow,
+    MEHeaderButtonTypeLeftArrow,
+    MEHeaderButtonTypePurchase,
+    MEHeaderButtonTypeDelete,
+};
+
 @protocol MECollectionViewControllerDelegate <NSObject>
 
-- (CALayer *)maskingLayerForViewFinder;
+- (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay;
+- (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
+- (void)headerButtonWasTapped:(UIButton *)sender;
 - (void)presentShareView;
-- (void)moveSectionsRight;
-- (void)moveSectionsLeft;
 
 @end
 

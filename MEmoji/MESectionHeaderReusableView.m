@@ -24,7 +24,7 @@
                                              self.frame.size.height)];
         [self.leftButton setShowsTouchWhenHighlighted:YES];
         [self.leftButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [self.leftButton setTransform:CGAffineTransformMakeScale(0.55, 0.55)];
+        [self.leftButton setTransform:CGAffineTransformMakeScale(0.6, 0.6)];
         [self.leftButton setAlpha:0.4];
         [self addSubview:self.leftButton];
         
@@ -33,7 +33,7 @@
                                                                     (frame.size.width/2) - self.leftButton.bounds.size.width - (captureButtonDiameter/2),
                                                                     frame.size.height)];
         [self.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.titleLabel setFont:[MEModel mainFontWithSize:13]];
+        [self.titleLabel setFont:[MEModel mainFontWithSize:16]];
         [self.titleLabel setNumberOfLines:2];
         [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:self.titleLabel];
@@ -47,7 +47,7 @@
                                               frame.size.height)];
         [self.rightButton setShowsTouchWhenHighlighted:YES];
         [self.rightButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [self.rightButton setTransform:CGAffineTransformMakeScale(0.55, 0.55)];
+        [self.rightButton setTransform:CGAffineTransformMakeScale(0.6, 0.6)];
         [self.rightButton setAlpha:0.4];
         [self addSubview:self.rightButton];
         
@@ -56,7 +56,7 @@
                                                  0,
                                                  frame.size.width/2 - self.rightButton.bounds.size.width - (captureButtonDiameter/2),
                                                  frame.size.height)];
-        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:13]];
+        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:16]];
         [self.purchaseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
         [self addSubview:self.purchaseButton];
     }

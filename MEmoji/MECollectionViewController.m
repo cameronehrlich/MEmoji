@@ -111,6 +111,8 @@
         
         MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
         
+        [cell setEditMode:self.libraryCollectionView.allowsMultipleSelection];
+        
         if ([self.imageCache objectForKey:thisImage.objectID]) {
             [cell.imageView setAnimatedImage:[self.imageCache objectForKey:thisImage.objectID]];
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -150,10 +152,7 @@
     if ([collectionView isEqual:self.standardCollectionView]) {
         
         MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.row];
-        [overlayImage.layer setFrame:[self.delegate maskingLayerForViewFinder].bounds]; // MUST SET FRAME OR IT WONT WORK // TODO
-        
-        [[self.delegate maskingLayerForViewFinder] addSublayer:overlayImage.layer];
-        [[[MEModel sharedInstance] currentOverlays] addObject:overlayImage];
+        [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
         
     }else if ([collectionView isEqual:self.libraryCollectionView]){
         [[MEModel sharedInstance] setSelectedImage:[[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.item]];
@@ -183,9 +182,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.standardCollectionView]) {
-        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.item];
-        [overlayImage.layer removeFromSuperlayer];
-        [[[MEModel sharedInstance] currentOverlays] removeObject:overlayImage];
+        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
     }
 }
 
@@ -197,20 +195,28 @@
     
     if (![collectionView isEqual:self.standardCollectionView] ) { // TODO : better check than this to see if its the furthest right
         [view.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-        [view.rightButton addTarget:self action:@selector(moveSectionsRight:) forControlEvents:UIControlEventTouchUpInside];
+        [view.rightButton setTag:MEHeaderButtonTypeRightArrow];
+        [view.rightButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
     }
 
     if (![collectionView isEqual:self.libraryCollectionView]) {
-        [view.leftButton addTarget:self action:@selector(moveSectionsLeft:) forControlEvents:UIControlEventTouchUpInside];
+        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+        [view.leftButton setTag:MEHeaderButtonTypeLeftArrow];
         [view.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     }
 
     
     if ([collectionView isEqual:self.libraryCollectionView]) {
         [view.titleLabel setText:@"Recents"];
+        [view.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+        [view.leftButton setAlpha:1];
+        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+        [view.leftButton setTag:MEHeaderButtonTypeDelete];
     }else if ([collectionView isEqual:self.standardCollectionView]) {
         [view.titleLabel setText:@"Standard Pack"];
         [view.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
+        [view.purchaseButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+        [view.purchaseButton setTag:MEHeaderButtonTypePurchase]; // Eventually the enum should contain one value for each pack
     }
 
     return view;
@@ -219,13 +225,9 @@
 #pragma mark -
 #pragma mark Protocol methods
 
-- (void)moveSectionsRight:(UIButton *)sender
+- (void)handleTap:(UIButton *)sender
 {
-    [self.delegate moveSectionsRight];
+    [self.delegate headerButtonWasTapped:sender];
 }
 
-- (void)moveSectionsLeft:(UIButton *)sender
-{
-    [self.delegate moveSectionsLeft];
-}
 @end
