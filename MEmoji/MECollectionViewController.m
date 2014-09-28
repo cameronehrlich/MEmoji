@@ -16,6 +16,10 @@
     self = [super init];
     if (self) {
         _imageCache = [[NSMutableDictionary alloc] init];
+        _loadingOperations = [[NSMutableDictionary alloc] init];
+
+        _loadingQueue = [[NSOperationQueue alloc] init];
+        [self.loadingQueue setMaxConcurrentOperationCount:4];
     }
     return self;
 }
@@ -24,8 +28,13 @@
 #pragma mark FlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat sideLength = (collectionView.bounds.size.width/3) - 2;
-    return CGSizeMake(sideLength, sideLength);
+    if ([collectionView isEqual:self.libraryCollectionView]) {
+        CGFloat sideLength = (collectionView.bounds.size.width/2) - 3;
+        return CGSizeMake(sideLength, sideLength);
+    }else {
+        CGFloat sideLength = (collectionView.bounds.size.width/3) - 2;
+        return CGSizeMake(sideLength, sideLength);
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -77,7 +86,8 @@
     
     if ([collectionView isEqual:self.standardCollectionView])
     {
-        MEOverlayCell *cell = [self.standardCollectionView dequeueReusableCellWithReuseIdentifier:@"OverlayCell" forIndexPath:indexPath];
+        static NSString *CellIdentifier = @"OverlayCell";
+        MEOverlayCell *cell = [self.standardCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         if ([self.imageCache objectForKey:indexPath]) {
             [cell.imageView setImage:[self.imageCache objectForKey:indexPath]];
@@ -85,20 +95,16 @@
                 [cell.imageView setAlpha:1];
             } completion:nil];
         }else{
-            [cell.imageView setAlpha:0];
+            [cell.imageView setImage:nil];
             
-            [[[MEModel sharedInstance] loadingQueue] addOperationWithBlock:^{
+            [self.loadingQueue addOperationWithBlock:^{
                 UIImage *image = [[[MEModel allOverlays] objectAtIndex:indexPath.item] image];
                 [self.imageCache setObject:image forKey:indexPath];
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     [cell.imageView setImage:image];
-                    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                        [cell.imageView setAlpha:1];
-                    } completion:nil];
                 }];
             }];
-            
         }
         return cell;
         
@@ -106,37 +112,35 @@
     
     else if ([collectionView isEqual:self.libraryCollectionView])
     {
-        
         Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
         
-        MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEmojiCell" forIndexPath:indexPath];
+        static NSString *CellIdentifier = @"MEmojiCell";
+        MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         [cell setEditMode:self.libraryCollectionView.allowsMultipleSelection];
         
         if ([self.imageCache objectForKey:thisImage.objectID]) {
             [cell.imageView setAnimatedImage:[self.imageCache objectForKey:thisImage.objectID]];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [cell.imageView setAlpha:1];
-            } completion:nil];
             
         }else{
-            [cell.imageView setAlpha:0];
+            [cell.imageView setAnimatedImage:nil];
             
-            [[[MEModel sharedInstance] loadingQueue] addOperationWithBlock:^{
+            NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+            __weak NSBlockOperation *weakOperation = operation;
+            [operation addExecutionBlock:^{
+                
                 FLAnimatedImage *image = [[FLAnimatedImage alloc] initWithAnimatedGIFData:thisImage.imageData];
-
                 [self.imageCache setObject:image forKey:thisImage.objectID];
                 
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
-                    
-                    [cell.imageView setAnimatedImage:image];
-                    
-                    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                        [cell.imageView setAlpha:1];
-                    } completion:nil];
-                    
-                }];
+                if (!weakOperation.isCancelled) {
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
+                        [cell.imageView setAnimatedImage:image];
+                    }];
+                }
             }];
+            
+            [self.loadingQueue addOperation:operation];
+            [self.loadingOperations setObject:operation forKey:indexPath];
         }
         return cell;
     }
@@ -144,6 +148,15 @@
     {
         NSLog(@"Error in %s", __PRETTY_FUNCTION__);
         return nil;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSBlockOperation *operation = [self.loadingOperations objectForKey:indexPath];
+    
+    if (operation.isExecuting) {
+        [operation cancel];
     }
 }
 
@@ -173,7 +186,7 @@
             }];
             
         }else{
-            
+            [self.delegate collectionView:self.libraryCollectionView didSelectImage:[[MEModel sharedInstance] selectedImage]];
             [self.delegate presentShareView];
         }
     }
@@ -209,6 +222,7 @@
     if ([collectionView isEqual:self.libraryCollectionView]) {
         [view.titleLabel setText:@"Recents"];
         [view.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+        [view.leftButton setTransform:CGAffineTransformIdentity];
         [view.leftButton setAlpha:1];
         [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
         [view.leftButton setTag:MEHeaderButtonTypeDelete];
@@ -220,6 +234,11 @@
     }
 
     return view;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSLog(@"Number of operations: %lu", (unsigned long)self.loadingQueue.operationCount);
 }
 
 #pragma mark -

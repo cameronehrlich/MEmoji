@@ -47,7 +47,6 @@ static const CGFloat stepOfGIF = 0.12f;
 @property (nonatomic, strong) NSMutableArray *currentFrames; //For collecting thumbnail images from MPMediaPlayer
 @property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
 
-@property (nonatomic, strong) NSOperationQueue *loadingQueue;
 @property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
 
 @property (copy) MEmojiCallback completionBlock;

@@ -8,6 +8,10 @@
 
 @import UIKit;
 
+#import <FLAnimatedImage.h>
+#import <FLAnimatedImageView.h>
+#import "Image.h"
+
 @class MEViewFinder;
 
 @protocol MEViewFinderDelegate <NSObject>
@@ -20,8 +24,9 @@
 
 @property (nonatomic, weak) id<MEViewFinderDelegate> delegate;
 
-@property (nonatomic, strong) CALayer *previewLayer;
-@property (nonatomic, strong) CALayer *maskLayer;
+@property (nonatomic, strong, readonly) CALayer *previewLayer;
+@property (nonatomic, strong, readonly) CALayer *maskLayer;
+@property (nonatomic, strong, readonly) FLAnimatedImageView *presentationView;
 
 @property (nonatomic, strong) UIButton *topLeftButton;
 @property (nonatomic, strong) UIButton *topRightButton;
@@ -33,5 +38,8 @@
 @property (nonatomic, assign) BOOL showingMask;
 
 - (instancetype)initWithFrame:(CGRect)frame previewLayer:(CALayer *)previewLayer;
+
+- (void)presentImage:(Image *)image;
+- (void)dismissImage;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "MEShareView.h"
+#import <UIView+Positioning.h>
 
 @implementation MEShareView
 
@@ -66,8 +67,9 @@
         // Close menu
         UIButton *closeXButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [closeXButton setFrame:shareButtonRect];
-        [closeXButton setCenter:CGPointMake(closeXButton.center.x + 9, closeXButton.center.y + 9)];
-        [closeXButton setTransform:CGAffineTransformMakeScale(0.65, 0.65)];
+        [closeXButton setRight:self.right];
+        [closeXButton setCenter:CGPointMake(closeXButton.center.x - 9, closeXButton.center.y + 9)];
+        [closeXButton setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
         [closeXButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
         [closeXButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [closeXButton setTag:MEShareOptionNone];

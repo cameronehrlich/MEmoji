@@ -31,9 +31,6 @@
         self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
         self.currentOverlays = [[NSMutableArray alloc] init];
         
-        self.loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
-        
         self.movieRenderingQueue = [[NSOperationQueue alloc] init];
         [self.movieRenderingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         

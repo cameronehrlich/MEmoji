@@ -206,7 +206,7 @@
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
     // Add mask first
-    if (self.maskEnabled) {
+    if (self.viewFinder.showingMask) {
         [overlaysToRender addObject:[UIImage imageNamed:@"maskLayer"]];
     }
     
@@ -225,6 +225,7 @@
         [self.captureButton stopSpinning];
         
         [self.collectionViewController collectionView:self.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+
     }];
 }
 
@@ -241,13 +242,18 @@
 {
     [[[MEModel sharedInstance] currentOverlays] addObject:overlay];
     [overlay.layer setFrame:self.viewFinder.bounds];
-    [self.viewFinder.layer addSublayer:overlay.layer];
+    [self.viewFinder.previewLayer addSublayer:overlay.layer];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
 {
     [[[MEModel sharedInstance] currentOverlays] removeObject:overlay];
     [overlay.layer removeFromSuperlayer];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image
+{
+    [self.viewFinder presentImage:image];
 }
 
 - (void)headerButtonWasTapped:(UIButton *)sender
@@ -427,14 +433,17 @@
     }
     
     [UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.shareView setAlpha:1];
         [self.shareView setY:self.viewFinder.bottom];
     } completion:nil];
 }
 
 - (void)dismissShareView
 {
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [self.viewFinder dismissImage];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.shareView setBottom:self.viewFinder.bottom];
+        [self.shareView setAlpha:0];
     } completion:nil];
 }
 
@@ -456,7 +465,6 @@
 - (void)didReceiveMemoryWarning
 {
     [[self.collectionViewController imageCache] removeAllObjects];
-    [[[MEModel sharedInstance] loadingQueue] cancelAllOperations];
     [super didReceiveMemoryWarning];
 }
 

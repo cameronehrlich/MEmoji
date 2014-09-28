@@ -34,6 +34,4 @@
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
 
-@property (assign, nonatomic) BOOL maskEnabled;
-
 @end

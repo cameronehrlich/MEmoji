@@ -26,6 +26,8 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 - (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay;
 - (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
 - (void)headerButtonWasTapped:(UIButton *)sender;
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image;
 - (void)presentShareView;
 
 @end
@@ -39,5 +41,7 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 @property (nonatomic, strong) UICollectionView *hipHopCollectionView;
 
 @property (strong, nonatomic) NSMutableDictionary *imageCache;
+@property (strong, nonatomic) NSMutableDictionary *loadingOperations;
+@property (strong, nonatomic) NSOperationQueue *loadingQueue;
 
 @end

@@ -18,7 +18,7 @@
         [self setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
         
         self.imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
-        [self.imageView setAnimatesWhileScrolling:NO];
+        [self.imageView setAnimatesWhileScrolling:YES];
         [self addSubview:self.imageView];
         
         CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/2, self.bounds.size.width/2);
@@ -36,17 +36,20 @@
 {
     _editMode = editMode;
     
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
-        if (editMode) {
+    if (editMode) {
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
             [self.deleteImageView setAlpha:1];
             [self.deleteImageView setTransform:CGAffineTransformRotate(self.deleteImageView.transform, M_PI_2)];
-        }else{
+        }completion:^(BOOL finished) {
+            
+         }];
+    }else{
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
             [self.deleteImageView setTransform:CGAffineTransformIdentity];
+        }completion:^(BOOL finished) {
             [self.deleteImageView setAlpha:0];
-        }
-    } completion:^(BOOL finished) {
-        //
-    }];
+        }];
+    }
 }
 
 - (void)setHighlighted:(BOOL)highlighted

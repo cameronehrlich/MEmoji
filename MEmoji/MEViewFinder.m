@@ -15,14 +15,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.previewLayer = previewLayer;
+        _previewLayer = previewLayer;
         [self.previewLayer setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.layer addSublayer:self.previewLayer];
         
-        self.maskLayer = [CALayer layer];
+        _maskLayer = [CALayer layer];
         [self.maskLayer setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.maskLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
-        [self.layer insertSublayer:self.maskLayer above:self.previewLayer];
+        [self.previewLayer addSublayer:self.maskLayer];
         [self setShowingMask:NO];
         
         CGRect cornerbuttonRect = CGRectMake(0, 0, 30, 30);
@@ -70,6 +70,12 @@
         self.bottomRightButton.y -= margin;
         self.bottomRightButton.x -= margin;
         
+        _presentationView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
+        [self addSubview:self.presentationView];
+        [self.presentationView setContentMode:UIViewContentModeScaleAspectFit];
+        [self.presentationView setAlpha:0];
+        [self dismissImage];
+        
     }
     return self;
 }
@@ -98,6 +104,43 @@
     }else{
         [self.maskLayer setOpacity:0];
     }
+}
+
+- (void)presentImage:(Image *)image
+{
+    [self.presentationView setAnimatedImage:[[FLAnimatedImage alloc] initWithAnimatedGIFData:image.imageData]];
+    [self.presentationView setTransform:CGAffineTransformMakeScale(0.5, 0.5)];
+    [self.presentationView setCenterY:self.bottom];
+    [self.presentationView setAlpha:0];
+    
+    for (MEOverlayImage *overlay in [[MEModel sharedInstance] currentOverlays]) {
+        [overlay.layer setOpacity:0];
+    }
+
+    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self.presentationView setTransform:CGAffineTransformMakeScale(0.95, 0.95)];
+        [self.presentationView setCenter:self.center];
+        [self.presentationView setAlpha:1];
+        [self.previewLayer setOpacity:0.5];
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void)dismissImage
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.presentationView setAlpha:0];
+        [self.presentationView setBottom:self.y];
+        [self.previewLayer setOpacity:1];
+    } completion:^(BOOL finished) {
+        [self.presentationView setAnimatedImage:nil];
+        
+        for (MEOverlayImage *overlay in [[MEModel sharedInstance] currentOverlays]) {
+            [overlay.layer setOpacity:1];
+        }
+        
+    }];
 }
 
 @end
