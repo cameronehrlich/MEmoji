@@ -66,8 +66,11 @@
         return [[MEModel sharedInstance] currentImages].count;
     }else if ([collectionView isEqual:self.standardCollectionView])
     {
-        return [[MEModel allOverlays] count];
-    }else{
+        return [[MEModel standardPack] count];
+    }else if ([collectionView isEqual:self.hipHopCollectionView]){
+        return [[MEModel hipHopPack] count];
+    }
+    else{
         NSLog(@"Error in Number of items in section");
         return 0;
     }
@@ -75,34 +78,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if ([collectionView isEqual:self.standardCollectionView])
-    {
-        static NSString *CellIdentifier = @"OverlayCell";
-        MEOverlayCell *cell = [self.standardCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-        if ([self.imageCache objectForKey:indexPath]) {
-            [cell.imageView setImage:[self.imageCache objectForKey:indexPath]];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [cell.imageView setAlpha:1];
-            } completion:nil];
-        }else{
-            [cell.imageView setImage:nil];
-            
-            [self.loadingQueue addOperationWithBlock:^{
-                UIImage *image = [[[MEModel allOverlays] objectAtIndex:indexPath.item] image];
-                [self.imageCache setObject:image forKey:indexPath];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [cell.imageView setImage:image];
-                }];
-            }];
-        }
-        return cell;
-        
-    }
-    
-    else if ([collectionView isEqual:self.libraryCollectionView])
+    if ([collectionView isEqual:self.libraryCollectionView])
     {
         Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
         
@@ -136,6 +112,57 @@
         }
         return cell;
     }
+    
+    else if ([collectionView isEqual:self.standardCollectionView])
+    {
+        static NSString *CellIdentifier = @"OverlayCell";
+        MEOverlayCell *cell = [self.standardCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.item];
+        
+        if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
+            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [cell.imageView setAlpha:1];
+            } completion:nil];
+        }else{
+            [cell.imageView setImage:nil];
+            [self.loadingQueue addOperationWithBlock:^{
+                [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [cell.imageView setImage:[overlayImage image]];
+                }];
+            }];
+        }
+        return cell;
+        
+    }
+    
+    else if ([collectionView isEqual:self.hipHopCollectionView])
+    {
+        static NSString *CellIdentifier = @"OverlayCell";
+        MEOverlayCell *cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
+
+        if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
+            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [cell.imageView setAlpha:1];
+            } completion:nil];
+        }else{
+            [cell.imageView setImage:nil];
+            
+            [self.loadingQueue addOperationWithBlock:^{
+                [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [cell.imageView setImage:[overlayImage image]];
+                }];
+            }];
+        }
+        return cell;
+    }
+    
     else
     {
         NSLog(@"Error in %s", __PRETTY_FUNCTION__);
@@ -147,19 +174,14 @@
 {
     NSBlockOperation *operation = [self.loadingOperations objectForKey:indexPath];
     
-    if (operation.isExecuting) {
+    if (operation.isExecuting || !operation.isFinished) {
         [operation cancel];
     }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([collectionView isEqual:self.standardCollectionView]) {
-        
-        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.row];
-        [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
-        
-    }else if ([collectionView isEqual:self.libraryCollectionView]){
+    if ([collectionView isEqual:self.libraryCollectionView]){
         [[MEModel sharedInstance] setSelectedImage:[[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.item]];
         
         if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
@@ -182,55 +204,27 @@
             [self.delegate presentShareView];
         }
     }
+    else if ([collectionView isEqual:self.standardCollectionView]) {
+        
+        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
+        
+    }
+    else if ([collectionView isEqual:self.hipHopCollectionView]){
+        MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.standardCollectionView]) {
-        MEOverlayImage *overlayImage = [[MEModel allOverlays] objectAtIndex:indexPath.row];
+        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
+    }else if ([collectionView isEqual:self.hipHopCollectionView]){
+        MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.row];
         [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
     }
-}
-
-//    MESectionHeaderView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-//                                                                           withReuseIdentifier:@"HeaderView"
-//                                                                                  forIndexPath:indexPath];
-//    
-//    if (![collectionView isEqual:self.standardCollectionView] ) { // TODO : better check than this to see if its the furthest right
-//        [view.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-//        [view.rightButton setTag:MEHeaderButtonTypeRightArrow];
-//        [view.rightButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//
-//    if (![collectionView isEqual:self.libraryCollectionView]) {
-//        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-//        [view.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-//        [view.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-//    }
-//
-//    
-//    if ([collectionView isEqual:self.libraryCollectionView]) {
-//        [view.titleLabel setText:@"Recents"];
-//        [view.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
-//        [view.leftButton.imageView setAlpha:0.5];
-//        [view.leftButton setTransform:CGAffineTransformIdentity];
-//        [view.leftButton setAlpha:1];
-//        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-//        [view.leftButton setTag:MEHeaderButtonTypeDelete];
-//    }else if ([collectionView isEqual:self.standardCollectionView]) {
-//        [view.titleLabel setText:@"Standard Pack"];
-//        [view.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
-//        [view.purchaseButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-//        [view.purchaseButton setTag:MEHeaderButtonTypePurchase]; // Eventually the enum should contain one value for each pack
-//    }
-
-
-#pragma mark -
-#pragma mark Protocol methods
-
-- (void)handleTap:(UIButton *)sender
-{
-    [self.delegate headerButtonWasTapped:sender];
 }
 
 @end

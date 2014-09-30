@@ -306,7 +306,7 @@
     return absolutePath;
 }
 
-+ (NSArray *)allOverlays
++ (NSArray *)standardPack
 {
     static NSArray *allImages = nil;
     static dispatch_once_t onceToken;
@@ -435,6 +435,11 @@
     return allImages;
 }
 
++ (NSArray *)hipHopPack
+{
+    return [MEModel standardPack];
+}
+
 + (UIColor *)mainColor
 {
     static UIColor *mainColor = nil;
@@ -448,8 +453,12 @@
 
 + (UIFont *)mainFontWithSize:(NSInteger)size
 {
-    // Make static?
-    return [UIFont fontWithName:@"AvenirNext-Medium" size:size];
+    static UIFont *mainFont = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mainFont = [UIFont fontWithName:@"AvenirNext-Medium" size:size];
+    });
+    return mainFont;
 }
 
 @end

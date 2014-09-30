@@ -21,10 +21,13 @@
 
 @property (strong, nonatomic) MEViewFinder *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) MECaptureButton *captureButton;
+
 @property (strong, nonatomic) MECollectionViewController *collectionViewController;
 @property (strong, nonatomic) UICollectionView *libraryCollectionView;
 @property (strong, nonatomic) UICollectionView *standardCollectionView;
-@property (strong, nonatomic) MECaptureButton *captureButton;
+@property (strong, nonatomic) UICollectionView *hipHopCollectionView;
+
 
 @property (strong, nonatomic) UIButton *maskToggleButton;
 @property (strong, nonatomic) UIButton *flipCameraButton;

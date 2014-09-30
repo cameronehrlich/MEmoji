@@ -59,7 +59,9 @@ static const CGFloat stepOfGIF = 0.12f;
 - (void)toggleCameras;
 - (void)reloadCurrentImages;
 
-+ (NSArray *)allOverlays;
++ (NSArray *)standardPack;
++ (NSArray *)hipHopPack;
+
 + (UIColor *)mainColor;
 + (UIFont *)mainFontWithSize:(NSInteger)size;
 

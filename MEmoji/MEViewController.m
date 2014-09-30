@@ -36,7 +36,7 @@
     
     // Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.viewFinder.bottom, self.view.width, self.view.height - self.viewFinder.height)];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*2, self.scrollView.height)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*3, self.scrollView.height)];
     [self.scrollView setBackgroundColor:[MEModel mainColor]];
     [self.scrollView setDelegate:self];
     [self.scrollView setPagingEnabled:YES];
@@ -60,8 +60,9 @@
     [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.scrollView addSubview:self.libraryCollectionView];
     
-    MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, captureButtonDiameter/2)];
+    MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
     [libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+    [libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(0.9, 0.9)];
     [libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
     [libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [libraryHeader.titleLabel setText:@"Recent MEmoji"];
@@ -73,12 +74,12 @@
     [self.collectionViewController setLibraryCollectionView:self.libraryCollectionView];
 
     // Standard Pack
-    self.standardCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width, 0, self.scrollView.width, self.scrollView.height)
+    self.standardCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, self.scrollView.height)
                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.standardCollectionView setDelegate:self.collectionViewController];
     [self.standardCollectionView setDataSource:self.collectionViewController];
     [self.standardCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.standardCollectionView setBackgroundColor:[UIColor clearColor]];
+    [self.standardCollectionView setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5]];
     [self.standardCollectionView setAlwaysBounceVertical:YES];
     [self.standardCollectionView setAllowsMultipleSelection:YES];
     [self.standardCollectionView setScrollsToTop:NO];
@@ -90,14 +91,34 @@
     [standardPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [standardPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [standardPackHeader.titleLabel setText:@"Standard Pack"];
-    [standardPackHeader.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
-    [standardPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchase]; // TODO : should have individual enum values
-    [standardPackHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [standardPackHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [standardPackHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [standardPackHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:standardPackHeader];
+
     
+    // Hip-Hop Pack
+    self.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
+                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    [self.hipHopCollectionView setDelegate:self.collectionViewController];
+    [self.hipHopCollectionView setDataSource:self.collectionViewController];
+    [self.hipHopCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
+    [self.hipHopCollectionView setBackgroundColor:[[UIColor purpleColor] colorWithAlphaComponent:0.3]];
+    [self.hipHopCollectionView setAlwaysBounceVertical:YES];
+    [self.hipHopCollectionView setAllowsMultipleSelection:YES];
+    [self.hipHopCollectionView setScrollsToTop:NO];
+    [self.scrollView addSubview:self.hipHopCollectionView];
+    [self.collectionViewController setHipHopCollectionView:self.hipHopCollectionView];
+    
+    MESectionHeaderView *hipHopPackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [hipHopPackHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [hipHopPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [hipHopPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [hipHopPackHeader.titleLabel setText:@"Hip-Hop Pack"];
+    [hipHopPackHeader.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
+    [hipHopPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack]; // TODO : should have individual enum values
+    [hipHopPackHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:hipHopPackHeader];
     
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, captureButtonDiameter, captureButtonDiameter);
@@ -126,6 +147,16 @@
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
+- (void)clearInterface
+{
+    for (MEOverlayImage *overlayImage in [[MEModel sharedInstance] currentOverlays]) {
+        [overlayImage.layer removeFromSuperlayer];
+    }
+    [[[MEModel sharedInstance] currentOverlays] removeAllObjects];
+    [self.standardCollectionView reloadData];
+    [self.hipHopCollectionView reloadData];
+}
+
 #pragma mark -
 #pragma mark MEViewFinderDelegate
 
@@ -146,11 +177,7 @@
         } completion:nil];
     }else if ([button isEqual:self.viewFinder.topLeftButton])
     {
-        for (MEOverlayImage *overlayImage in [[MEModel sharedInstance] currentOverlays]) {
-            [overlayImage.layer removeFromSuperlayer];
-        }
-        [[[MEModel sharedInstance] currentOverlays] removeAllObjects];
-        [self.standardCollectionView reloadData];
+        [self clearInterface];
     }
 }
 
@@ -300,8 +327,8 @@
             [self.libraryCollectionView reloadData];
             break;
             
-        case MEHeaderButtonTypePurchase:
-            [[[UIAlertView alloc] initWithTitle:@"MONEY" message:@"Give us dat cash!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+        case MEHeaderButtonTypePurchaseHipHopPack:
+            [[[UIAlertView alloc] initWithTitle:@"Purchase Hip-Hop Pack" message:@"Give us dat cash!" delegate:nil cancelButtonTitle:@"Take my money" otherButtonTitles:nil, nil] show];
             break;
         default:
             break;
@@ -477,12 +504,7 @@
 {
     if (motion == UIEventSubtypeMotionShake)
     {
-        for (MEOverlayImage *overlayImage in [[MEModel sharedInstance] currentOverlays]) {
-            [overlayImage.layer removeFromSuperlayer];
-        }
-        
-        [[[MEModel sharedInstance] currentOverlays] removeAllObjects];
-        [self.standardCollectionView reloadData];
+        [self clearInterface];
     }
 }
 

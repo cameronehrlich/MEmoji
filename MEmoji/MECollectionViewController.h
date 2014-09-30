@@ -17,15 +17,14 @@
 typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
     MEHeaderButtonTypeRightArrow,
     MEHeaderButtonTypeLeftArrow,
-    MEHeaderButtonTypePurchase,
     MEHeaderButtonTypeDelete,
+    MEHeaderButtonTypePurchaseHipHopPack,
 };
 
 @protocol MECollectionViewControllerDelegate <NSObject>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay;
 - (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
-- (void)headerButtonWasTapped:(UIButton *)sender;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image;
 - (void)presentShareView;
@@ -38,6 +37,7 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 
 @property (nonatomic, strong) UICollectionView *libraryCollectionView;
 @property (nonatomic, strong) UICollectionView *standardCollectionView;
+@property (nonatomic, strong) UICollectionView *hipHopCollectionView;
 
 @property (strong, nonatomic) NSMutableDictionary *imageCache;
 @property (strong, nonatomic) NSMutableDictionary *loadingOperations;

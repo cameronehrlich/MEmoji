@@ -18,7 +18,7 @@
 
         self.maskingView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self.maskingView setImage:[UIImage imageNamed:@"maskLayerSmall"]];
-        [self.maskingView setAlpha:0.2];
+        [self.maskingView setAlpha:0.5];
         [self addSubview:self.maskingView];
         
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
