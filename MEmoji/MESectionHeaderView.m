@@ -65,6 +65,7 @@
                                                  frame.size.width/2 - self.rightButton.bounds.size.width - (captureButtonDiameter/2),
                                                  frame.size.height)];
         [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:12]];
+        [self.purchaseButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
         [self.purchaseButton setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
         [self.purchaseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
         [self addSubview:self.purchaseButton];

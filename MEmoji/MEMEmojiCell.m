@@ -58,6 +58,12 @@
 {
     [super setHighlighted:highlighted];
     
+    if (highlighted) {
+        [self setAlpha:0.7];
+    }else{
+        [self setAlpha:1];
+    }
+    
     [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
         
         if (highlighted) {
@@ -67,9 +73,7 @@
         }else{
             [self.deleteImageView setTransform:CGAffineTransformIdentity];
         }
-    } completion:^(BOOL finished) {
-        //
-    }];
+    } completion:nil];
 }
 
 @end

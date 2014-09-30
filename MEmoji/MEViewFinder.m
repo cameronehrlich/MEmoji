@@ -23,7 +23,7 @@
         [self.maskLayer setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.maskLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
         [self.previewLayer addSublayer:self.maskLayer];
-        [self setShowingMask:NO];
+        [self setShowingMask:YES];
         
         CGRect cornerbuttonRect = CGRectMake(0, 0, 30, 30);
         

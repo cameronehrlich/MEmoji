@@ -103,7 +103,7 @@
     [self.hipHopCollectionView setDelegate:self.collectionViewController];
     [self.hipHopCollectionView setDataSource:self.collectionViewController];
     [self.hipHopCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.hipHopCollectionView setBackgroundColor:[[UIColor purpleColor] colorWithAlphaComponent:0.3]];
+    [self.hipHopCollectionView setBackgroundColor:[[UIColor purpleColor] colorWithAlphaComponent:0.2]];
     [self.hipHopCollectionView setAlwaysBounceVertical:YES];
     [self.hipHopCollectionView setAllowsMultipleSelection:YES];
     [self.hipHopCollectionView setScrollsToTop:NO];
@@ -115,8 +115,8 @@
     [hipHopPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [hipHopPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [hipHopPackHeader.titleLabel setText:@"Hip-Hop Pack"];
-    [hipHopPackHeader.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
-    [hipHopPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack]; // TODO : should have individual enum values
+    [hipHopPackHeader.purchaseButton setTitle:@"Buy for $0.99" forState:UIControlStateNormal];
+    [hipHopPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
     [hipHopPackHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:hipHopPackHeader];
     

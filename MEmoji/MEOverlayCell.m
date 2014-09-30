@@ -55,8 +55,17 @@
             [self.selectedImageView setAlpha:0];
             [self.selectedImageView setTransform:CGAffineTransformMakeScale(2, 2)];
         }
-    } completion:^(BOOL finished) {
-        //
-    }];
+    } completion:nil];
 }
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    if (highlighted) {
+        [self setAlpha:0.5];
+    }else{
+        [self setAlpha:1];
+    }
+}
+
 @end
