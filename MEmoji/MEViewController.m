@@ -37,7 +37,7 @@
     // Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.viewFinder.bottom, self.view.width, self.view.height - self.viewFinder.height)];
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*3, self.scrollView.height)];
-    [self.scrollView setBackgroundColor:[MEModel mainColor]];
+    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
     [self.scrollView setDelegate:self];
     [self.scrollView setPagingEnabled:YES];
     [self.scrollView setDirectionalLockEnabled:YES];
@@ -57,7 +57,7 @@
     [self.libraryCollectionView registerClass:[MEMEmojiCell class] forCellWithReuseIdentifier:@"MEmojiCell"];
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
-    [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
+    [self.libraryCollectionView setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.4]];
     [self.scrollView addSubview:self.libraryCollectionView];
     
     MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
@@ -79,7 +79,7 @@
     [self.standardCollectionView setDelegate:self.collectionViewController];
     [self.standardCollectionView setDataSource:self.collectionViewController];
     [self.standardCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.standardCollectionView setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5]];
+    [self.standardCollectionView setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.45]];
     [self.standardCollectionView setAlwaysBounceVertical:YES];
     [self.standardCollectionView setAllowsMultipleSelection:YES];
     [self.standardCollectionView setScrollsToTop:NO];
@@ -103,7 +103,7 @@
     [self.hipHopCollectionView setDelegate:self.collectionViewController];
     [self.hipHopCollectionView setDataSource:self.collectionViewController];
     [self.hipHopCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.hipHopCollectionView setBackgroundColor:[[UIColor purpleColor] colorWithAlphaComponent:0.2]];
+    [self.hipHopCollectionView setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.45]];
     [self.hipHopCollectionView setAlwaysBounceVertical:YES];
     [self.hipHopCollectionView setAllowsMultipleSelection:YES];
     [self.hipHopCollectionView setScrollsToTop:NO];
