@@ -19,7 +19,7 @@
         _loadingOperations = [[NSMutableDictionary alloc] init];
 
         _loadingQueue = [[NSOperationQueue alloc] init];
-        [self.loadingQueue setMaxConcurrentOperationCount:4];
+        [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
     }
     return self;
 }
@@ -42,11 +42,6 @@
     return 1;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    return CGSizeMake(collectionView.bounds.size.width, captureButtonDiameter/2);
-}
-
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
     return 1;
@@ -59,7 +54,7 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(2, 2, 2, 2);
+    return UIEdgeInsetsMake(2 + (captureButtonDiameter/2), 2, 2, 2);
 }
 
 #pragma mark -
@@ -72,9 +67,6 @@
     }else if ([collectionView isEqual:self.standardCollectionView])
     {
         return [[MEModel allOverlays] count];
-    }else if ([collectionView isEqual:self.hipHopCollectionView]){
-        //
-        return 0; // TODO
     }else{
         NSLog(@"Error in Number of items in section");
         return 0;
@@ -200,46 +192,38 @@
     }
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    MESectionHeaderReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                           withReuseIdentifier:@"HeaderView"
-                                                                                  forIndexPath:indexPath];
-    
-    if (![collectionView isEqual:self.standardCollectionView] ) { // TODO : better check than this to see if its the furthest right
-        [view.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-        [view.rightButton setTag:MEHeaderButtonTypeRightArrow];
-        [view.rightButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-    }
+//    MESectionHeaderView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+//                                                                           withReuseIdentifier:@"HeaderView"
+//                                                                                  forIndexPath:indexPath];
+//    
+//    if (![collectionView isEqual:self.standardCollectionView] ) { // TODO : better check than this to see if its the furthest right
+//        [view.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+//        [view.rightButton setTag:MEHeaderButtonTypeRightArrow];
+//        [view.rightButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//
+//    if (![collectionView isEqual:self.libraryCollectionView]) {
+//        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+//        [view.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+//        [view.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+//    }
+//
+//    
+//    if ([collectionView isEqual:self.libraryCollectionView]) {
+//        [view.titleLabel setText:@"Recents"];
+//        [view.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+//        [view.leftButton.imageView setAlpha:0.5];
+//        [view.leftButton setTransform:CGAffineTransformIdentity];
+//        [view.leftButton setAlpha:1];
+//        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+//        [view.leftButton setTag:MEHeaderButtonTypeDelete];
+//    }else if ([collectionView isEqual:self.standardCollectionView]) {
+//        [view.titleLabel setText:@"Standard Pack"];
+//        [view.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
+//        [view.purchaseButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+//        [view.purchaseButton setTag:MEHeaderButtonTypePurchase]; // Eventually the enum should contain one value for each pack
+//    }
 
-    if (![collectionView isEqual:self.libraryCollectionView]) {
-        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-        [view.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-        [view.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    }
-
-    
-    if ([collectionView isEqual:self.libraryCollectionView]) {
-        [view.titleLabel setText:@"Recents"];
-        [view.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
-        [view.leftButton setTransform:CGAffineTransformIdentity];
-        [view.leftButton setAlpha:1];
-        [view.leftButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-        [view.leftButton setTag:MEHeaderButtonTypeDelete];
-    }else if ([collectionView isEqual:self.standardCollectionView]) {
-        [view.titleLabel setText:@"Standard Pack"];
-        [view.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
-        [view.purchaseButton addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-        [view.purchaseButton setTag:MEHeaderButtonTypePurchase]; // Eventually the enum should contain one value for each pack
-    }
-
-    return view;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    NSLog(@"Number of operations: %lu", (unsigned long)self.loadingQueue.operationCount);
-}
 
 #pragma mark -
 #pragma mark Protocol methods

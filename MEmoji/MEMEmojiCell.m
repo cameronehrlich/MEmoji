@@ -45,9 +45,10 @@
          }];
     }else{
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:(UIViewAnimationOptionCurveEaseOut) animations:^{
-            [self.deleteImageView setTransform:CGAffineTransformIdentity];
-        }completion:^(BOOL finished) {
+            [self.deleteImageView setTransform:CGAffineTransformRotate(self.deleteImageView.transform, M_PI_2/2)];
             [self.deleteImageView setAlpha:0];
+        }completion:^(BOOL finished) {
+            
         }];
     }
 }

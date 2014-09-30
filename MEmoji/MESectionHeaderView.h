@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@interface MESectionHeaderReusableView : UICollectionReusableView
+@interface MESectionHeaderView : UIView
 
 @property (nonatomic, strong) UIButton *leftButton;
 @property (nonatomic, strong) UIButton *rightButton;

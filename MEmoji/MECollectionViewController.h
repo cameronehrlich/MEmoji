@@ -8,7 +8,7 @@
 
 #import "MEMEmojiCell.h"
 #import "MEOverlayCell.h"
-#import "MESectionHeaderReusableView.h"
+#import "MESectionHeaderView.h"
 #import <FLAnimatedImageView.h>
 #import <FLAnimatedImage.h>
 
@@ -38,7 +38,6 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 
 @property (nonatomic, strong) UICollectionView *libraryCollectionView;
 @property (nonatomic, strong) UICollectionView *standardCollectionView;
-@property (nonatomic, strong) UICollectionView *hipHopCollectionView;
 
 @property (strong, nonatomic) NSMutableDictionary *imageCache;
 @property (strong, nonatomic) NSMutableDictionary *loadingOperations;

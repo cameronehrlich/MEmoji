@@ -16,7 +16,7 @@
 		328F63A219D5220F0010CF1C /* MECollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A119D5220F0010CF1C /* MECollectionViewController.m */; };
 		328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A419D5333F0010CF1C /* MECaptureButton.m */; };
 		328F63A819D561CD0010CF1C /* MEShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A719D561CD0010CF1C /* MEShareView.m */; };
-		329B189A19D4E526002B42BF /* MESectionHeaderReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */; };
+		329B189A19D4E526002B42BF /* MESectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 329B189919D4E526002B42BF /* MESectionHeaderView.m */; };
 		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
 		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
 		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
@@ -69,8 +69,8 @@
 		328F63A419D5333F0010CF1C /* MECaptureButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MECaptureButton.m; sourceTree = "<group>"; };
 		328F63A619D561CD0010CF1C /* MEShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEShareView.h; sourceTree = "<group>"; };
 		328F63A719D561CD0010CF1C /* MEShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEShareView.m; sourceTree = "<group>"; };
-		329B189819D4E526002B42BF /* MESectionHeaderReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionHeaderReusableView.h; sourceTree = "<group>"; };
-		329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionHeaderReusableView.m; sourceTree = "<group>"; };
+		329B189819D4E526002B42BF /* MESectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionHeaderView.h; sourceTree = "<group>"; };
+		329B189919D4E526002B42BF /* MESectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionHeaderView.m; sourceTree = "<group>"; };
 		32A93849199BE59E00125DA8 /* MEModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEModel.h; sourceTree = "<group>"; };
 		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
 		32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -133,8 +133,8 @@
 				327A02231987542200DF27BC /* MEMEmojiCell.m */,
 				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
 				3218C80D19C7691C0035B7BA /* MEOverlayCell.m */,
-				329B189819D4E526002B42BF /* MESectionHeaderReusableView.h */,
-				329B189919D4E526002B42BF /* MESectionHeaderReusableView.m */,
+				329B189819D4E526002B42BF /* MESectionHeaderView.h */,
+				329B189919D4E526002B42BF /* MESectionHeaderView.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -382,7 +382,7 @@
 				328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */,
 				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
 				3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */,
-				329B189A19D4E526002B42BF /* MESectionHeaderReusableView.m in Sources */,
+				329B189A19D4E526002B42BF /* MESectionHeaderView.m in Sources */,
 				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
 				325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */,
 				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,

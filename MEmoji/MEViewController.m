@@ -15,7 +15,7 @@
 #import <UIView+Shimmer.h>
 #import <UIAlertView+Blocks.h>
 #import "MEOverlayCell.h"
-#import "MESectionHeaderReusableView.h"
+#import "MESectionHeaderView.h"
 #import "MECaptureButton.h"
 
 @implementation MEViewController
@@ -48,29 +48,36 @@
     self.collectionViewController = [[MECollectionViewController alloc] init];
     [self.collectionViewController setDelegate:self];
     
+    
     // Library Collection View
-    self.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)
+    self.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, self.scrollView.height)
                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.libraryCollectionView setDelegate:self.collectionViewController];
     [self.libraryCollectionView setDataSource:self.collectionViewController];
     [self.libraryCollectionView registerClass:[MEMEmojiCell class] forCellWithReuseIdentifier:@"MEmojiCell"];
-    [self.libraryCollectionView registerClass:[MESectionHeaderReusableView class]
-                   forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                          withReuseIdentifier:@"HeaderView"];
     [self.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.libraryCollectionView setScrollsToTop:YES];
     [self.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.scrollView addSubview:self.libraryCollectionView];
-    [self.collectionViewController setLibraryCollectionView:self.libraryCollectionView];
     
+    MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+    [libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
+    [libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [libraryHeader.titleLabel setText:@"Recent MEmoji"];
+    [libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:libraryHeader];
+    
+    [self.collectionViewController setLibraryCollectionView:self.libraryCollectionView];
+
+    // Standard Pack
     self.standardCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width, 0, self.scrollView.width, self.scrollView.height)
                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.standardCollectionView setDelegate:self.collectionViewController];
     [self.standardCollectionView setDataSource:self.collectionViewController];
     [self.standardCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.standardCollectionView registerClass:[MESectionHeaderReusableView class]
-                   forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                          withReuseIdentifier:@"HeaderView"];
     [self.standardCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.standardCollectionView setAlwaysBounceVertical:YES];
     [self.standardCollectionView setAllowsMultipleSelection:YES];
@@ -78,17 +85,31 @@
     [self.scrollView addSubview:self.standardCollectionView];
     [self.collectionViewController setStandardCollectionView:self.standardCollectionView];
     
+    MESectionHeaderView *standardPackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [standardPackHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [standardPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [standardPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [standardPackHeader.titleLabel setText:@"Standard Pack"];
+    [standardPackHeader.purchaseButton setTitle:@"$0.99" forState:UIControlStateNormal];
+    [standardPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchase]; // TODO : should have individual enum values
+    [standardPackHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [standardPackHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [standardPackHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [standardPackHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:standardPackHeader];
+    
+    
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, captureButtonDiameter, captureButtonDiameter);
     self.captureButton = [[MECaptureButton alloc] initWithFrame:captureButtonFrame];
     [self.captureButton setCenter:CGPointMake(self.viewFinder.centerX, self.viewFinder.bottom)];
-    self.captureButton.alpha = 0.90;
     [self.view addSubview:self.captureButton];
 
     // Gestures
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.captureButton addGestureRecognizer:singleTapRecognizer];
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [longPressRecognier setMinimumPressDuration:0.137];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
 }
@@ -202,6 +223,9 @@
 
 - (void)captureGIF
 {
+    [self.libraryCollectionView setAllowsMultipleSelection:NO];
+    [self.libraryCollectionView reloadData];
+    
     NSURL *url = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
@@ -277,7 +301,7 @@
             break;
             
         case MEHeaderButtonTypePurchase:
-            NSLog(@"Purchase button pressed.");
+            [[[UIAlertView alloc] initWithTitle:@"MONEY" message:@"Give us dat cash!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
             break;
         default:
             break;
