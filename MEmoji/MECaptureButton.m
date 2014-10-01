@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.rangeOfMotion = 15;
+        self.rangeOfMotion = 12.5;
         self.scaleTransform = CGAffineTransformMakeScale(1.3, 1.3);
         
         self.backgroundLayer = [CALayer layer];

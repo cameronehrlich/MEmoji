@@ -1,4 +1,5 @@
 PODS:
+  - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.1)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - JGProgressHUD (1.2.1)
@@ -6,6 +7,13 @@ PODS:
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
+  - ReactiveCocoa (2.3.1):
+    - ReactiveCocoa/UI
+  - ReactiveCocoa/Core (2.3.1):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.3.1)
+  - ReactiveCocoa/UI (2.3.1):
+    - ReactiveCocoa/Core
   - UIAlertView+Blocks (0.8.1)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor
@@ -16,11 +24,13 @@ PODS:
   - UIView+Shimmer (1.0.0)
 
 DEPENDENCIES:
+  - DHAppleReceiptParser (~> 1.0)
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
   - MagicalRecord (~> 2.2)
+  - ReactiveCocoa (~> 2.3)
   - UIAlertView+Blocks (~> 0.8)
   - UIColor+Hex (~> 1.0)
   - UIImage+Additions (~> 1.1)
@@ -33,15 +43,17 @@ EXTERNAL SOURCES:
     :git: https://github.com/cameronehrlich/FLAnimatedImage
 
 SPEC CHECKSUMS:
+  DHAppleReceiptParser: 7cdb2486778146b38cbc65325d22faf5883fd781
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JGProgressHUD: f3c0258684f318bc0009e893fdac0701de5cb75b
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
   UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
   UIView+Positioning: 870af80983bf495af2cb8a3a15b20e26fcc57ebb
   UIView+Shimmer: 344d5826166c0f2a3040a4cb78b4dc2b3914aaab
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.1

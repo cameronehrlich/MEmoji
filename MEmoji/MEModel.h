@@ -11,6 +11,8 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+#import <DHAppStoreReceipt.h>
+#import <JGProgressHUD.h>
 #import "CEMovieMaker.h"
 #import "Image.h"
 #import "MEOverlayImage.h"
@@ -21,35 +23,42 @@
 @import ImageIO;
 @import MessageUI;
 @import MobileCoreServices;
+@import StoreKit;
 
 typedef void (^MEmojiCallback)();
+typedef void (^PurchaseCallback)(BOOL success);
 
 static const CGFloat dimensionOfGIF = 320;
 static const CGFloat stepOfGIF = 0.12f;
 
-@interface MEModel : NSObject
+@interface MEModel : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic, strong) AVCaptureSession *session;
-
 @property (nonatomic, strong) AVCaptureDevice *frontCamera;
 @property (nonatomic, strong) AVCaptureDevice *backCamera;
 @property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
-
 @property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CEMovieMaker *movieMaker;
+@property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
 
 @property (nonatomic, strong) NSMutableArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;
 @property (nonatomic, strong) Image *selectedImage;
+@property (copy)              MEmojiCallback creationCompletion;
 
-@property (nonatomic, strong) NSMutableArray *currentFrames; //For collecting thumbnail images from MPMediaPlayer
-@property (nonatomic, strong) MPMoviePlayerController *playerController; // For generating thumbnail images from video
+@property (nonatomic, strong) SKProduct *hipHopPackProduct;
+@property (nonatomic, strong) SKProductsRequest *productRequest;
+@property (nonatomic, strong) SKReceiptRefreshRequest *receiptRequest;
+@property (copy)              PurchaseCallback purchaseCompletion;
+@property (copy)              PurchaseCallback restoreCompletion;
+@property (nonatomic, assign) BOOL hipHopPackEnabled;
 
-@property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
+@property (nonatomic, strong) JGProgressHUD *HUD;
 
-@property (copy) MEmojiCallback completionBlock;
+- (void)purchaseProduct:(SKProduct *)product withCompletion:(PurchaseCallback)callback;
+- (void)restorePurchasesCompletion:(PurchaseCallback)callback;
 
 + (instancetype)sharedInstance;
 + (NSString *)currentVideoPath;
@@ -64,5 +73,6 @@ static const CGFloat stepOfGIF = 0.12f;
 
 + (UIColor *)mainColor;
 + (UIFont *)mainFontWithSize:(NSInteger)size;
++ (NSString *)formattedPriceForProduct:(SKProduct *)product;
 
 @end

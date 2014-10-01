@@ -3,6 +3,8 @@
 
 inhibit_all_warnings!
 
+source 'https://github.com/CocoaPods/Specs.git' # I DON'T UNDERSTAND THIS
+
 target "MEmoji" do
     pod 'MagicalRecord', '~> 2.2'
     pod 'UIImage+Additions', '~> 1.1'
@@ -14,6 +16,8 @@ target "MEmoji" do
     pod 'UIView+Shimmer', '~> 1.0'
     pod 'UIAlertView+Blocks', '~> 0.8'
     pod 'GoogleAnalytics-iOS-SDK', '~> 3.0'
+    pod 'ReactiveCocoa', '~> 2.3'
+    pod 'DHAppleReceiptParser', '~> 1.0'
 end
 
 target "MEmojiTests" do

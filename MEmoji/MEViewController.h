@@ -28,7 +28,6 @@
 @property (strong, nonatomic) UICollectionView *standardCollectionView;
 @property (strong, nonatomic) UICollectionView *hipHopCollectionView;
 
-
 @property (strong, nonatomic) UIButton *maskToggleButton;
 @property (strong, nonatomic) UIButton *flipCameraButton;
 @property (strong, nonatomic) UIButton *smileyFaceButton;
@@ -36,5 +35,6 @@
 @property (strong, nonatomic) MEShareView *shareView;
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
+@property (strong, nonatomic) UILabel *instructionsLabel;
 
 @end

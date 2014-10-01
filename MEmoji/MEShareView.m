@@ -19,16 +19,17 @@
         CGFloat buttonSideLength = self.bounds.size.width/numberOfDivisions;
         CGRect shareButtonRect = CGRectMake(0, 0, buttonSideLength, buttonSideLength);
         
-        // Save to Library
-        UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [saveToLibraryButton setFrame:shareButtonRect];
-        [saveToLibraryButton setCenter:CGPointMake(1*(self.bounds.size.width/numberOfDivisions), self.bounds.size.height/2)];
-        [saveToLibraryButton setImage:[UIImage imageNamed:@"saveToCameraRoll"] forState:UIControlStateNormal];
-        [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [saveToLibraryButton setTag:MEShareOptionSaveToLibrary];
-        [saveToLibraryButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
-        [saveToLibraryButton setShowsTouchWhenHighlighted:YES];
-        [self addSubview:saveToLibraryButton];
+        // Save to Messages
+        UIButton *messgesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [messgesButton setFrame:shareButtonRect];
+        [messgesButton setTransform:CGAffineTransformMakeScale(1.25, 1.25)];
+        [messgesButton setCenter:CGPointMake(1*(self.bounds.size.width/numberOfDivisions), self.bounds.size.height/2)];
+        [messgesButton setImage:[UIImage imageNamed:@"sms"] forState:UIControlStateNormal];
+        [messgesButton setTag:MEShareOptionMessages];
+        [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [messgesButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [messgesButton setShowsTouchWhenHighlighted:YES];
+        [self addSubview:messgesButton];
         
         // Instagram
         UIButton *instagramButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -51,18 +52,19 @@
         [twitterButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
         [twitterButton setShowsTouchWhenHighlighted:YES];
         [self addSubview:twitterButton];
+
         
-        // Save to Messages
-        UIButton *messgesButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [messgesButton setFrame:shareButtonRect];
-        [messgesButton setTransform:CGAffineTransformMakeScale(1.25, 1.25)];
-        [messgesButton setCenter:CGPointMake(7*(self.bounds.size.width/numberOfDivisions), self.bounds.size.height/2)];
-        [messgesButton setImage:[UIImage imageNamed:@"sms"] forState:UIControlStateNormal];
-        [messgesButton setTag:MEShareOptionMessages];
-        [messgesButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [messgesButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
-        [messgesButton setShowsTouchWhenHighlighted:YES];
-        [self addSubview:messgesButton];
+        // Save to Library
+        UIButton *saveToLibraryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [saveToLibraryButton setFrame:shareButtonRect];
+        [saveToLibraryButton setCenter:CGPointMake(7*(self.bounds.size.width/numberOfDivisions), self.bounds.size.height/2)];
+        [saveToLibraryButton setImage:[UIImage imageNamed:@"saveToCameraRoll"] forState:UIControlStateNormal];
+        [saveToLibraryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [saveToLibraryButton setTag:MEShareOptionSaveToLibrary];
+        [saveToLibraryButton addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        [saveToLibraryButton setShowsTouchWhenHighlighted:YES];
+        [self addSubview:saveToLibraryButton];
+
         
         // Close menu
         UIButton *closeXButton = [UIButton buttonWithType:UIButtonTypeCustom];

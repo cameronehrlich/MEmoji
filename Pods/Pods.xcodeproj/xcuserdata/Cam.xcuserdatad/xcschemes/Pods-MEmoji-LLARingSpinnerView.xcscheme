@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83EF82313F8043309F1315A4"
+               BlueprintIdentifier = "229569616860488BED48353D"
                BuildableName = "libPods-MEmoji-LLARingSpinnerView.a"
                BlueprintName = "Pods-MEmoji-LLARingSpinnerView"
                ReferencedContainer = "container:Pods.xcodeproj">

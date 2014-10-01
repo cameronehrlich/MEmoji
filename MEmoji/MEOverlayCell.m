@@ -26,7 +26,7 @@
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
         [self addSubview:self.imageView];
         
-        CGRect selectedImageFrame = CGRectMake(0, 0, 35, 35);
+        CGRect selectedImageFrame = CGRectMake(0, 0, 45, 45);
         selectedImageFrame.origin.y += (frame.size.height/2) - (selectedImageFrame.size.height/2);
         selectedImageFrame.origin.x += (frame.size.width/2) - (selectedImageFrame.size.width/2);
         
@@ -34,8 +34,8 @@
         [self.selectedImageView setImage:[UIImage imageNamed:@"checkmark"]];
         [self.selectedImageView.layer setShadowColor:[UIColor blackColor].CGColor];
         [self.selectedImageView.layer setShadowOffset:CGSizeMake(1, 1)];
-        [self.selectedImageView.layer setShadowOpacity:0.5];
-        [self.selectedImageView.layer setShadowRadius:5];
+        [self.selectedImageView.layer setShadowOpacity:0.7];
+        [self.selectedImageView.layer setShadowRadius:3];
         [self addSubview:self.selectedImageView];
 
         [self setSelected:NO];
@@ -47,15 +47,23 @@
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        if (selected) {
+    
+    if (selected) {
+        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [self.selectedImageView setAlpha:1];
             [self.selectedImageView setTransform:CGAffineTransformIdentity];
-        }else{
+
+        } completion:nil];
+    }else{
+        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self.selectedImageView setAlpha:0];
             [self.selectedImageView setTransform:CGAffineTransformMakeScale(2, 2)];
-        }
-    } completion:nil];
+        } completion:^(BOOL finished) {
+            //
+        }];
+    }
+
+    
 }
 
 - (void)setHighlighted:(BOOL)highlighted

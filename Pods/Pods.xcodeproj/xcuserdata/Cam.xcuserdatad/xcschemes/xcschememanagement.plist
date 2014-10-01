@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-MEmoji-DHAppleReceiptParser.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-FLAnimatedImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -25,6 +30,11 @@
 			<false/>
 		</dict>
 		<key>Pods-MEmoji-MagicalRecord.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -62,57 +72,67 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>12D4EE9CF48A4DAB8C9ADD07</key>
+		<key>10047C3B0D73C449033B9B75</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2180D7A9AFCE440A8BD4E9ED</key>
+		<key>229569616860488BED48353D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6E486A0F9D25472E9BC3080C</key>
+		<key>247D2B2E6A9C5238F0B08858</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7F44D4DFB8D74C9382275551</key>
+		<key>25BBABE13583D0581C8334F5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>80DC28A457AA43FC93FB0CC3</key>
+		<key>3D50302501C56E83A94B5EEB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>83EF82313F8043309F1315A4</key>
+		<key>66DA082F18470370FBB53C54</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A354314370FE4116BC830FE5</key>
+		<key>83F08D47154DC67A61F23F60</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A67E22F9E391404FB70391BA</key>
+		<key>910402ED1A91125847DAD628</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BB330031E6EB4C439B3855E4</key>
+		<key>919235333DC661302268E7AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CE80994CAD5D4B1C83EDF769</key>
+		<key>929C0C01018A01A7A4B3D891</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F80C4CFDA72D4230A272A602</key>
+		<key>C18A2CCF6248DE348F4B5509</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CF09952D6532237722B525B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D8A7CBEF75CBE85ED73C7CBC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

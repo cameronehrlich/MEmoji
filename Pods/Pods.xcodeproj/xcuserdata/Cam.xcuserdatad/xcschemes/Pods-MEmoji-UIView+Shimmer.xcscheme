@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB330031E6EB4C439B3855E4"
+               BlueprintIdentifier = "66DA082F18470370FBB53C54"
                BuildableName = "libPods-MEmoji-UIView+Shimmer.a"
                BlueprintName = "Pods-MEmoji-UIView+Shimmer"
                ReferencedContainer = "container:Pods.xcodeproj">

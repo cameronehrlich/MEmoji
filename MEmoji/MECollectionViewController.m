@@ -227,4 +227,12 @@
     }
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([collectionView isEqual:self.hipHopCollectionView]) {
+        return [[MEModel sharedInstance] hipHopPackEnabled];
+    }
+    return YES;
+}
+
 @end

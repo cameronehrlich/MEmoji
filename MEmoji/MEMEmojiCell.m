@@ -21,13 +21,16 @@
         [self.imageView setAnimatesWhileScrolling:YES];
         [self addSubview:self.imageView];
         
-        CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.width);
+        CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/1.5, self.bounds.size.width/1.5);
+        deleteViewFrame.origin.x = self.bounds.size.width/2 - (deleteViewFrame.size.width/2);
+        deleteViewFrame.origin.y = self.bounds.size.height/2 - (deleteViewFrame.size.height/2);
+        
         self.deleteImageView = [[UIImageView alloc] initWithFrame:deleteViewFrame];
         [self.deleteImageView setImage:[UIImage imageNamed:@"deleteX"]];
         [self.deleteImageView setAlpha:0];
         [self.deleteImageView.layer setShadowColor:[UIColor blackColor].CGColor];
-        [self.deleteImageView.layer setShadowOpacity:0.5];
-        [self.deleteImageView.layer setShadowRadius:5];
+        [self.deleteImageView.layer setShadowOpacity:0.7];
+        [self.deleteImageView.layer setShadowRadius:2.5];
         [self addSubview:self.deleteImageView];
     }
     return self;

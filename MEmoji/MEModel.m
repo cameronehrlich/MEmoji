@@ -8,6 +8,8 @@
 
 #import "MEModel.h"
 
+static NSString *hipHopPackProductIdentifier = @"hiphoppack";
+
 @implementation MEModel
 
 + (instancetype)sharedInstance
@@ -20,6 +22,32 @@
     });
     
     return instance;
+}
+
++ (UIColor *)mainColor
+{
+    static UIColor *mainColor = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mainColor = [UIColor colorWithHex:0x49a5db];
+    });
+    
+    return mainColor;
+}
+
++ (UIFont *)mainFontWithSize:(NSInteger)size
+{
+    return [UIFont fontWithName:@"AvenirNext-Medium" size:size];
+    
+}
+
++ (NSString *)formattedPriceForProduct:(SKProduct *)product
+{
+    NSNumberFormatter *priceFormatter = [[NSNumberFormatter alloc] init];
+    [priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [priceFormatter setLocale:product.priceLocale];
+    NSString *price = [priceFormatter stringFromNumber:product.price];
+    return price;
 }
 
 - (instancetype)init
@@ -35,6 +63,13 @@
         [self.movieRenderingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         [self initializeCaptureSession];
+        
+        self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
+        [self.productRequest setDelegate:self];
+        [self.productRequest start];
+        
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+        
     }
     return self;
 }
@@ -46,7 +81,7 @@
 
 - (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback
 {
-    self.completionBlock = callback;
+    self.creationCompletion = callback;
     
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
     
@@ -107,7 +142,7 @@
 
     } completion:^(BOOL success, NSError *error) {
         self.selectedImage = justSaved;
-        self.completionBlock();
+        self.creationCompletion();
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.movieRenderingQueue addOperationWithBlock:^{
@@ -313,112 +348,106 @@
     dispatch_once(&onceToken, ^{
 
         NSArray *imageNames = @[
-                                @"Fistwhite.png",
-                                @"faceMom.png",
-                                @"oneTear.png",
-                                @"ambiguosHands.png",
-                                @"faceMustache.png",
-                                @"peaceHand.png",
-                                @"babyBottle.png",
-                                @"faceNO.png",
-                                @"pigNose.png",
-                                @"balloonRed.png",
-                                @"faceQueen.png",
-                                @"pinkBow.png",
-                                @"beerMug.png",
-                                @"faceSkull.png",
-                                @"playViola.png",
-                                @"bigFist.png",
-                                @"fireFire.png",
-                                @"pointOut.png",
-                                @"bigLaugh.png",
-                                @"ghostEyes.png",
-                                @"pointUp.png",
-                                @"bigPhone.png",
-                                @"goldCrown.png",
-                                @"policeHat.png",
-                                @"bigTears.png",
-                                @"graduationCap.png",
-                                @"prayingHands.png",
-                                @"blackdoubleFistDark.png",
-                                @"gritTeeth.png",
-                                @"pumkinHead.png",
-                                @"blackdoubleFistLight.png",
-                                @"halfCigarette.png",
-                                @"questionMark.png",
-                                @"blueHalo.png",
-                                @"hammerThor.png",
-                                @"rightThumb.png",
-                                @"cartoonOuchie.png",
-                                @"handsPalms.png",
-                                @"roseRed.png",
-                                @"cheekKiss.png",
-                                @"heartArrow.png",
-                                @"russianHat.png",
-                                @"cheerCone.png",
-                                @"heartBroke.png",
-                                @"santaHatBeard.png",
-                                @"cherriesSex.png",
-                                @"heartEyes.png",
-                                @"sexyLips.png",
-                                @"chinaHat.png",
-                                @"iceCream.png",
-                                @"sexySaxy.png",
-                                @"clapHands.png",
-                                @"itsDoodoo.png",
-                                @"showerHead.png",
-                                @"clapMarker.png",
-                                @"kittyWhiskers.png",
-                                @"sleepZees.png",
-                                @"coffeeMug.png",
-                                @"knifeParty.png",
-                                @"smallCamera.png",
-                                @"creepyEyes.png",
-                                @"leftFist.png",
-                                @"smallTears.png",
-                                @"daBomb.png",
-                                @"lightBulb.png",
-                                @"soundMic.png",
-                                @"darkGun.png",
-                                @"lightningBolt.png",
-                                @"strongArms.png",
-                                @"donaldTrumpet.png",
-                                @"lolliPop.png",
-                                @"sunGlasses.png",
-                                @"doubleFist.png",
-                                @"loudSpeaker.png",
-                                @"surgicalMask.png",
-                                @"downThumb.png",
-                                @"maitaiGlass.png",
-                                @"theTrophy.png",
-                                @"dropBass.png",
-                                @"martiniGlass.png",
-                                @"thumbLeft.png",
-                                @"embrellaRain.png",
-                                @"medicalHat.png",
-                                @"toiletFace.png",
-                                @"exclamationPoint.png",
-                                @"moneyBag.png",
-                                @"tongueLaugh.png",
                                 @"eyes.png",
-                                @"moneyEuro.png",
-                                @"topHat.png",
-                                @"faceBaby.png",
-                                @"moneyLb.png",
-                                @"turbanAllah.png",
-                                @"faceBoy.png",
-                                @"moneyUSA.png",
-                                @"waterMelon.png",
-                                @"faceDemon.png",
-                                @"moneyYen.png",
+                                @"creepyEyes.png",
+                                @"blackEyes.png",
+                                @"sunGlasses.png",
+                                @"nerdGlasses.png",
+                                @"heartEyes.png",
+                                @"heartArrow.png",
+                                @"heartBroke.png",
+                                @"cheekKiss.png",
+                                @"sexyLips.png",
+                                @"gritTeeth.png",
+                                @"nostrilSmoke.png",
+                                @"tongueLaugh.png",
+                                @"bigLaugh.jpg",
+                                @"oneTear.png",
+                                @"smallTears.png",
+                                @"bigTears.png",
                                 @"waterfallTears.png",
-                                @"faceGirl.png",
+                                @"blackThumbLeft.png",
+                                @"thumbLeft.png",
+                                @"blackDownThumb.png",
+                                @"downThumb.png",
+                                @"blackDoubleFistLight.png",
+                                @"doubleFist.png",
+                                @"blackLeftFist.png",
+                                @"leftFist.png",
+                                @"blackPointUp.png",
+                                @"pointUp.png ",
+                                @"blackPeaceHand.png ",
+                                @"peaceHand.png ",
+                                @"blackPrayingHands.png",
+                                @"prayingHands.png",
+                                @"blackStrongArms.png ",
+                                @"strongArms.png",
+                                @"blackRightThumb.png",
+                                @"rightThumb.png",
+                                @"blackAmbiguousHands.png",
+                                @"ambiguousHands.png",
+                                @"bigFist.png",
+                                @"blackFist.png",
+                                @"fistWhite.png",
+                                @"blackPalmsHands.png",
+                                @"handsPalms.png",
+                                @"blackClapHands.png",
+                                @"clapHands.png",
+                                @"kittyWhiskers.png",
                                 @"monkeySpeak.png",
-                                @"wineGlass.png",
-                                @"faceGramma.png",
+                                @"pigNose.png",
+                                @"santaHatBeard.png",
+                                @"itsDoodoo.png",
+                                @"toiletFace.png",
+                                @"afroHair.png",
+                                @"flatTop.png",
+                                @"mohawkBlack.png",
+                                @"mohawkBlonde.png",
+                                @"oldTimeyMustache.png",
+                                @"blueHalo.png",
+                                @"pinkBow.png",
+                                @"goldCrown.png",
+                                @"topHat.png",
+                                @"turbanAllah.png",
+                                @"graduationCap.png",
+                                @"policeHat.png",
+                                @"russianHat.png",
+                                @"chinaHat.png",
+                                @"surgicalMask.png",
+                                @"fmlForehead.png",
+                                @"halfCigarette.png",
+                                @"showerHead.png",
+                                @"bigPhone.png",
+                                @"hammerThor.png",
+                                @"umbrellaRain.png",
+                                @"smallCamera.png ",
+                                @"roseRed.png",
+                                @"moneyUSA.png",
+                                @"clapMarker.png",
+                                @"knifeParty.png",
+                                @"darkGun.png",
+                                @"fireFire.png",
+                                @"daBomb.png",
                                 @"musicNotes.png",
-                                @"faceGrampa.png",
-                                @"nostrilSmoke.png"];
+                                @"dropBass.png",
+                                @"sexySaxy.png",
+                                @"donaldTrumpet.png",
+                                @"playViola.png",
+                                @"loudSpeaker.png",
+                                @"questionMark.png",
+                                @"exclamationPoint.png",
+                                @"cartoonOuchie.png",
+                                @"sleepZees.png",
+                                @"lightBulb.png",
+                                @"lollipop.png",
+                                @"iceCream.png",
+                                @"waterMelon.png",
+                                @"coffeeMug.png",
+                                @"babyBottle.png",
+                                @"beerMug.png",
+                                @"maitaiGlass.png",
+                                @"martiniGlass.png",
+                                @"wineGlass.png"];
         
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
 
@@ -440,25 +469,113 @@
     return [MEModel standardPack];
 }
 
-+ (UIColor *)mainColor
+#pragma mark -
+#pragma mark StoreKitShit
+- (void)purchaseProduct:(SKProduct *)product withCompletion:(PurchaseCallback)callback;
 {
-    static UIColor *mainColor = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        mainColor = [UIColor colorWithHex:0x49a5db];
-    });
+    self.purchaseCompletion = callback;
     
-    return mainColor;
+    if (![SKPaymentQueue canMakePayments]) {
+        
+        NSLog(@"User can't make payments on this device, should be checking earlier in the callchain");
+        self.purchaseCompletion(NO);
+        return;
+    }
+    
+    SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+    [payment setQuantity:1];
+    [[SKPaymentQueue defaultQueue] addPayment:payment];
 }
 
-+ (UIFont *)mainFontWithSize:(NSInteger)size
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
-    static UIFont *mainFont = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        mainFont = [UIFont fontWithName:@"AvenirNext-Medium" size:size];
-    });
-    return mainFont;
+    for (SKProduct *product in response.products) {
+        if ([product.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
+            self.hipHopPackProduct = product;
+        }
+    }
+}
+
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
+{
+    for (SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStatePurchasing:
+                // Do nothing???
+                break;
+            case SKPaymentTransactionStatePurchased:
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                if (self.purchaseCompletion) {
+                    self.purchaseCompletion(YES);
+                }
+                break;
+            case SKPaymentTransactionStateFailed:
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                if (self.purchaseCompletion) {
+                    self.purchaseCompletion(NO);
+                }
+                break;
+            case SKPaymentTransactionStateRestored:
+                NSLog(@"Restored.");
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                if (self.purchaseCompletion) {
+                    self.purchaseCompletion(YES);
+                }
+                break;
+            case SKPaymentTransactionStateDeferred:
+                if (self.purchaseCompletion) {
+                    NSLog(@"Needs parent's permission???"); //TODO : Implement this?
+                    self.purchaseCompletion(NO);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+- (void)restorePurchasesCompletion:(PurchaseCallback)callback;
+{
+    self.restoreCompletion = callback;
+    
+    self.receiptRequest = [[SKReceiptRefreshRequest alloc] init];
+    [self.receiptRequest setDelegate:self];
+    [self.receiptRequest start];
+}
+
+- (void)requestDidFinish:(SKRequest *)request
+{
+    if ([request isEqual:self.receiptRequest]) {
+
+        NSLog(@"Received receipt request succccesssssssfulllllllly!");
+        
+        for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
+            if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
+                [self setHipHopPackEnabled:YES];
+            }
+        }
+    }
+}
+
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error
+{
+    NSLog(@"Failed in %s with error: %@", __PRETTY_FUNCTION__, error.debugDescription);
+}
+
+- (BOOL)hipHopPackEnabled
+{
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:hipHopPackProductIdentifier]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:hipHopPackProductIdentifier];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] boolForKey:hipHopPackProductIdentifier];
+}
+
+
+- (void)setHipHopPackEnabled:(BOOL)hipHopPackEnabled
+{
+    [[NSUserDefaults standardUserDefaults] setBool:hipHopPackEnabled forKey:hipHopPackProductIdentifier];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
