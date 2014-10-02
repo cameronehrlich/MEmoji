@@ -16,7 +16,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        [self setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.8]];
+        [self setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.85]];
         [self.layer setShadowColor:[UIColor blackColor].CGColor];
         [self.layer setShadowOffset:CGSizeMake(0, 5)];
         [self.layer setShadowOpacity:0.2];

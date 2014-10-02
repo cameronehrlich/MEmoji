@@ -81,7 +81,7 @@
     
     MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
     [libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
-    [libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(0.9, 0.9)];
+    [libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
     [libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
     [libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [libraryHeader.titleImage setImage:[UIImage imageNamed:@"myMemojiLabel"]] ; // TODO : SWAP OUT
