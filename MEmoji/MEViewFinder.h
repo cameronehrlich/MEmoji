@@ -24,7 +24,7 @@
 
 @property (nonatomic, weak) id<MEViewFinderDelegate> delegate;
 
-@property (nonatomic, strong, readonly) CALayer *previewLayer;
+@property (nonatomic, strong, readonly) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong, readonly) CALayer *maskLayer;
 @property (nonatomic, strong, readonly) FLAnimatedImageView *presentationView;
 
@@ -37,7 +37,7 @@
 
 @property (nonatomic, assign) BOOL showingMask;
 
-- (instancetype)initWithFrame:(CGRect)frame previewLayer:(CALayer *)previewLayer;
+- (instancetype)initWithFrame:(CGRect)frame previewLayer:(AVCaptureVideoPreviewLayer *)previewLayer;
 
 - (void)presentImage:(Image *)image;
 - (void)dismissImage;

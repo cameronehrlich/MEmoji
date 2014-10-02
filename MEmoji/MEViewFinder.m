@@ -11,7 +11,7 @@
 
 @implementation MEViewFinder
 
-- (instancetype)initWithFrame:(CGRect)frame previewLayer:(CALayer *)previewLayer
+- (instancetype)initWithFrame:(CGRect)frame previewLayer:(AVCaptureVideoPreviewLayer *)previewLayer
 {
     self = [super initWithFrame:frame];
     if (self) {
