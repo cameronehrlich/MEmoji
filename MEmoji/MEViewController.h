@@ -8,7 +8,7 @@
 #import <UIView+Positioning.h>
 #import <LLARingSpinnerView.h>
 #import "MEMEmojiCell.h"
-#import "MECollectionViewController.h"
+#import "MESectionsManager.h"
 #import "MECaptureButton.h"
 #import "MEShareView.h"
 #import "MEViewFinder.h"
@@ -17,16 +17,13 @@
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MECollectionViewControllerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MESectionsManagerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
 
 @property (strong, nonatomic) MEViewFinder *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) MECaptureButton *captureButton;
 
-@property (strong, nonatomic) MECollectionViewController *collectionViewController;
-@property (strong, nonatomic) UICollectionView *libraryCollectionView;
-@property (strong, nonatomic) UICollectionView *standardCollectionView;
-@property (strong, nonatomic) UICollectionView *hipHopCollectionView;
+@property (strong, nonatomic) MESectionsManager *sectionsManager;
 
 @property (strong, nonatomic) UIButton *maskToggleButton;
 @property (strong, nonatomic) UIButton *flipCameraButton;

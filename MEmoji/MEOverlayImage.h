@@ -10,9 +10,9 @@
 
 @interface MEOverlayImage : NSObject
 
-@property (strong, nonatomic) CALayer *layer;
-@property (strong, nonatomic) UIImage *image;
+@property (strong, nonatomic, readonly) CALayer *layer;
+@property (strong, nonatomic, readonly) UIImage *image;
 
-- (instancetype)initWithImage:(UIImage *)image;
+- (instancetype)initWithImageName:(NSString *)imageName;
 
 @end

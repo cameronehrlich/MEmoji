@@ -6,7 +6,7 @@ inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git' # I DON'T UNDERSTAND THIS
 
 target "MEmoji" do
-    pod 'MagicalRecord', '~> 2.2'
+    pod 'MagicalRecord', :git => 'https://github.com/magicalpanda/MagicalRecord.git'
     pod 'UIImage+Additions', '~> 1.1'
     pod 'UIColor+Hex', '~> 1.0'
     pod 'FLAnimatedImage', :git => 'https://github.com/cameronehrlich/FLAnimatedImage', :branch => 'animatesWhileScrolling'

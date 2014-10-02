@@ -74,6 +74,11 @@
         [self addSubview:self.presentationView];
         [self.presentationView setContentMode:UIViewContentModeScaleAspectFit];
         [self.presentationView setAlpha:0];
+        [self.presentationView.layer setShadowColor:[UIColor blackColor].CGColor];
+        [self.presentationView.layer setShadowOffset:CGSizeMake(0, 0)];
+        [self.presentationView.layer setShadowOpacity:0.5];
+        [self.presentationView.layer setShadowRadius:5];
+        [self.presentationView.layer setShadowPath:[UIBezierPath bezierPathWithRect:self.presentationView.bounds].CGPath];
         [self dismissImage];
         
     }

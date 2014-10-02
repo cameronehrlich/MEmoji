@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
+#define MR_LOGGING_ENABLED 0
+#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
+
 #import <CoreData+MagicalRecord.h>
 #import <UIImage+Additions.h>
 #import <GAI.h>

@@ -35,16 +35,12 @@
         [self.leftButton setAlpha:0.4];
         [self addSubview:self.leftButton];
         
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.height,
+        self.titleImage = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.height,
                                                                     0,
                                                                     (frame.size.width/2) - self.leftButton.bounds.size.width - (captureButtonDiameter/2),
                                                                     frame.size.height)];
-        [self.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.titleLabel setFont:[MEModel mainFontWithSize:13]];
-        [self.titleLabel setNumberOfLines:1];
-        [self.titleLabel setTextColor:[UIColor whiteColor]];
-        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [self addSubview:self.titleLabel];
+        [self.titleImage setContentMode:UIViewContentModeScaleAspectFit ];
+        [self addSubview:self.titleImage];
         
         
         // Right
@@ -64,7 +60,7 @@
                                                  0,
                                                  frame.size.width/2 - self.rightButton.bounds.size.width - (captureButtonDiameter/2),
                                                  frame.size.height)];
-        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:13]];
+        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:18]];
         [self.purchaseButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
         [self.purchaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.purchaseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];

@@ -37,8 +37,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 + (UIFont *)mainFontWithSize:(NSInteger)size
 {
-    return [UIFont fontWithName:@"AvenirNext-Medium" size:size];
-    
+    return [UIFont fontWithName:@"AvenirNext-DemiBold" size:size];
 }
 
 + (NSString *)formattedPriceForProduct:(SKProduct *)product
@@ -55,6 +54,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     self = [super init];
     if (self) {
         [MagicalRecord setupAutoMigratingCoreDataStack];
+        [MagicalRecord setLoggingLevel:MagicalRecordLoggingLevelOff];
         
         self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
         self.currentOverlays = [[NSMutableArray alloc] init];
@@ -70,6 +70,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
         
+        self.HUD = [[JGProgressHUD alloc] initWithStyle:JGProgressHUDStyleLight];
     }
     return self;
 }
@@ -135,7 +136,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     __block Image *justSaved;
     
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        Image *newImage = [Image MR_createInContext:localContext];
+        Image *newImage = [Image MR_createEntityInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
         justSaved = newImage;
@@ -164,8 +165,6 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                     } completion:^(BOOL success, NSError *error) {
                         if (error || !success) {
                             NSLog(@"Error while saving movie: %@", error);
-                        }else{
-                            NSLog(@"Finished saving movie data.");
                         }
                     }];
                 }];
@@ -183,21 +182,14 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     imgFrame = [UIImage imageWithCGImage:imageRef scale:1 orientation:UIImageOrientationUpMirrored];
     CGImageRelease(imageRef);
     
+    UIGraphicsBeginImageContextWithOptions(imgFrame.size, YES, 1);
+    
+    [imgFrame drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
+    
     for (UIImage *overlay in overlays) {
-        imgFrame = [self image:imgFrame withOverlay:overlay];
+        [overlay drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
     }
     
-    return imgFrame;
-}
-
-
-- (UIImage *)image:(UIImage *)image withOverlay:(UIImage *)overlay
-{
-    UIGraphicsBeginImageContextWithOptions(image.size, YES, 1);
-    
-    [image drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
-    [overlay drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
-
     UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -452,10 +444,8 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
 
         for (NSString *name in imageNames) {
-            @autoreleasepool {
-                MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImage:[UIImage imageNamed:name]];
-                [outputImages addObject:tmpImage];
-            }
+            MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImageName:name];
+            [outputImages addObject:tmpImage];
         }
         
         allImages = [outputImages copy];
