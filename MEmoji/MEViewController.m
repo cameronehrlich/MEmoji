@@ -143,6 +143,13 @@
     [settingsHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:settingsHeader];
     
+    self.shareView = [[MEShareView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
+    [self.shareView setDelegate:self];
+    [self.shareView setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.9]];
+    [self.shareView setBottom:self.viewFinder.bottom];
+    [self.shareView setHidden:YES];
+    [self.view addSubview:self.shareView];
+    
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, captureButtonDiameter, captureButtonDiameter);
     self.captureButton = [[MECaptureButton alloc] initWithFrame:captureButtonFrame];
@@ -617,17 +624,14 @@
 
 - (void)presentShareView
 {
-    if (!self.shareView) {
-        self.shareView = [[MEShareView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
-        [self.shareView setDelegate:self];
-        [self.shareView setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.9]];
-        [self.shareView setBottom:self.viewFinder.bottom];
-        [self.view insertSubview:self.shareView belowSubview:self.viewFinder];
-    }
     [self.captureButton setUserInteractionEnabled:NO];
+    [self.shareView setHidden:NO];
+    
     [UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self.shareView setY:self.viewFinder.bottom];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        //
+    }];
 }
 
 - (void)dismissShareView
@@ -637,6 +641,7 @@
         [self.shareView setY:self.view.bottom];
     } completion:^(BOOL finished) {
         [self.captureButton setUserInteractionEnabled:YES];
+        [self.shareView setHidden:YES];
     }];
 }
 
