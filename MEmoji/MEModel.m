@@ -342,6 +342,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         NSArray *imageNames = @[
                                 @"eyes.png",
                                 @"creepyEyes.png",
+                                @"redEyes.png",
                                 @"blackEyes.png",
                                 @"sunGlasses.png",
                                 @"nerdGlasses.png",
@@ -380,7 +381,6 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                                 @"ambiguousHands.png",
                                 @"bigFist.png",
                                 @"blackFist.png",
-                                @"fistWhite.png",
                                 @"blackPalmsHands.png",
                                 @"handsPalms.png",
                                 @"blackClapHands.png",
@@ -395,6 +395,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                                 @"flatTop.png",
                                 @"mohawkBlack.png",
                                 @"mohawkBlonde.png",
+                                @"mustacheNewerThinnerVersion.png",
                                 @"oldTimeyMustache.png",
                                 @"blueHalo.png",
                                 @"pinkBow.png",
@@ -456,7 +457,50 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 + (NSArray *)hipHopPack
 {
-    return [MEModel standardPack];
+    static NSArray *allImages = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSArray *imageNames = @[
+                                @"stonerEyes1.png",
+                                @"stonerEyes2.png",
+                                @"dollarEyes.png",
+                                @"roundedSunglasses.png",
+                                @"grill.png",
+                                @"bucketHat.png",
+                                @"snapback.png",
+                                @"bandana.png",
+                                @"bandanaLowerFace.png",
+                                @"doRag.png",
+                                @"goldChain.png",
+                                @"goldChain2.png",
+                                @"joint.png",
+                                @"blunt.png",
+                                @"styrofoamCupWithDrank.png",
+                                @"chalice.png",
+                                @"champagne.png",
+                                @"deuces.png",
+                                @"deucesBlack.png",
+                                @"middleFinger.png",
+                                @"middleFingerBlack.png",
+                                @"westside.png",
+                                @"westsideBlack.png",
+                                @"iceCreamTattoo.png",
+                                @"goldMic.png",
+                                @"headphones.png"];
+        
+        
+        NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
+        
+        for (NSString *name in imageNames) {
+            MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImageName:name];
+            [outputImages addObject:tmpImage];
+        }
+        
+        allImages = [outputImages copy];
+    });
+    
+    return allImages;
 }
 
 #pragma mark -
@@ -494,6 +538,9 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                 // Do nothing???
                 break;
             case SKPaymentTransactionStatePurchased:
+                if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
+                    [self setHipHopPackEnabled:YES];
+                }
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 if (self.purchaseCompletion) {
                     self.purchaseCompletion(YES);
@@ -506,7 +553,11 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                 }
                 break;
             case SKPaymentTransactionStateRestored:
-                NSLog(@"Restored.");
+                
+                if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
+                    [self setHipHopPackEnabled:YES];
+                }
+                
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 if (self.purchaseCompletion) {
                     self.purchaseCompletion(YES);
@@ -534,28 +585,39 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 }
 
 - (void)requestDidFinish:(SKRequest *)request
-{
-    if ([request isEqual:self.receiptRequest]) {
-
-        NSLog(@"Received receipt request succccesssssssfulllllllly!");
-        
-        for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
-            if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
-                [self setHipHopPackEnabled:YES];
-            }
+{    
+    for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
+        if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
+            [self setHipHopPackEnabled:YES];
         }
+    }
+    if (self.restoreCompletion) {
+        self.restoreCompletion(YES);
     }
 }
 
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
     NSLog(@"Failed in %s with error: %@", __PRETTY_FUNCTION__, error.debugDescription);
+    if ([request isEqual:self.productRequest]) {
+        [self.productRequest cancel];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"Trying to fetch products again...");
+            self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
+            [self.productRequest setDelegate:self];
+            [self.productRequest start];
+        });
+    }
+    if (self.restoreCompletion) {
+        self.restoreCompletion(NO);
+    }
 }
 
 - (BOOL)hipHopPackEnabled
 {
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:hipHopPackProductIdentifier]) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:hipHopPackProductIdentifier] == nil) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:hipHopPackProductIdentifier];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
     return [[NSUserDefaults standardUserDefaults] boolForKey:hipHopPackProductIdentifier];

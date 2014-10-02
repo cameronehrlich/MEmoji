@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3201656C19D225CE00B3ECB1 /* Accessories.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* Accessories.xcassets */; };
+		3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* FreePack.xcassets */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C9CA719D61E4B00E426E9 /* MEViewFinder.m */; };
+		325E995C19DD2CD6004E8DBA /* HipHipPack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */; };
 		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
 		328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A119D5220F0010CF1C /* MESectionsManager.m */; };
 		328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A419D5333F0010CF1C /* MECaptureButton.m */; };
@@ -50,7 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3201656B19D225CE00B3ECB1 /* Accessories.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accessories.xcassets; sourceTree = "<group>"; };
+		3201656B19D225CE00B3ECB1 /* FreePack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FreePack.xcassets; sourceTree = "<group>"; };
 		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
 		325C9CA619D61E4B00E426E9 /* MEViewFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEViewFinder.h; sourceTree = "<group>"; };
 		325C9CA719D61E4B00E426E9 /* MEViewFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEViewFinder.m; sourceTree = "<group>"; };
+		325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HipHipPack.xcassets; sourceTree = "<group>"; };
 		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
 		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
@@ -209,7 +211,8 @@
 				32F752691987514300045AFA /* Model */,
 				3212C2A619C77717007ED774 /* Cells */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
-				3201656B19D225CE00B3ECB1 /* Accessories.xcassets */,
+				3201656B19D225CE00B3ECB1 /* FreePack.xcassets */,
+				325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */,
 				32DD888C19870B44008E8BCE /* Supporting Files */,
 			);
 			path = MEmoji;
@@ -342,8 +345,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3201656C19D225CE00B3ECB1 /* Accessories.xcassets in Resources */,
+				3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */,
 				32DD88A119870B44008E8BCE /* Images.xcassets in Resources */,
+				325E995C19DD2CD6004E8DBA /* HipHipPack.xcassets in Resources */,
 				32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */,
 				32DD889019870B44008E8BCE /* InfoPlist.strings in Resources */,
 				32EFAB9D19DCE5AC00D0051F /* Launch Screen.xib in Resources */,

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
+
 #import "MEMEmojiCell.h"
 #import "MEOverlayCell.h"
 #import "MESectionHeaderView.h"
@@ -28,17 +29,24 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image;
 - (void)presentShareView;
+- (void)tappedSettingsButtonAtIndex:(NSInteger)buttonIndex;
 
 @end
 
-@interface MESectionsManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate>
+@interface MESectionsManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) id <MESectionsManagerDelegate> delegate;
 
+@property (nonatomic, strong) MESectionHeaderView *libraryHeader;
 @property (nonatomic, strong) UICollectionView *libraryCollectionView;
+
+@property (nonatomic, strong) MESectionHeaderView *freeHeader;
 @property (nonatomic, strong) UICollectionView *freeCollectionView;
+
+@property (nonatomic, strong) MESectionHeaderView *hipHopHeader;
 @property (nonatomic, strong) UICollectionView *hipHopCollectionView;
 
+@property (nonatomic, strong) MESectionHeaderView *settingsHeader;
 @property (nonatomic, strong) UITableView *settingsTableView;
 
 @property (strong, nonatomic) NSMutableDictionary *imageCache;

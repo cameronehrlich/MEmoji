@@ -9,7 +9,7 @@
 @import Foundation;
 #import <LLARingSpinnerView.h>
 
-const static CGFloat captureButtonDiameter = 95.0;
+const static CGFloat captureButtonDiameter = 90.0;
 
 @interface MECaptureButton : UIView
 

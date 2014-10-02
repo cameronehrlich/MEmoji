@@ -17,7 +17,8 @@
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MESectionsManagerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MESectionsManagerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
+
 
 @property (strong, nonatomic) MEViewFinder *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;

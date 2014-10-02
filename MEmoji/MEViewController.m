@@ -55,16 +55,6 @@
     [self.instructionsLabel startShimmering];
     [self.scrollView addSubview:self.instructionsLabel];
     
-    [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
-        if ([[[MEModel sharedInstance] currentImages] count] == 0) {
-            [self.instructionsLabel startShimmering];
-            [self.instructionsLabel setHidden:NO];
-        }else{
-            [self.instructionsLabel stopShimmering];
-            [self.instructionsLabel setHidden:YES];
-        }
-    }];
-    
     // One controller to rule them all
     self.sectionsManager = [[MESectionsManager alloc] init];
     [self.sectionsManager setDelegate:self];
@@ -79,16 +69,16 @@
     [self.sectionsManager.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.scrollView addSubview:self.sectionsManager.libraryCollectionView];
     
-    MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
-    [libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
-    [libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
-    [libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [libraryHeader.titleImage setImage:[UIImage imageNamed:@"myMemojiLabel"]] ; // TODO : SWAP OUT
-    [libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:libraryHeader];
+    self.sectionsManager.libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [self.sectionsManager.libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
+    [self.sectionsManager.libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
+    [self.sectionsManager.libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
+    [self.sectionsManager.libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.libraryHeader.titleImage setImage:[UIImage imageNamed:@"myMemojiLabel"]] ; // TODO : SWAP OUT
+    [self.sectionsManager.libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [self.sectionsManager.libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [self.sectionsManager.libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.sectionsManager.libraryHeader];
 
     // Free Pack
     self.sectionsManager.freeCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, self.scrollView.height)
@@ -101,15 +91,15 @@
     [self.sectionsManager.freeCollectionView setAllowsMultipleSelection:YES];
     [self.scrollView addSubview:self.sectionsManager.freeCollectionView];
     
-    MESectionHeaderView *freePackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [freePackHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [freePackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [freePackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [freePackHeader.titleImage setImage:[UIImage imageNamed:@"freePackLabel"]];
-    [freePackHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [freePackHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [freePackHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:freePackHeader];
+    self.sectionsManager.freeHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [self.sectionsManager.freeHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [self.sectionsManager.freeHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [self.sectionsManager.freeHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.freeHeader.titleImage setImage:[UIImage imageNamed:@"freePackLabel"]];
+    [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.sectionsManager.freeHeader];
     
     // Hip-Hop Pack
     self.sectionsManager.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
@@ -122,34 +112,18 @@
     [self.sectionsManager.hipHopCollectionView setAllowsMultipleSelection:YES];
     [self.scrollView addSubview:self.sectionsManager.hipHopCollectionView];
     
-    MESectionHeaderView *hipHopPackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [hipHopPackHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [hipHopPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [hipHopPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [hipHopPackHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [hipHopPackHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [hipHopPackHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [hipHopPackHeader.titleImage setImage:[UIImage imageNamed:@"hiphopPackLabel"]];
+    self.sectionsManager.hipHopHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [self.sectionsManager.hipHopHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [self.sectionsManager.hipHopHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [self.sectionsManager.hipHopHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.hipHopHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [self.sectionsManager.hipHopHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [self.sectionsManager.hipHopHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.hipHopHeader.titleImage setImage:[UIImage imageNamed:@"hiphopPackLabel"]];
 
-    [hipHopPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
-    [hipHopPackHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:hipHopPackHeader];
-    
-    if ([[MEModel sharedInstance] hipHopPackEnabled]) {
-        [self.sectionsManager.hipHopCollectionView setAlpha:1];
-    }else{
-        [self.sectionsManager.hipHopCollectionView setAlpha:0.4];
-        [RACObserve([MEModel sharedInstance], hipHopPackProduct) subscribeNext:^(id x) {
-            if (x) {
-                NSString *priceString = [MEModel formattedPriceForProduct:x];
-                [hipHopPackHeader.purchaseButton setTitle:[NSString stringWithFormat:@"Buy %@", priceString] forState:UIControlStateNormal];
-                [hipHopPackHeader.purchaseButton setUserInteractionEnabled:YES];
-            }else{
-                [hipHopPackHeader.purchaseButton setTitle:[NSString stringWithFormat:@"Buy"] forState:UIControlStateNormal];
-                [hipHopPackHeader.purchaseButton setUserInteractionEnabled:NO];
-            }
-        }];
-    }
+    [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
+    [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.sectionsManager.hipHopHeader];
     
     // Settings page
     self.sectionsManager.settingsTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height) style:UITableViewStylePlain];
@@ -163,10 +137,10 @@
     [self.scrollView addSubview:self.sectionsManager.settingsTableView];
     
     MESectionHeaderView *settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width *3, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [settingsHeader.titleImage setImage:[UIImage imageNamed:@"freePackLabel"]];
+    [settingsHeader.titleImage setImage:[UIImage imageNamed:@"settingsLabel"]];
     [settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [settingsHeader.leftButton addTarget:settingsHeader action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:settingsHeader];
     
     // Capture Button
@@ -183,7 +157,54 @@
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
     [self updateViewFinderButtons];
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+    [self setUpObservers];
 }
+
+- (void)setUpObservers
+{
+    // instruction Label
+    [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
+        if ([[[MEModel sharedInstance] currentImages] count] == 0) {
+            [self.instructionsLabel startShimmering];
+            [self.instructionsLabel setHidden:NO];
+        }else{
+            [self.instructionsLabel stopShimmering];
+            [self.instructionsLabel setHidden:YES];
+        }
+    }];
+    
+    // HipHop Pack
+    [RACObserve([MEModel sharedInstance], hipHopPackEnabled) subscribeNext:^(id x) {
+        if (x) {
+            [self.sectionsManager.hipHopHeader.purchaseButton setTitle:@"Unlocked!" forState:UIControlStateNormal];
+            [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:NO];
+            [self.sectionsManager.hipHopCollectionView setAlpha:1];
+            [self.sectionsManager.hipHopCollectionView reloadData];
+        }else{
+            [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
+            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
+            [self.sectionsManager.hipHopCollectionView reloadData];
+        }
+    }];
+    
+    [RACObserve([MEModel sharedInstance], hipHopPackProduct) subscribeNext:^(id x) {
+        if (![[MEModel sharedInstance] hipHopPackEnabled]) {
+
+            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
+
+            if (x) {
+                NSString *priceString = [MEModel formattedPriceForProduct:x];
+                [self.sectionsManager.hipHopHeader.purchaseButton setTitle:[NSString stringWithFormat:@"Buy %@", priceString] forState:UIControlStateNormal];
+                [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
+            }else{
+                [self.sectionsManager.hipHopHeader.purchaseButton setTitle:@"Buy" forState:UIControlStateNormal];
+                [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:NO];
+            }
+        }
+    }];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -192,13 +213,6 @@
     
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
-    
-    if ([[[MEModel sharedInstance] currentImages] count] != 0) {
-        
-        [UIView animateWithDuration:0.75 delay:0.3 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
-        } completion:nil];
-    }
 }
 
 - (void)clearInterface
@@ -422,15 +436,44 @@
             [[MEModel sharedInstance].HUD showInView:self.view];
             [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] hipHopPackProduct] withCompletion:^(BOOL success) {
                 [[MEModel sharedInstance].HUD dismiss];
-                if (success) {
-                    [self.sectionsManager.hipHopCollectionView reloadData];
-                    NSLog(@"Unlocked Hip-Hop Pack");
-                }
             }];
             break;
         }
         default:
             break;
+    }
+}
+
+- (void)tappedSettingsButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        if (![MFMailComposeViewController canSendMail]) {
+            [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"It appears your device is not setup to send mail.\nPlease email us at support@luckybunnyapps.com" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+            return;
+        }else{
+            [[[MEModel sharedInstance] HUD] showInView:self.view];
+            
+            MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+            [mailController setMailComposeDelegate:self];
+            [mailController setSubject:@"MEmoji Support"];
+            [mailController setMessageBody:@"Dear MEmoji support team,\n" isHTML:NO];
+            [mailController setToRecipients:[NSArray arrayWithObject:@"support@luckybunnyapps.com"]];
+            [self presentViewController:mailController animated:YES completion:^{
+                [[[MEModel sharedInstance] HUD] dismiss];
+            }];
+        }
+    }else if (buttonIndex == 1){
+        //
+    }else if (buttonIndex == 2){
+        [[[MEModel sharedInstance] HUD] showInView:self.view];
+        [[MEModel sharedInstance] restorePurchasesCompletion:^(BOOL success) {
+            [[[MEModel sharedInstance] HUD] dismiss];
+            if (success) {
+                [[[UIAlertView alloc] initWithTitle:@"Restored!" message:@"All of your previous purchases have been restored!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+            }else{
+                [[[UIAlertView alloc] initWithTitle:@"Failed!" message:@"We could not find any purchases to restore at this time.\nPlease contact support@luckybunnyapps.com if you believe this is an error." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+            }
+        }];
     }
 }
 
@@ -531,9 +574,9 @@
                     NSLog(@"Error saving asset to camera. %@", error.debugDescription);
                 }
                 [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                [UIAlertView showWithTitle:@"Saved Video to Library"
+                [UIAlertView showWithTitle:@"Ready to Upload to Instagram!"
                                    message:@"You can post your MEmoji by selecting it from your library once in Instagram."
-                         cancelButtonTitle:@"Let's go!"
+                         cancelButtonTitle:@"Go to Instagram"
                          otherButtonTitles:nil
                                   tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                       NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
@@ -556,7 +599,7 @@
                                           
                                           [UIAlertView showWithTitle:@"Saved GIF to Library"
                                                              message:@"You can tweet your MEmoji by selecting it from your library once in Twitter."
-                                                   cancelButtonTitle:@"Let's go!"
+                                                   cancelButtonTitle:@"Go to Twitter"
                                                    otherButtonTitles:nil
                                                             tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                                                 
@@ -618,5 +661,13 @@
     return YES;
 }
 
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end
 

@@ -252,7 +252,7 @@
             [cell.textLabel setText:@"Contact us"];
             break;
         case 1:
-            [cell.textLabel setText:@"Remove Watermark"];
+            [cell.textLabel setText:@"Leave a nice review!"];
             break;
         case 2:
             [cell.textLabel setText:@"Restore Purchases"];
@@ -277,7 +277,29 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3; //TODO : implement
+    return 3;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.delegate tappedSettingsButtonAtIndex:indexPath.row];
+    
+    switch (indexPath.row) {
+        case 0:
+            // Mail
+            break;
+        case 1:
+            // Leave a Review
+            [[UIApplication sharedApplication] openURL:
+             [NSURL URLWithString:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=921847909&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software"]];
+            break;
+        case 2:
+            // Restore purchases
+            break;
+            
+        default:
+            break;
+    }
 }
 
 @end
