@@ -38,7 +38,7 @@
 
 - (CALayer *)layer
 {
-    if (!self.layer) {
+    if (!_layer) {
         _layer = [CALayer layer];
         _layer.contents = (id)_image.CGImage;
         // MUST INDEPENDENTLY SET LAYER FRAME OR IT WONT WORK

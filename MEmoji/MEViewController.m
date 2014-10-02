@@ -17,6 +17,7 @@
 #import "MEOverlayCell.h"
 #import "MESectionHeaderView.h"
 #import "MECaptureButton.h"
+#import "MESettingsCell.h"
 
 @implementation MEViewController
 
@@ -35,7 +36,7 @@
     
     // Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.viewFinder.bottom, self.view.width, self.view.height - self.viewFinder.height)];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*3, self.scrollView.height)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*4, self.scrollView.height)];
     [self.scrollView setBackgroundColor:[UIColor lightGrayColor]];
     [self.scrollView setDelegate:self];
     [self.scrollView setPagingEnabled:YES];
@@ -76,7 +77,6 @@
     [self.sectionsManager.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.sectionsManager.libraryCollectionView registerClass:[MEMEmojiCell class] forCellWithReuseIdentifier:@"MEmojiCell"];
     [self.sectionsManager.libraryCollectionView setAlwaysBounceVertical:YES];
-    [self.sectionsManager.libraryCollectionView setScrollsToTop:YES];
     [self.scrollView addSubview:self.sectionsManager.libraryCollectionView];
     
     MESectionHeaderView *libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
@@ -99,7 +99,6 @@
     [self.sectionsManager.freeCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
     [self.sectionsManager.freeCollectionView setAlwaysBounceVertical:YES];
     [self.sectionsManager.freeCollectionView setAllowsMultipleSelection:YES];
-    [self.sectionsManager.freeCollectionView setScrollsToTop:NO];
     [self.scrollView addSubview:self.sectionsManager.freeCollectionView];
     
     MESectionHeaderView *freePackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2)];
@@ -121,13 +120,15 @@
     [self.sectionsManager.hipHopCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.sectionsManager.hipHopCollectionView setAlwaysBounceVertical:YES];
     [self.sectionsManager.hipHopCollectionView setAllowsMultipleSelection:YES];
-    [self.sectionsManager.hipHopCollectionView setScrollsToTop:NO];
     [self.scrollView addSubview:self.sectionsManager.hipHopCollectionView];
     
     MESectionHeaderView *hipHopPackHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
     [hipHopPackHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [hipHopPackHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [hipHopPackHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [hipHopPackHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [hipHopPackHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [hipHopPackHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [hipHopPackHeader.titleImage setImage:[UIImage imageNamed:@"hiphopPackLabel"]];
 
     [hipHopPackHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
@@ -150,12 +151,30 @@
         }];
     }
     
+    // Settings page
+    self.sectionsManager.settingsTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height) style:UITableViewStylePlain];
+    [self.sectionsManager.settingsTableView registerClass:[MESettingsCell class] forCellReuseIdentifier:@"SettingsCell"];
+    [self.sectionsManager.settingsTableView setDelegate:self.sectionsManager];
+    [self.sectionsManager.settingsTableView setDataSource:self.sectionsManager];
+    [self.sectionsManager.settingsTableView setContentInset:UIEdgeInsetsMake(2 + captureButtonDiameter/2, 0, 0, 0)];
+    [self.sectionsManager.settingsTableView setBackgroundColor:[UIColor clearColor]];
+    [self.sectionsManager.settingsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.sectionsManager.settingsTableView setSeparatorColor:[UIColor clearColor]];
+    [self.scrollView addSubview:self.sectionsManager.settingsTableView];
+    
+    MESectionHeaderView *settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width *3, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [settingsHeader.titleImage setImage:[UIImage imageNamed:@"freePackLabel"]];
+    [settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [settingsHeader.leftButton addTarget:settingsHeader action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:settingsHeader];
+    
     // Capture Button
     CGRect captureButtonFrame = CGRectMake(0, 0, captureButtonDiameter, captureButtonDiameter);
     self.captureButton = [[MECaptureButton alloc] initWithFrame:captureButtonFrame];
     [self.captureButton setCenter:CGPointMake(self.viewFinder.centerX, self.viewFinder.bottom)];
     [self.view addSubview:self.captureButton];
-
+    
     // Gestures
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.captureButton addGestureRecognizer:singleTapRecognizer];

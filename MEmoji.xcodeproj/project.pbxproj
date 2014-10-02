@@ -33,6 +33,7 @@
 		32DD88B219870B44008E8BCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD88B019870B44008E8BCE /* InfoPlist.strings */; };
 		32DD88B419870B44008E8BCE /* MEmojiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD88B319870B44008E8BCE /* MEmojiTests.m */; };
 		32EFAB9D19DCE5AC00D0051F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */; };
+		32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFAB9F19DD097000D0051F /* MESettingsCell.m */; };
 		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
 		32F752681987513000045AFA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F752671987513000045AFA /* Image.m */; };
 		B70966644BFC49138AC4B007 /* libPods-MEmoji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */; };
@@ -95,6 +96,8 @@
 		32DD88B119870B44008E8BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DD88B319870B44008E8BCE /* MEmojiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEmojiTests.m; sourceTree = "<group>"; };
 		32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "../Launch Screen.xib"; sourceTree = "<group>"; };
+		32EFAB9E19DD097000D0051F /* MESettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESettingsCell.h; sourceTree = "<group>"; };
+		32EFAB9F19DD097000D0051F /* MESettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESettingsCell.m; sourceTree = "<group>"; };
 		32F7526419874FEA00045AFA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 				327A02231987542200DF27BC /* MEMEmojiCell.m */,
 				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
 				3218C80D19C7691C0035B7BA /* MEOverlayCell.m */,
+				32EFAB9E19DD097000D0051F /* MESettingsCell.h */,
+				32EFAB9F19DD097000D0051F /* MESettingsCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -407,6 +412,7 @@
 				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
 				32F752681987513000045AFA /* Image.m in Sources */,
 				328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */,
+				32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */,
 				32A9384B199BE59E00125DA8 /* MEModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

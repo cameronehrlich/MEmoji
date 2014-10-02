@@ -8,6 +8,7 @@
 
 #import "MESectionsManager.h"
 #import "MECaptureButton.h"
+#import "MESettingsCell.h"
 
 @implementation MESectionsManager
 
@@ -233,6 +234,50 @@
         return [[MEModel sharedInstance] hipHopPackEnabled];
     }
     return YES;
+}
+
+#pragma mark -
+#pragma mark UITableViewDelegate and Datasource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MESettingsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor clearColor]];
+    [cell.textLabel setFont:[MEModel mainFontWithSize:30]];
+    [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+    [cell.textLabel setTextColor:[UIColor lightTextColor]];
+    
+    switch (indexPath.row) {
+        case 0:
+            [cell.textLabel setText:@"Contact us"];
+            break;
+        case 1:
+            [cell.textLabel setText:@"Remove Watermark"];
+            break;
+        case 2:
+            [cell.textLabel setText:@"Restore Purchases"];
+            break;
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger numberOfSections = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    return tableView.bounds.size.height/numberOfSections - (tableView.contentInset.top/numberOfSections);
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3; //TODO : implement
 }
 
 @end
