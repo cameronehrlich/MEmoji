@@ -14,6 +14,7 @@
 {
     [super layoutSubviews];
     self.selectedBackgroundView = [[UIView alloc] init];
+    [self.textLabel setAdjustsFontSizeToFitWidth:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
