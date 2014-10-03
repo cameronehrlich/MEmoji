@@ -99,6 +99,11 @@
     [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.sectionsManager.freeHeader.purchaseButton setTitle:@"More Packs" forState:UIControlStateNormal];
+    [self.sectionsManager.freeHeader.purchaseButton setTag:MEHeaderButtonTypeRightArrow];
+    [self.sectionsManager.freeHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.scrollView addSubview:self.sectionsManager.freeHeader];
     
     // Hip-Hop Pack
