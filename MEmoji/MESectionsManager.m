@@ -79,12 +79,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if ([collectionView isEqual:self.libraryCollectionView])
     {
-        Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
-        
         static NSString *CellIdentifier = @"MEmojiCell";
         MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+
+        Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
         
         [cell setEditMode:self.libraryCollectionView.allowsMultipleSelection];
         
@@ -114,45 +115,31 @@
         return cell;
     }
     
-    else if ([collectionView isEqual:self.freeCollectionView])
-    {
+    else {
         static NSString *CellIdentifier = @"OverlayCell";
         MEOverlayCell *cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.item];
         
-        if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
-            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [cell.imageView setAlpha:1];
-            } completion:nil];
-        }else{
-            [cell.imageView setImage:nil];
-            [self.loadingQueue addOperationWithBlock:^{
-                [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [cell.imageView setImage:[overlayImage image]];
-                }];
-            }];
-        }
-        return cell;
+        MEOverlayImage *overlayImage;
         
-    }
-    
-    else if ([collectionView isEqual:self.hipHopCollectionView])
-    {
-        static NSString *CellIdentifier = @"OverlayCell";
-        MEOverlayCell *cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
-
-        if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
-            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [cell.imageView setAlpha:1];
-            } completion:nil];
+        if ([collectionView isEqual:self.freeCollectionView]) {
+            overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.item];
+        }else if ([collectionView isEqual:self.hipHopCollectionView]){
+            overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
         }else{
-            [cell.imageView setImage:nil];
+            NSLog(@"Error in %s", __PRETTY_FUNCTION__);
             
+        }
+        
+        cell.layer.shouldRasterize = YES;
+        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        
+        if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
+            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [cell.imageView setAlpha:1];
+            } completion:nil];
+        }else{
+            [cell.imageView setImage:nil];
             [self.loadingQueue addOperationWithBlock:^{
                 [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
                 
@@ -162,12 +149,7 @@
             }];
         }
         return cell;
-    }
-    
-    else
-    {
-        NSLog(@"Error in %s", __PRETTY_FUNCTION__);
-        return nil;
+        
     }
 }
 

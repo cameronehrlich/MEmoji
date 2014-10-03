@@ -35,12 +35,16 @@
         [self.leftButton setAlpha:0.4];
         [self addSubview:self.leftButton];
         
-        self.titleImage = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.height,
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.height,
                                                                     0,
                                                                     (frame.size.width/2) - self.leftButton.bounds.size.width - (captureButtonDiameter/2),
                                                                     frame.size.height)];
-        [self.titleImage setContentMode:UIViewContentModeScaleAspectFit ];
-        [self addSubview:self.titleImage];
+        [self.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [self.titleLabel setFont:[MEModel mainFontWithSize:20]];
+        [self.titleLabel setNumberOfLines:1];
+        [self.titleLabel setTextColor:[UIColor whiteColor]];
+        [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [self addSubview:self.titleLabel];
         
         
         // Right

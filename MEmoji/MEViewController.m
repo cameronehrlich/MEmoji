@@ -74,7 +74,7 @@
     [self.sectionsManager.libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
     [self.sectionsManager.libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
     [self.sectionsManager.libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.libraryHeader.titleImage setImage:[UIImage imageNamed:@"myMemojiLabel"]] ; // TODO : SWAP OUT
+    [self.sectionsManager.libraryHeader.titleLabel setText:@"My MEmoji"];
     [self.sectionsManager.libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -95,7 +95,7 @@
     [self.sectionsManager.freeHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [self.sectionsManager.freeHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.freeHeader.titleImage setImage:[UIImage imageNamed:@"freePackLabel"]];
+    [self.sectionsManager.freeHeader.titleLabel setText:@"Free Pack"];
     [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -119,7 +119,7 @@
     [self.sectionsManager.hipHopHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.hipHopHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.hipHopHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.hipHopHeader.titleImage setImage:[UIImage imageNamed:@"hiphopPackLabel"]];
+    [self.sectionsManager.hipHopHeader.titleLabel setText:@"Hip Hop Pack"];
 
     [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
     [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -136,12 +136,12 @@
     [self.sectionsManager.settingsTableView setSeparatorColor:[UIColor clearColor]];
     [self.scrollView addSubview:self.sectionsManager.settingsTableView];
     
-    MESectionHeaderView *settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width *3, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [settingsHeader.titleImage setImage:[UIImage imageNamed:@"settingsLabel"]];
-    [settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [settingsHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:settingsHeader];
+    self.sectionsManager.settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width *3, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [self.sectionsManager.settingsHeader.titleLabel setText:@"Settings"];
+    [self.sectionsManager.settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [self.sectionsManager.settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [self.sectionsManager.settingsHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.sectionsManager.settingsHeader];
     
     self.shareView = [[MEShareView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
     [self.shareView setDelegate:self];
@@ -213,10 +213,15 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES]; // iPad ios 7å
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
@@ -277,27 +282,30 @@
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
     if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
-        [self.captureButton scaleUp];
+        [[MEModel sharedInstance] setRecordingStill:YES];
         [self startRecording];
-        [self finishRecording];
     }
 }
 
 -  (void)handleLongPress:(UILongPressGestureRecognizer *)sender
 {
-    
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
-            [self.captureButton scaleUp];
+            [[MEModel sharedInstance] setRecordingStill:NO];
             [self startRecording];
+            [self.viewFinder.progressView startAnimationWithCompletion:^{
+                NSLog(@"%s", __FUNCTION__);
+                [sender setEnabled:NO];
+                [sender setEnabled:YES];
+                [self.viewFinder.progressView reset];
+            }];
         }
     }
     else if (sender.state == UIGestureRecognizerStateEnded ||
              sender.state == UIGestureRecognizerStateCancelled ||
-             sender.state == UIGestureRecognizerStateFailed) {
+             sender.state == UIGestureRecognizerStateFailed) { // TODO : This can be done cleverly with a bitmask; im being lazy
+        [self.viewFinder.progressView reset];
         [self finishRecording];
-        [self.captureButton scaleDown];
-        [self.captureButton startSpinning];
     }
 }
 
@@ -311,21 +319,32 @@
     {
         NSError *error;
         [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-        if (error){ NSLog(@"Error: %@", error);}
+        if (error){ NSLog(@"Error: %@", error); return;}
     }
-    
+
     NSURL *url = [NSURL fileURLWithPath:path];
+    [self.captureButton scaleUp];
     [[[MEModel sharedInstance] fileOutput] startRecordingToOutputFileURL:url recordingDelegate:self];
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
+{
+    if ([[MEModel sharedInstance] recordingStill]) {
+        [self finishRecording];
+    }
 }
 
 - (void)finishRecording // Be careful not to call this without calling startRecording beforehand
 {
+    [self.captureButton setUserInteractionEnabled:NO];
+
     if ([[MEModel sharedInstance] fileOutput].isRecording) {
-        [self.captureButton scaleDown];
         [self.captureButton startSpinning];
+        [self.captureButton scaleDown];
         [[[MEModel sharedInstance] fileOutput] stopRecording];
     }else{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(stepOfGIF/2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            // TRY HARD
             [self finishRecording];
         });
     }
@@ -333,12 +352,12 @@
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
-    if (!error) {
-        [self captureGIF];
+    if (error) {
+        NSLog(@"Error in %s, %@", __PRETTY_FUNCTION__, error.debugDescription);
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video could not be converted for some reason!\nTry again!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
     }
-    
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video could not be converted for some reason!\nTry again!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+    [self captureGIF];
 }
 
 - (void)captureGIF
@@ -362,11 +381,13 @@
     if (YES) {
         [overlaysToRender addObject:[UIImage imageNamed:@"waterMark"]];
     }
-    
     [[MEModel sharedInstance] createEmojiFromMovieURL:url andOverlays:[overlaysToRender copy] complete:^{
+
+        [self.captureButton stopSpinning];
+        [self.captureButton setUserInteractionEnabled:YES];
+        
         [[MEModel sharedInstance] reloadCurrentImages];
         [self.sectionsManager.libraryCollectionView reloadData];
-        [self.captureButton stopSpinning];
         [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
     }];
 }

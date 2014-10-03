@@ -37,7 +37,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 + (UIFont *)mainFontWithSize:(NSInteger)size
 {
-    return [UIFont fontWithName:@"AvenirNext-DemiBold" size:size];
+    return [UIFont fontWithName:@"ArialRoundedMTBold" size:size];
 }
 
 + (NSString *)formattedPriceForProduct:(SKProduct *)product

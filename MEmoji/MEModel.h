@@ -45,6 +45,7 @@ static const CGFloat stepOfGIF = 0.12f;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CEMovieMaker *movieMaker;
 @property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
+@property (nonatomic, assign) BOOL recordingStill;
 
 @property (nonatomic, strong) NSMutableArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;

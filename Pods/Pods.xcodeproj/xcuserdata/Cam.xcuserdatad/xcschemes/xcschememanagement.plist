@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-MEmoji-Bolts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-DHAppleReceiptParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -30,6 +35,11 @@
 			<false/>
 		</dict>
 		<key>Pods-MEmoji-MagicalRecord.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -72,67 +82,77 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>07C640A6181F6DE3134795AB</key>
+		<key>1EAF3F812C332DDE1181EF0E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0AB492212802113164A15D4A</key>
+		<key>292D9420E26F1EA80BA22250</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>14F25C4B0D77CF1ECE41C376</key>
+		<key>3F47CA3AE1EB14C1F026B49E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>382B4A33C1FE5A9E8607D31C</key>
+		<key>4974809BE9898FB033C9E8EE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>45035741A2BCC4DF79B9AB6A</key>
+		<key>552B7BCFFE6A2960BA6A8CD3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>50A40F3B830A759E9CA5C9DC</key>
+		<key>5D5276DE403FB2AE63440FC5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>55F91B78A4C9221104249012</key>
+		<key>5DC403D62E1F1EA5A3BF0428</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>72A2377DE34F568600FFE59E</key>
+		<key>5E65AD57E3B760CD3E361D80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>81357B96DC14EFBA1C613AEE</key>
+		<key>7FAB17804FF8239F7FB22852</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>95F46993FEB767FF721CA425</key>
+		<key>80928AE689709668F907D531</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ABFA910954726ED54873144B</key>
+		<key>80C1737493E8A651957C01ED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B3189D9F32F5A0CEC5111864</key>
+		<key>874398687D9F12D1B6F0F9DF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C78818E54046BFE4C41AEBB6</key>
+		<key>8B254A2ED4E7241823C49DD3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B52BB05E852A79CF5440082E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D79A666C2A55D0AFD7827AFE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -1,4 +1,5 @@
 PODS:
+  - Bolts (1.1.2)
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.1)
   - GoogleAnalytics-iOS-SDK (3.0.9)
@@ -7,6 +8,8 @@ PODS:
   - MagicalRecord (2.3.0-beta.3):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.3.0-beta.3)
+  - Parse (1.4.1):
+    - Bolts (~> 1.1.2)
   - ReactiveCocoa (2.3.1):
     - ReactiveCocoa/UI
   - ReactiveCocoa/Core (2.3.1):
@@ -30,6 +33,7 @@ DEPENDENCIES:
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
   - MagicalRecord (from `https://github.com/magicalpanda/MagicalRecord.git`)
+  - Parse (~> 1.4.1)
   - ReactiveCocoa (~> 2.3)
   - UIAlertView+Blocks (~> 0.8)
   - UIColor+Hex (~> 1.0)
@@ -45,12 +49,14 @@ EXTERNAL SOURCES:
     :git: https://github.com/magicalpanda/MagicalRecord.git
 
 SPEC CHECKSUMS:
+  Bolts: 2635e8698a630774689441047f3465d78c48d485
   DHAppleReceiptParser: 7cdb2486778146b38cbc65325d22faf5883fd781
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6
   MagicalRecord: 23dfe0350eab4767cc1ce7d247af4e4cd54ee72c
+  Parse: db1a09c832b7509edcc88a65dc07229f5e578c73
   ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432

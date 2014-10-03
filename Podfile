@@ -18,6 +18,7 @@ target "MEmoji" do
     pod 'GoogleAnalytics-iOS-SDK', '~> 3.0'
     pod 'ReactiveCocoa', '~> 2.3'
     pod 'DHAppleReceiptParser', '~> 1.0'
+    pod 'Parse', '~> 1.4.1'
 end
 
 target "MEmojiTests" do

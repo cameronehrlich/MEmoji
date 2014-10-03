@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) UIButton *leftButton;
 @property (nonatomic, strong) UIButton *rightButton;
-@property (nonatomic, strong) UIImageView *titleImage;
+@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *purchaseButton;
 
 @end

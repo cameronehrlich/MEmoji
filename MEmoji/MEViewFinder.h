@@ -10,6 +10,7 @@
 
 #import <FLAnimatedImage.h>
 #import <FLAnimatedImageView.h>
+#import "MEProgressView.h"
 #import "Image.h"
 
 @class MEViewFinder;
@@ -26,6 +27,7 @@
 
 @property (nonatomic, strong, readonly) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong, readonly) CALayer *maskLayer;
+@property (nonatomic, strong)           MEProgressView *progressView;
 @property (nonatomic, strong, readonly) FLAnimatedImageView *presentationView;
 
 @property (nonatomic, strong) UIButton *topLeftButton;

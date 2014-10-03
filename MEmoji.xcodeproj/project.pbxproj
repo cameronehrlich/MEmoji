@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* FreePack.xcassets */; };
+		3210054219DE0F12001B3680 /* MEProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210054119DE0F12001B3680 /* MEProgressView.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
@@ -52,6 +53,8 @@
 
 /* Begin PBXFileReference section */
 		3201656B19D225CE00B3ECB1 /* FreePack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FreePack.xcassets; sourceTree = "<group>"; };
+		3210054019DE0F12001B3680 /* MEProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEProgressView.h; sourceTree = "<group>"; };
+		3210054119DE0F12001B3680 /* MEProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEProgressView.m; sourceTree = "<group>"; };
 		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
 				328F63A019D5220F0010CF1C /* MESectionsManager.h */,
 				328F63A119D5220F0010CF1C /* MESectionsManager.m */,
+				3210054019DE0F12001B3680 /* MEProgressView.h */,
+				3210054119DE0F12001B3680 /* MEProgressView.m */,
 				329B189819D4E526002B42BF /* MESectionHeaderView.h */,
 				329B189919D4E526002B42BF /* MESectionHeaderView.m */,
 				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
@@ -418,6 +423,7 @@
 				328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */,
 				32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */,
 				32A9384B199BE59E00125DA8 /* MEModel.m in Sources */,
+				3210054219DE0F12001B3680 /* MEProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,16 +550,20 @@
 			baseConfigurationReference = 67E171B79A82CDFAFBD5200A /* Pods-MEmoji.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.LuckyBunny.MEmoji";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.LuckyBunny.MEmoji";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "b772c6a0-1400-4823-8b72-87e005cb379e";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -563,15 +573,19 @@
 			baseConfigurationReference = 44D715BB95BC35D25908B3A1 /* Pods-MEmoji.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.LuckyBunny.MEmoji";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.LuckyBunny.MEmoji";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "b772c6a0-1400-4823-8b72-87e005cb379e";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

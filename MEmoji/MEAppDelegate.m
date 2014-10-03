@@ -15,7 +15,7 @@
     [MEModel sharedInstance];
 
     [self.window  setTintColor:[UIColor whiteColor]];
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [application setApplicationSupportsShakeToEdit:YES];
     
     [[GAI sharedInstance] setTrackUncaughtExceptions:YES];
@@ -24,7 +24,39 @@
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-35804692-4"];
     [[[GAI sharedInstance] defaultTracker] setAllowIDFACollection:NO];
     
+    [Parse setApplicationId:@"qordhDuNzL5nBU9u7H3w2krXjn1HC2Nthl0s7K4n"
+                  clientKey:@"aOTBL97DNoMle0bzg57AFBCqtKXRQQhVZ0xuNSXG"];
+    
+    // Register for Push Notitications, if running iOS 8
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                        UIUserNotificationTypeBadge |
+                                                        UIUserNotificationTypeSound);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                                 categories:nil];
+        [application registerUserNotificationSettings:settings];
+        [application registerForRemoteNotifications];
+    } else {
+        // Register for Push Notifications before iOS 8
+        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                         UIRemoteNotificationTypeAlert |
+                                                         UIRemoteNotificationTypeSound)];
+    }
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+    // Store the deviceToken in the current installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation setChannels:@[ @"global" ]];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [PFPush handlePush:userInfo];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -53,6 +85,16 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [MagicalRecord cleanUp];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    if ([[url description] isEqualToString:@"memoji://hiphoppack"]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[MEModel sharedInstance] setHipHopPackEnabled:YES];
+        });
+    }
+    return YES;
 }
 
 @end

@@ -23,7 +23,7 @@
         [self.maskLayer setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.maskLayer setContents:(id)[UIImage imageNamed:@"maskLayer"].CGImage];
         [self.previewLayer addSublayer:self.maskLayer];
-        [self setShowingMask:YES];
+        [self setShowingMask:NO];
         
         CGRect cornerbuttonRect = CGRectMake(0, 0, 30, 30);
         
@@ -69,6 +69,9 @@
         
         self.bottomRightButton.y -= margin;
         self.bottomRightButton.x -= margin;
+        
+        self.progressView = [[MEProgressView alloc] initWithFrame:CGRectMake(0, 0, self.width, 8) andColor:[UIColor redColor]];
+        [self addSubview:self.progressView];
         
         _presentationView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
         [self addSubview:self.presentationView];
