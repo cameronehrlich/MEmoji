@@ -24,6 +24,12 @@
 #define COCOAPODS_VERSION_MINOR_FLAnimatedImage 0
 #define COCOAPODS_VERSION_PATCH_FLAnimatedImage 1
 
+// FSOpenInInstagram
+#define COCOAPODS_POD_AVAILABLE_FSOpenInInstagram
+#define COCOAPODS_VERSION_MAJOR_FSOpenInInstagram 1
+#define COCOAPODS_VERSION_MINOR_FSOpenInInstagram 0
+#define COCOAPODS_VERSION_PATCH_FSOpenInInstagram 0
+
 // GoogleAnalytics-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3

@@ -80,11 +80,12 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
 }
 
-- (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback
+- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback
 {
     self.creationCompletion = callback;
     
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]]
+                                            options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
     
     AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     [generator setRequestedTimeToleranceAfter:kCMTimeZero];
@@ -97,7 +98,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     NSMutableArray *outImages = [[NSMutableArray alloc] init];
     NSError *error;
     
-    NSInteger frameRate = 80;
+    const static NSInteger frameRate = 80;
     
     for (NSInteger frame = 0; frame < duration.value; frame += frameRate) {
         @autoreleasepool {
@@ -105,7 +106,6 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
             
             CMTime actualTime;
             CGImageRef refImg = [generator copyCGImageAtTime:keyFrame actualTime:&actualTime error:&error];
-            
             UIImage *singleFrame = [UIImage imageWithCGImage:refImg scale:1 orientation:UIImageOrientationUp];
             
             BOOL isBackFacing = (self.inputDevice.device == self.backCamera);
@@ -113,8 +113,10 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                 // Flip image only if using back camera
                 singleFrame = [self flippedImageAxis:singleFrame];
             }
+            const CGRect cropRect = CGRectMake(0, (singleFrame.size.height/2) - (singleFrame.size.width/2), singleFrame.size.width, singleFrame.size.width);
             
-            UIImage *tmpFrameImage = [self emojifyFrame:singleFrame andOverlays:overlays];
+            UIImage *croppedImage = [self cropImage:singleFrame toRect:cropRect];
+            UIImage *tmpFrameImage = [self emojifyFrame:croppedImage andOverlays:overlays];
             
             [outImages addObject:tmpFrameImage];
             
@@ -128,10 +130,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     NSArray *emojifiedFrames = [outImages copy];
     
     NSData *GIFData = [self createGIFwithFrames:emojifiedFrames];
-    
-    if (GIFData == nil) {
-        NSLog(@"Trying to save nil gif!");
-    }
+    NSData *frameData = [NSKeyedArchiver archivedDataWithRootObject:emojifiedFrames];
     
     __block Image *justSaved;
     
@@ -139,50 +138,53 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         Image *newImage = [Image MR_createEntityInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
+        [newImage setFrameData:frameData]; // TODO : Create video only when its needed
+        [newImage setAnimated:@(animated)];
         justSaved = newImage;
 
     } completion:^(BOOL success, NSError *error) {
         self.selectedImage = justSaved;
         self.creationCompletion();
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.movieRenderingQueue addOperationWithBlock:^{
-                self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
-                                                                                                    withWidth:dimensionOfGIF
-                                                                                                    andHeight:dimensionOfGIF]];
-                
-                NSArray *framesTimes3 = [[emojifiedFrames arrayByAddingObjectsFromArray:emojifiedFrames] arrayByAddingObjectsFromArray:emojifiedFrames];
-                
-                [self.movieMaker createMovieFromImages:framesTimes3 withCompletion:^(BOOL success, NSURL *fileURL) {
-                    if (!success) {
-                        NSLog(@"There was an error creating the movie");
+        if (animated) {
+            // TODO : Create video only when its needed
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"Creating movie...");
+                [self.movieRenderingQueue addOperationWithBlock:^{
+                    self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
+                                                                                                        withWidth:dimensionOfGIF
+                                                                                                        andHeight:dimensionOfGIF]];
+                    
+                    NSMutableArray *framesMultiplied = [[NSMutableArray alloc] init];
+                    
+                    for (NSInteger i = 0; i <= numberOfGIFVideoLoops; i++) {
+                        [framesMultiplied addObjectsFromArray:emojifiedFrames];
                     }
-                    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-                        NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
-                        
-                        [[justSaved MR_inContext:localContext] setMovieData:movieData];
-                        
-                    } completion:^(BOOL success, NSError *error) {
-                        if (error || !success) {
-                            NSLog(@"Error while saving movie: %@", error);
+                    
+                    [self.movieMaker createMovieFromImages:framesMultiplied withCompletion:^(BOOL success, NSURL *fileURL) {
+                        if (!success) {
+                            NSLog(@"There was an error creating the movie");
                         }
+                        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+                            NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
+                            
+                            [[justSaved MR_inContext:localContext] setMovieData:movieData];
+                            
+                        } completion:^(BOOL success, NSError *error) {
+                            if (error || !success) {
+                                NSLog(@"Error while saving movie: %@", error);
+                            }
+                        }];
                     }];
                 }];
-            }];
-            
-        });
+            });
+        }
     }];
 }
 
 - (UIImage *)emojifyFrame:(UIImage *)imgFrame andOverlays:(NSArray *)overlays
 {
-    CGRect cropRect = CGRectMake(0, (imgFrame.size.height/2) - (imgFrame.size.width/2), imgFrame.size.width, imgFrame.size.width);
-    
-    CGImageRef imageRef = CGImageCreateWithImageInRect([imgFrame CGImage], cropRect);
-    imgFrame = [UIImage imageWithCGImage:imageRef scale:1 orientation:UIImageOrientationUpMirrored];
-    CGImageRelease(imageRef);
-    
-    UIGraphicsBeginImageContextWithOptions(imgFrame.size, YES, 1);
+    UIGraphicsBeginImageContextWithOptions(imgFrame.size, YES, 1.0);
     
     [imgFrame drawInRect:CGRectMake( 0, 0, dimensionOfGIF, dimensionOfGIF)];
     
@@ -194,6 +196,15 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     UIGraphicsEndImageContext();
     
     return destImage;
+}
+
+- (UIImage *)cropImage:(UIImage *)image toRect:(CGRect)rect
+{
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], rect);
+    UIImage *imgFrame = [UIImage imageWithCGImage:imageRef scale:1.0 orientation:UIImageOrientationUpMirrored];
+    CGImageRelease(imageRef);
+    
+    return imgFrame;
 }
 
 - (NSData *)createGIFwithFrames:(NSArray *)images
@@ -209,7 +220,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
                                               (__bridge id)kCGImagePropertyGIFDelayTime:[NSNumber numberWithFloat:stepOfGIF], // a float (not double!) in seconds, rounded to centiseconds in the GIF data
                                               }
                                       };
-    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
+    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil]; //TODO : Proper error checking here?
     NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:@"animated.gif"];
     
     CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, images.count, NULL);
@@ -232,7 +243,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 - (UIImage *)flippedImageAxis:(UIImage *)image
 {
-    UIGraphicsBeginImageContextWithOptions(image.size, YES, 1);
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     // flip x
@@ -259,14 +270,14 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     
     [self initializeCameraReferences];
     
-    self.fileOutput = [[AVCaptureMovieFileOutput alloc] init];
-    [self.session addOutput:self.fileOutput];
+    // Video
+    self.videoFileOutput = [[AVCaptureMovieFileOutput alloc] init];
+    [self.session addOutput:self.videoFileOutput];
     
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
     [self.session startRunning];
-    
     [self beginRecordingWithDevice:self.frontCamera];
 }
 
@@ -274,13 +285,13 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 {
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     
-    for(AVCaptureDevice *device in devices)
+    for (AVCaptureDevice *device in devices)
     {
-        if(device.position == AVCaptureDevicePositionBack)
+        if (device.position == AVCaptureDevicePositionBack)
         {
             self.backCamera = device;
         }
-        else if(device.position == AVCaptureDevicePositionFront)
+        else if (device.position == AVCaptureDevicePositionFront)
         {
             self.frontCamera = device;
         }
@@ -305,7 +316,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     
     [self.session addInput:self.inputDevice];
     
-    self.session.sessionPreset = AVCaptureSessionPresetMedium;
+    self.session.sessionPreset = AVCaptureSessionPreset640x480;
     [self.session startRunning];
 }
 

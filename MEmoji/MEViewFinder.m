@@ -25,7 +25,7 @@
         [self.previewLayer addSublayer:self.maskLayer];
         [self setShowingMask:NO];
         
-        CGRect cornerbuttonRect = CGRectMake(0, 0, 30, 30);
+        CGRect cornerbuttonRect = CGRectMake(0, 0, 37, 37);
         
         self.topLeftButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.topLeftButton setFrame:cornerbuttonRect];
@@ -47,17 +47,21 @@
         
         for (UIButton *button in self.allButtons) {
             [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
-            [button.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+            [button.imageView.layer setShadowColor:[UIColor whiteColor].CGColor];
             [button.imageView.layer setShadowOffset:CGSizeMake(0, 0)];
-            [button.imageView.layer setShadowOpacity:0.5];
-            [button.imageView.layer setShadowRadius:1];
+            [button.imageView.layer setShadowOpacity:0.85];
+            [button.imageView.layer setShadowRadius:4];
             [button setShowsTouchWhenHighlighted:YES];
             [button addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+            [button setClipsToBounds:NO];
+            [button.layer setMasksToBounds:NO];
+            [button.imageView setClipsToBounds:NO];
+            [button.imageView.layer setMasksToBounds:NO];
             [self addSubview:button];
         }
         
         // Reposition buttons
-        CGFloat margin = 10;
+        const static CGFloat margin = 10;
         self.topLeftButton.y += margin;
         self.topLeftButton.x += margin;
         
@@ -71,6 +75,7 @@
         self.bottomRightButton.x -= margin;
         
         self.progressView = [[MEProgressView alloc] initWithFrame:CGRectMake(0, 0, self.width, 8) andColor:[UIColor redColor]];
+        [self.progressView setDuration:lengthOfGIF];
         [self addSubview:self.progressView];
         
         _presentationView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];

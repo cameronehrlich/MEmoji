@@ -19,6 +19,7 @@ target "MEmoji" do
     pod 'ReactiveCocoa', '~> 2.3'
     pod 'DHAppleReceiptParser', '~> 1.0'
     pod 'Parse', '~> 1.4.1'
+    pod 'FSOpenInInstagram', '~> 1.0'
 end
 
 target "MEmojiTests" do

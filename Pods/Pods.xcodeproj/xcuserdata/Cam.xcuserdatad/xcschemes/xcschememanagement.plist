@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MEmoji-FSOpenInInstagram.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -82,77 +87,82 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>27E2980EEC4FBC748F8929E4</key>
+		<key>02319B3CD98E54FBB6AA9B6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2D6975A93E9C20ED66F45338</key>
+		<key>4ED2AAD14D5BD32AE9EF57F2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2DAAE6F6DA41262A52946233</key>
+		<key>541A762B4D26A091538B3FD3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>531E4EDDAF6AEA553499F9A5</key>
+		<key>5BD415F46DD12A4EFA439110</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>676597600E49271C6414EEC6</key>
+		<key>7E98786F66552202F3B90E6C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6ED3D758EF0768B4CE1CB676</key>
+		<key>7EF7CD3E5401AC262B0703D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>70FCC0064C275FEB10BDE236</key>
+		<key>7FFF5722815722D4D4E0B916</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7FB42BD83EB15526423CA016</key>
+		<key>8B2B04B1E7E9C145D3E670C6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8A534AF1251DECD2877AD435</key>
+		<key>B1B7D20EF3D38877EF320FBB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F300BDF4542065A352AF957</key>
+		<key>C1C0ACBAA94B6DF4B3F71D24</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AADA048A443357FD7FD5F7D7</key>
+		<key>C5BD5FCF66997B7BF01ACF0B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6E1D633D9844248FB17D0EA</key>
+		<key>CE9F0CEEE65710D2A1176565</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D773CC976F883489E25E2F69</key>
+		<key>DA812E29B2C22432F9034D39</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E22F9C1F14A2652AE95F79C6</key>
+		<key>E068FB476FE4583C9A02B47F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F42DDF627DFB263AF6337A6D</key>
+		<key>ED62E505CB9BDC01F028609F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FEF2948635795826A1CAB68D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

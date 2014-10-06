@@ -2,6 +2,7 @@ PODS:
   - Bolts (1.1.2)
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.1)
+  - FSOpenInInstagram (1.0)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - JGProgressHUD (1.2.2)
   - LLARingSpinnerView (0.1.2)
@@ -29,6 +30,7 @@ PODS:
 DEPENDENCIES:
   - DHAppleReceiptParser (~> 1.0)
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
+  - FSOpenInInstagram (~> 1.0)
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
@@ -52,6 +54,7 @@ SPEC CHECKSUMS:
   Bolts: 2635e8698a630774689441047f3465d78c48d485
   DHAppleReceiptParser: 7cdb2486778146b38cbc65325d22faf5883fd781
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
+  FSOpenInInstagram: adae5a504d4573037d42c06f74498914e8a6f7a9
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6

@@ -28,29 +28,29 @@
 @import MobileCoreServices;
 @import StoreKit;
 
-typedef void (^MEmojiCallback)();
+typedef void (^MEmojiCreationCallback)();
 typedef void (^PurchaseCallback)(BOOL success);
 
 static const CGFloat dimensionOfGIF = 320;
-static const CGFloat stepOfGIF = 0.12f;
-
+static const CGFloat stepOfGIF = 0.12;
+static const CGFloat lengthOfGIF = 5.0;
+static const NSInteger numberOfGIFVideoLoops = 10;
 @interface MEModel : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureDevice *frontCamera;
 @property (nonatomic, strong) AVCaptureDevice *backCamera;
 @property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
-@property (nonatomic, strong) AVCaptureStillImageOutput *stillImageOutput;
-@property (nonatomic, strong) AVCaptureMovieFileOutput *fileOutput;
+@property (nonatomic, strong) AVCaptureMovieFileOutput *videoFileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) CEMovieMaker *movieMaker;
 @property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
-@property (nonatomic, assign) BOOL recordingStill;
+@property (nonatomic, assign) BOOL capturingStill;
 
 @property (nonatomic, strong) NSMutableArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;
 @property (nonatomic, strong) Image *selectedImage;
-@property (copy)              MEmojiCallback creationCompletion;
+@property (copy)              MEmojiCreationCallback creationCompletion;
 
 @property (nonatomic, strong) SKProduct *hipHopPackProduct;
 @property (nonatomic, strong) SKProductsRequest *productRequest;
@@ -67,7 +67,8 @@ static const CGFloat stepOfGIF = 0.12f;
 + (instancetype)sharedInstance;
 + (NSString *)currentVideoPath;
 
-- (void)createEmojiFromMovieURL:(NSURL *)url andOverlays:(NSArray *)overlays complete:(MEmojiCallback)callback;
+- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback;
+
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;
 - (void)reloadCurrentImages;

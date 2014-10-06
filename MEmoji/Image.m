@@ -13,6 +13,8 @@
 
 @dynamic movieData;
 @dynamic imageData;
+@dynamic frameData;
 @dynamic createdAt;
+@dynamic animated;
 
 @end

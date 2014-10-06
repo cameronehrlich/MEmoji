@@ -165,7 +165,7 @@
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.captureButton addGestureRecognizer:singleTapRecognizer];
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    [longPressRecognier setMinimumPressDuration:0.15];
+    [longPressRecognier setMinimumPressDuration:0.2];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
     [self updateViewFinderButtons];
@@ -178,8 +178,8 @@
     // instruction Label
     [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
         if ([[[MEModel sharedInstance] currentImages] count] == 0) {
-            [self.instructionsLabel startShimmering];
             [self.instructionsLabel setHidden:NO];
+            [self.instructionsLabel startShimmering];
         }else{
             [self.instructionsLabel stopShimmering];
             [self.instructionsLabel setHidden:YES];
@@ -286,8 +286,8 @@
 #pragma mark UIGestureRecognizerHandlers
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
-    if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
-        [[MEModel sharedInstance] setRecordingStill:YES];
+    if (![[[MEModel sharedInstance] videoFileOutput] isRecording]) {
+        [[MEModel sharedInstance] setCapturingStill:YES];
         [self startRecording];
     }
 }
@@ -295,11 +295,10 @@
 -  (void)handleLongPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
-        if (![[[MEModel sharedInstance] fileOutput] isRecording]) {
-            [[MEModel sharedInstance] setRecordingStill:NO];
+        if (![[[MEModel sharedInstance] videoFileOutput] isRecording]) {
+            [[MEModel sharedInstance] setCapturingStill:NO];
             [self startRecording];
             [self.viewFinder.progressView startAnimationWithCompletion:^{
-                NSLog(@"%s", __FUNCTION__);
                 [sender setEnabled:NO];
                 [sender setEnabled:YES];
                 [self.viewFinder.progressView reset];
@@ -329,12 +328,12 @@
 
     NSURL *url = [NSURL fileURLWithPath:path];
     [self.captureButton scaleUp];
-    [[[MEModel sharedInstance] fileOutput] startRecordingToOutputFileURL:url recordingDelegate:self];
+    [[[MEModel sharedInstance] videoFileOutput] startRecordingToOutputFileURL:url recordingDelegate:self];
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
 {
-    if ([[MEModel sharedInstance] recordingStill]) {
+    if ([[MEModel sharedInstance] capturingStill]) {
         [self finishRecording];
     }
 }
@@ -343,10 +342,10 @@
 {
     [self.captureButton setUserInteractionEnabled:NO];
 
-    if ([[MEModel sharedInstance] fileOutput].isRecording) {
+    if ([[MEModel sharedInstance] videoFileOutput].isRecording) {
         [self.captureButton startSpinning];
         [self.captureButton scaleDown];
-        [[[MEModel sharedInstance] fileOutput] stopRecording];
+        [[[MEModel sharedInstance] videoFileOutput] stopRecording];
     }else{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // TRY HARD
@@ -370,7 +369,6 @@
     [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:NO];
     [self.sectionsManager.libraryCollectionView reloadData];
     
-    NSURL *url = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
     // Add mask first
@@ -383,18 +381,20 @@
     }
     
     // Finally, add watermark layer
-    if (YES) {
+    if (YES) { // TODO : Allow user to disable watermark somehow
         [overlaysToRender addObject:[UIImage imageNamed:@"waterMark"]];
     }
-    [[MEModel sharedInstance] createEmojiFromMovieURL:url andOverlays:[overlaysToRender copy] complete:^{
-
-        [self.captureButton stopSpinning];
-        [self.captureButton setUserInteractionEnabled:YES];
-        
-        [[MEModel sharedInstance] reloadCurrentImages];
-        [self.sectionsManager.libraryCollectionView reloadData];
-        [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    }];
+    
+    [[MEModel sharedInstance] createImageAnimated:![[MEModel sharedInstance] capturingStill]
+                                     withOverlays:[overlaysToRender copy]
+                                         complete:^{
+                                             [self.captureButton stopSpinning];
+                                             [self.captureButton setUserInteractionEnabled:YES];
+                                             
+                                             [[MEModel sharedInstance] reloadCurrentImages];
+                                             [self.sectionsManager.libraryCollectionView reloadData];
+                                             [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                                         }];
 }
 
 #pragma mark -
@@ -527,7 +527,7 @@
         }
         case MEShareOptionSaveToLibrary: {
             [UIAlertView showWithTitle:@"Save to Library"
-                               message:@"Select how you would like to\nsave your MEmoji."
+                               message:@"How you would like to\nsave your MEmoji?"
                      cancelButtonTitle:@"Cancel"
                      otherButtonTitles:@[@"Save as GIF", @"Save as Video"]
                               tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -548,6 +548,16 @@
                                           
                                       }else if (buttonIndex == 2){ // Save as Video
                                           
+                                          if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
+                                              [[[UIAlertView alloc] initWithTitle:@"Oops"
+                                                                          message:@"Non-animated GIFs can't be saved as videos...Silly!"
+                                                                         delegate:nil
+                                                                cancelButtonTitle:@"Okay"
+                                                                 otherButtonTitles:nil, nil] show];
+                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                                              return;
+                                          }
+                                          
                                           NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
                                           NSError *error;
                                           if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
@@ -565,7 +575,7 @@
                                                   NSLog(@"Error saving asset to camera. %@", error.debugDescription);
                                               }
                                               [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                              // TODO : Confirm saved as Video
+                                          
                                           }];
                                       }
                                   }
@@ -590,34 +600,51 @@
             [self dismissShareView];
             [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
-            NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
-            NSError *error;
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
-                [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
-                if (error) {
-                    NSLog(@"An Error occured writing to file. %@", error.debugDescription);
+            if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData]
+                                                 metadata:nil
+                                          completionBlock:^(NSURL *assetURL, NSError *error) {
+                                              
+                                              if ([FSOpenInInstagram canSendInstagram]) {
+                                                  UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
+                                                  self.instagramOpener = [[FSOpenInInstagram alloc] init];
+                                                  
+                                                  [self.instagramOpener postImage:tmpImage caption:@"@MEmojiApp" inView:self.view];
+                                              }
+                                              
+                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                                          }];
+            }else{
+                NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
+                NSError *error;
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
+                    [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
+                    if (error) {
+                        NSLog(@"An Error occured writing to file. %@", error.debugDescription);
+                    }
                 }
+                
+                [[[[MEModel sharedInstance] selectedImage] movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
+                
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
+                    if (error) {
+                        NSLog(@"Error saving asset to camera. %@", error.debugDescription);
+                    }
+                    [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                    [UIAlertView showWithTitle:@"Ready to Upload on Instagram!"
+                                       message:@"You can post your MEmoji by selecting it from your library once in Instagram."
+                             cancelButtonTitle:@"Go to Instagram"
+                             otherButtonTitles:nil
+                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                          NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
+                                          if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+                                              [[UIApplication sharedApplication] openURL:instagramURL];
+                                          }
+                                      }];
+                }];
             }
-            
-            [[[[MEModel sharedInstance] selectedImage] movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
-            
-            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-            [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
-                if (error) {
-                    NSLog(@"Error saving asset to camera. %@", error.debugDescription);
-                }
-                [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                [UIAlertView showWithTitle:@"Ready to Upload to Instagram!"
-                                   message:@"You can post your MEmoji by selecting it from your library once in Instagram."
-                         cancelButtonTitle:@"Go to Instagram"
-                         otherButtonTitles:nil
-                                  tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                      NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
-                                      if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
-                                          [[UIApplication sharedApplication] openURL:instagramURL];
-                                      }
-                                  }];
-            }];
             break;
         }
         case MEShareOptionTwitter: {
@@ -655,9 +682,7 @@
     
     [UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:0.7 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self.shareView setY:self.viewFinder.bottom];
-    } completion:^(BOOL finished) {
-        //
-    }];
+    } completion:nil];
 }
 
 - (void)dismissShareView
@@ -683,6 +708,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+    NSLog(@"%s", __FUNCTION__);
     [[self.sectionsManager imageCache] removeAllObjects];
     [super didReceiveMemoryWarning];
 }

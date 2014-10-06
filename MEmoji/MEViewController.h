@@ -7,6 +7,8 @@
 //
 #import <UIView+Positioning.h>
 #import <LLARingSpinnerView.h>
+#import <FSOpenInInstagram.h>
+
 #import "MEMEmojiCell.h"
 #import "MESectionsManager.h"
 #import "MECaptureButton.h"
@@ -31,6 +33,7 @@
 @property (strong, nonatomic) UIButton *smileyFaceButton;
 
 @property (strong, nonatomic) MEShareView *shareView;
+@property (strong, nonatomic) FSOpenInInstagram *instagramOpener;
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageController;
 @property (strong, nonatomic) UILabel *instructionsLabel;

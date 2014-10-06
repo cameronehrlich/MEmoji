@@ -64,7 +64,7 @@
 {
     if ([collectionView isEqual:self.libraryCollectionView])
     {
-        return [[MEModel sharedInstance] currentImages].count;
+        return [[[MEModel sharedInstance] currentImages] count];
     }else if ([collectionView isEqual:self.freeCollectionView])
     {
         return [[MEModel standardPack] count];
@@ -90,6 +90,7 @@
         [cell setEditMode:self.libraryCollectionView.allowsMultipleSelection];
         
         if ([self.imageCache objectForKey:thisImage.objectID]) {
+            
             [cell.imageView setAnimatedImage:[self.imageCache objectForKey:thisImage.objectID]];
             
         }else{
@@ -103,9 +104,10 @@
                 [self.imageCache setObject:image forKey:thisImage.objectID];
                 
                 if (!weakOperation.isCancelled) {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
-                        [cell.imageView setAnimatedImage:image];
-                    }];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                         [cell.imageView setAnimatedImage:image];
+                    });
                 }
             }];
             
@@ -143,9 +145,10 @@
             [self.loadingQueue addOperationWithBlock:^{
                 [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
                 
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
                     [cell.imageView setImage:[overlayImage image]];
-                }];
+
+                });
             }];
         }
         return cell;

@@ -113,6 +113,7 @@
     CGFloat frameWidth = [[self.videoSettings objectForKey:AVVideoWidthKey] floatValue];
     CGFloat frameHeight = [[self.videoSettings objectForKey:AVVideoHeightKey] floatValue];
     
+
     CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault,
                                           frameWidth,
                                           frameHeight,
