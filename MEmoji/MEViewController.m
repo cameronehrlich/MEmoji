@@ -166,6 +166,7 @@
     [self.captureButton addGestureRecognizer:singleTapRecognizer];
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [longPressRecognier setMinimumPressDuration:0.2];
+    [longPressRecognier setAllowableMovement:captureButtonDiameter ];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
     [self updateViewFinderButtons];

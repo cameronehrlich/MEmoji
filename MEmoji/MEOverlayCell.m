@@ -49,21 +49,16 @@
     [super setSelected:selected];
     
     if (selected) {
-        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            [self.selectedImageView setAlpha:1];
-            [self.selectedImageView setTransform:CGAffineTransformIdentity];
-
-        } completion:nil];
+        [self.selectedImageView setTransform:CGAffineTransformIdentity];
+        [self.selectedImageView setAlpha:1];
     }else{
+        [self.selectedImageView setAlpha:1];
+        [self.selectedImageView setTransform:CGAffineTransformIdentity];
         [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self.selectedImageView setAlpha:0];
             [self.selectedImageView setTransform:CGAffineTransformMakeScale(2, 2)];
-        } completion:^(BOOL finished) {
-            //
-        }];
+        } completion:nil];
     }
-
-    
 }
 
 - (void)setHighlighted:(BOOL)highlighted

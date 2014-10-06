@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic, readonly) CALayer *layer;
 @property (strong, nonatomic, readonly) UIImage *image;
+@property (strong, nonatomic, readonly) UIImage *thumbnail;
 
 - (instancetype)initWithImageName:(NSString *)imageName;
 

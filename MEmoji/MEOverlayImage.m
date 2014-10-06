@@ -25,13 +25,14 @@
     self = [super init];
     if (self) {
         _imageName = imageName;
+        _thumbnail = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", imageName, @"-thumbnail"]]; // 160x160
     }
     return self;
 }
 - (UIImage *)image
 {
     if (!_image) {
-        _image = [UIImage imageNamed:_imageName];
+        _image = [UIImage imageNamed:_imageName]; // 640x640
     }
     return _image;
 }
@@ -40,7 +41,7 @@
 {
     if (!_layer) {
         _layer = [CALayer layer];
-        _layer.contents = (id)_image.CGImage;
+        _layer.contents = (id)self.image.CGImage; // Needs to call getter to trigger lazy load
         // MUST INDEPENDENTLY SET LAYER FRAME OR IT WONT WORK
     }
     

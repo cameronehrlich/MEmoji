@@ -119,24 +119,25 @@
     
     else {
         static NSString *CellIdentifier = @"OverlayCell";
-        MEOverlayCell *cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         MEOverlayImage *overlayImage;
+        MEOverlayCell *cell;
         
         if ([collectionView isEqual:self.freeCollectionView]) {
+            cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.item];
         }else if ([collectionView isEqual:self.hipHopCollectionView]){
+            cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
         }else{
             NSLog(@"Error in %s", __PRETTY_FUNCTION__);
-            
         }
         
         cell.layer.shouldRasterize = YES;
         cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
         
         if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
-            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] image]];
+            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] thumbnail]];
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                 [cell.imageView setAlpha:1];
             } completion:nil];
@@ -146,13 +147,11 @@
                 [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [cell.imageView setImage:[overlayImage image]];
-
+                    [cell.imageView setImage:[overlayImage thumbnail]];
                 });
             }];
         }
         return cell;
-        
     }
 }
 
