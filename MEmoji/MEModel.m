@@ -56,6 +56,8 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         [MagicalRecord setupAutoMigratingCoreDataStack];
         [MagicalRecord setLoggingLevel:MagicalRecordLoggingLevelOff];
         
+        self.numberToLoad = 10;
+        
         [self reloadCurrentImages];
         self.currentOverlays = [[NSMutableArray alloc] init];
         
@@ -77,11 +79,11 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 - (void)reloadCurrentImages
 {
-//    NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
-//    [fetchRequest setFetchLimit:12];
-//    self.currentImages = [[Image MR_executeFetchRequest:fetchRequest] mutableCopy];
+    NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
+    [fetchRequest setFetchLimit:self.numberToLoad];
+    self.currentImages = [[Image MR_executeFetchRequest:fetchRequest] mutableCopy];
     
-    self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+//    self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
 }
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback
@@ -153,7 +155,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         if (animated) {
             // TODO : Create video only when its needed
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSLog(@"Creating movie...");
+
                 [self.movieRenderingQueue addOperationWithBlock:^{
                     self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
                                                                                                         withWidth:dimensionOfGIF

@@ -9,6 +9,8 @@
 #import "MESectionHeaderView.h"
 #import "MECaptureButton.h"
 
+const static CGFloat arrowButtonWidth = 25;
+
 @implementation MESectionHeaderView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -27,20 +29,20 @@
         self.leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.leftButton setFrame:CGRectMake(0,
                                              0,
-                                             frame.size.height,
-                                             self.frame.size.height)];
+                                             arrowButtonWidth,
+                                             frame.size.height)];
         [self.leftButton setShowsTouchWhenHighlighted:YES];
-        [self.leftButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [self.leftButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
         [self.leftButton setTransform:CGAffineTransformMakeScale(0.6, 0.6)];
         [self.leftButton setAlpha:0.4];
         [self addSubview:self.leftButton];
         
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.height,
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(arrowButtonWidth,
                                                                     0,
-                                                                    (frame.size.width/2) - self.leftButton.bounds.size.width - (captureButtonDiameter/2),
+                                                                    (frame.size.width/2) - arrowButtonWidth - (captureButtonDiameter/2),
                                                                     frame.size.height)];
         [self.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.titleLabel setFont:[MEModel mainFontWithSize:20]];
+        [self.titleLabel setFont:[MEModel mainFontWithSize:15]];
         [self.titleLabel setNumberOfLines:1];
         [self.titleLabel setTextColor:[UIColor whiteColor]];
         [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -49,12 +51,12 @@
         
         // Right
         self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.rightButton setFrame:CGRectMake(frame.size.width - frame.size.height,
+        [self.rightButton setFrame:CGRectMake(frame.size.width - arrowButtonWidth,
                                               0,
-                                              frame.size.height,
+                                              arrowButtonWidth,
                                               frame.size.height)];
         [self.rightButton setShowsTouchWhenHighlighted:YES];
-        [self.rightButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [self.rightButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
         [self.rightButton setTransform:CGAffineTransformMakeScale(0.6, 0.6)];
         [self.rightButton setAlpha:0.4];
         [self addSubview:self.rightButton];
@@ -64,7 +66,7 @@
                                                  0,
                                                  frame.size.width/2 - self.rightButton.bounds.size.width - (captureButtonDiameter/2),
                                                  frame.size.height)];
-        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:20]];
+        [self.purchaseButton.titleLabel setFont:[MEModel mainFontWithSize:15]];
         [self.purchaseButton.titleLabel setAdjustsFontSizeToFitWidth:YES];
         [self.purchaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.purchaseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];

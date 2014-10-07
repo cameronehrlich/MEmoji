@@ -52,7 +52,6 @@
         [self.selectedImageView setTransform:CGAffineTransformIdentity];
         [self.selectedImageView setAlpha:1];
     }else{
-        [self.selectedImageView setAlpha:1];
         [self.selectedImageView setTransform:CGAffineTransformIdentity];
         [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self.selectedImageView setAlpha:0];

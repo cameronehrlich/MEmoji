@@ -169,21 +169,24 @@
         if (self.libraryCollectionView.allowsMultipleSelection) { // If in editing mode
             [self.libraryCollectionView performBatchUpdates:^{
                 
-                [[[MEModel sharedInstance] selectedImage] MR_deleteEntity];
                 [[[MEModel sharedInstance] currentImages] removeObject:[[MEModel sharedInstance] selectedImage]];
                 [self.libraryCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                [[[MEModel sharedInstance] selectedImage] MR_deleteEntity];
                 
                 [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                    
+                    [[MEModel sharedInstance] reloadCurrentImages];
+                    [self.libraryCollectionView reloadData];
                 }];
                 
             } completion:^(BOOL finished) {
-                [[MEModel sharedInstance] reloadCurrentImages];
+                
             }];
             
         }else{
-            [self.delegate collectionView:self.libraryCollectionView didSelectImage:[[MEModel sharedInstance] selectedImage]];
-            [self.delegate presentShareView];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate collectionView:self.libraryCollectionView didSelectImage:[[MEModel sharedInstance] selectedImage]];
+                [self.delegate presentShareView];
+            });
         }
     }
     else if ([collectionView isEqual:self.freeCollectionView]) {
@@ -215,6 +218,38 @@
         return [[MEModel sharedInstance] hipHopPackEnabled];
     }
     return YES;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([collectionView isEqual:self.libraryCollectionView] && [kind isEqualToString:UICollectionElementKindSectionFooter] && indexPath.section == 0 && [[MEModel sharedInstance] currentImages].count > 9) {
+
+        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer" forIndexPath:indexPath];
+        UIButton *loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [loadMoreButton setFrame:view.bounds];
+        [loadMoreButton setTitle:@"Load more" forState:UIControlStateNormal];
+        [loadMoreButton.titleLabel setFont:[MEModel mainFontWithSize:20]];
+        [loadMoreButton addTarget:self action:@selector(loadMore:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [view addSubview:loadMoreButton];
+        return view;
+    }
+    return nil;
+}
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if ([collectionView isEqual:self.libraryCollectionView] && section == 0 && [[MEModel sharedInstance] currentImages].count > 9) {
+        return CGSizeMake(collectionView.frame.size.width, 50);
+    }
+    return CGSizeZero;
+}
+
+- (void)loadMore:(id)sender
+{
+    [[MEModel sharedInstance] setNumberToLoad:[[MEModel sharedInstance] numberToLoad] + 6];
+    [[MEModel sharedInstance] reloadCurrentImages];
+    [self.libraryCollectionView reloadData];
 }
 
 #pragma mark -

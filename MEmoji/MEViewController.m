@@ -66,6 +66,7 @@
     [self.sectionsManager.libraryCollectionView setDataSource:self.sectionsManager];
     [self.sectionsManager.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
     [self.sectionsManager.libraryCollectionView registerClass:[MEMEmojiCell class] forCellWithReuseIdentifier:@"MEmojiCell"];
+    [self.sectionsManager.libraryCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer"];
     [self.sectionsManager.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.scrollView addSubview:self.sectionsManager.libraryCollectionView];
     
@@ -388,12 +389,14 @@
     [[MEModel sharedInstance] createImageAnimated:![[MEModel sharedInstance] capturingStill]
                                      withOverlays:[overlaysToRender copy]
                                          complete:^{
-                                             [self.captureButton stopSpinning];
-                                             [self.captureButton setUserInteractionEnabled:YES];
-                                             
-                                             [[MEModel sharedInstance] reloadCurrentImages];
-                                             [self.sectionsManager.libraryCollectionView reloadData];
-                                             [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                                             dispatch_async(dispatch_get_main_queue(), ^{ // Make sure we are on the main queue
+                                                 [self.captureButton stopSpinning];
+                                                 [self.captureButton setUserInteractionEnabled:YES];
+                                                 
+                                                 [[MEModel sharedInstance] reloadCurrentImages];
+                                                 [self.sectionsManager.libraryCollectionView reloadData];
+                                                 [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                                             });
                                          }];
 }
 

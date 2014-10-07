@@ -47,6 +47,7 @@ static const NSInteger numberOfGIFVideoLoops = 10;
 @property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
 @property (nonatomic, assign) BOOL capturingStill;
 
+@property (nonatomic, assign) NSInteger numberToLoad;
 @property (nonatomic, strong) NSMutableArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;
 @property (nonatomic, strong) Image *selectedImage;
