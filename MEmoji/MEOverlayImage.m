@@ -10,8 +10,9 @@
 
 @interface MEOverlayImage ()
 
-@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) CALayer *layer;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *thumbnail;
 
 @end
 

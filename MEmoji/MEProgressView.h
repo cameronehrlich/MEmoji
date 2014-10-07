@@ -16,6 +16,7 @@ typedef void (^ProgressCompletion)();
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, assign) CGFloat duration;
 @property (nonatomic, assign) BOOL isAnimating;
+@property (copy)              ProgressCompletion completion;
 
 - (instancetype)initWithFrame:(CGRect)frame andColor:(UIColor *)color;
 - (void)startAnimationWithCompletion:(ProgressCompletion)completionBlock;

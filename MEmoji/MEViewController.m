@@ -274,7 +274,7 @@
     {
         [self.sectionsManager.libraryCollectionView setContentOffset:CGPointMake(0, 0) animated:(self.scrollView.contentOffset.x == 0)];
         
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionAllowAnimatedContent animations:^{
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self.scrollView setContentOffset:CGPointMake(0, 0)];
         } completion:nil];
     }else if ([button isEqual:self.viewFinder.topLeftButton])
@@ -302,7 +302,6 @@
             [self.viewFinder.progressView startAnimationWithCompletion:^{
                 [sender setEnabled:NO];
                 [sender setEnabled:YES];
-                [self.viewFinder.progressView reset];
             }];
         }
     }

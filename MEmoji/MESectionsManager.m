@@ -137,17 +137,14 @@
         cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
         
         if ([self.imageCache objectForKey:@(overlayImage.hash)]) {
-            [cell.imageView setImage:[(MEOverlayImage*)[self.imageCache objectForKey:@(overlayImage.hash)] thumbnail]];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [cell.imageView setAlpha:1];
-            } completion:nil];
+            [cell.imageView setImage:[self.imageCache objectForKey:@(overlayImage.hash)]];
         }else{
             [cell.imageView setImage:nil];
             [self.loadingQueue addOperationWithBlock:^{
-                [self.imageCache setObject:overlayImage forKey:@(overlayImage.hash)];
+                [self.imageCache setObject:overlayImage.thumbnail forKey:@(overlayImage.hash)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [cell.imageView setImage:[overlayImage thumbnail]];
+                    [cell.imageView setImage:overlayImage.thumbnail];
                 });
             }];
         }
@@ -227,7 +224,7 @@
 {
     MESettingsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
     [cell setBackgroundColor:[UIColor clearColor]];
-    [cell.textLabel setFont:[MEModel mainFontWithSize:30]];
+    [cell.textLabel setFont:[MEModel mainFontWithSize:26]];
     [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
     [cell.textLabel setTextColor:[UIColor lightTextColor]];
     
@@ -251,7 +248,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger numberOfSections = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    return tableView.bounds.size.height/numberOfSections - (tableView.contentInset.top/numberOfSections);
+    return MAX(40, tableView.bounds.size.height/numberOfSections - (tableView.contentInset.top/numberOfSections));
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -56,7 +56,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         [MagicalRecord setupAutoMigratingCoreDataStack];
         [MagicalRecord setLoggingLevel:MagicalRecordLoggingLevelOff];
         
-        self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
+        [self reloadCurrentImages];
         self.currentOverlays = [[NSMutableArray alloc] init];
         
         self.movieRenderingQueue = [[NSOperationQueue alloc] init];
@@ -77,6 +77,10 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 - (void)reloadCurrentImages
 {
+//    NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
+//    [fetchRequest setFetchLimit:12];
+//    self.currentImages = [[Image MR_executeFetchRequest:fetchRequest] mutableCopy];
+    
     self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
 }
 

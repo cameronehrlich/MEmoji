@@ -17,29 +17,38 @@
         
         self.colorView = [[UIView alloc] initWithFrame:self.bounds];
         [self.colorView setBackgroundColor:color];
-        [self.colorView setAlpha:0];
         [self addSubview:self.colorView];
         [self setClipsToBounds:YES];
         
         self.color = color;
-        self.duration = 5; // default
+        self.duration = 5.0f; // default
+        
+        [self reset];
     }
     return self;
 }
 
 - (void)startAnimationWithCompletion:(ProgressCompletion)completionBlock;
 {
-    CGRect startingFrame = CGRectMake(-self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height);
+    self.completion = completionBlock;
+
+    [self.colorView setAlpha:1];
+    
+    CGRect startingFrame = CGRectMake(0, 0, 1, self.bounds.size.height);
     CGRect endingFrame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     [self.colorView setFrame:startingFrame];
-    [self.colorView setAlpha:1];
+
     [self setBackgroundColor:[self.color colorWithAlphaComponent:0.2]];
     
-    [UIView animateWithDuration:self.duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveLinear animations:^{
+    [UIView animateWithDuration:self.duration delay:0 options: UIViewAnimationOptionCurveLinear | UIViewAnimationOptionOverrideInheritedCurve animations:^{
         [self.colorView setFrame:endingFrame];
     } completion:^(BOOL finished) {
         if (finished) {
-            completionBlock();
+            [self reset];
+
+            if (self.completion) {
+                self.completion();
+            }
         }
     }];
 }
