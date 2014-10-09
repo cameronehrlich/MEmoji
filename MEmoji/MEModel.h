@@ -35,6 +35,10 @@ static const CGFloat dimensionOfGIF = 320;
 static const CGFloat stepOfGIF = 0.12;
 static const CGFloat lengthOfGIF = 5.0;
 static const NSInteger numberOfGIFVideoLoops = 10;
+static const NSInteger numberToLoadIncrementValue = 6;
+static NSString *hipHopPackProductIdentifier = @"hiphoppack";
+static NSString *watermarkProductIdentifier = @"watermark";
+
 @interface MEModel : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -59,6 +63,7 @@ static const NSInteger numberOfGIFVideoLoops = 10;
 @property (copy)              PurchaseCallback purchaseCompletion;
 @property (copy)              PurchaseCallback restoreCompletion;
 @property (nonatomic, assign) BOOL hipHopPackEnabled;
+@property (nonatomic, assign) BOOL watermarkEnabled;
 
 @property (nonatomic, strong) JGProgressHUD *HUD;
 

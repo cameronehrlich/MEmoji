@@ -20,6 +20,7 @@ target "MEmoji" do
     pod 'DHAppleReceiptParser', '~> 1.0'
     pod 'Parse', '~> 1.4.1'
     pod 'FSOpenInInstagram', '~> 1.0'
+    pod 'NSURL+ParseQuery', '~> 0.1'
 end
 
 target "MEmojiTests" do

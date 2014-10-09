@@ -7,13 +7,14 @@
 //
 
 #import "MEAppDelegate.h"
+#import <NSURL+ParseQuery/NSURL+QueryParser.h>
 
 @implementation MEAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MEModel sharedInstance];
-
+        
     [self.window  setTintColor:[UIColor whiteColor]];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [application setApplicationSupportsShakeToEdit:YES];
@@ -89,11 +90,25 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    if ([[url description] isEqualToString:@"memoji://hiphoppack"]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[MEModel sharedInstance] setHipHopPackEnabled:YES];
-        });
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSDictionary *args = [url parseQuery]; // memoji://?hiphoppack=1?watermark=1
+        
+        @try {
+            for (NSString *key in args.keyEnumerator.allObjects) {
+                BOOL enabled = [@([[args objectForKey:key] integerValue]) boolValue];
+                if ([key isEqualToString:hipHopPackProductIdentifier]) {
+                    [[MEModel sharedInstance] setHipHopPackEnabled:enabled];
+                }else if ([key isEqualToString:watermarkProductIdentifier]){
+                    [[MEModel sharedInstance] setWatermarkEnabled:enabled];
+                }
+            }
+        }
+        @catch (NSException *exception) {
+
+        }
+        
+    });
+
     return YES;
 }
 

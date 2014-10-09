@@ -150,6 +150,8 @@
 		3212C2A619C77717007ED774 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				329B189819D4E526002B42BF /* MESectionHeaderView.h */,
+				329B189919D4E526002B42BF /* MESectionHeaderView.m */,
 				327A02221987542200DF27BC /* MEMEmojiCell.h */,
 				327A02231987542200DF27BC /* MEMEmojiCell.m */,
 				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
@@ -158,6 +160,21 @@
 				32EFAB9F19DD097000D0051F /* MESettingsCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		32640E9719E6001400F023F6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3210054019DE0F12001B3680 /* MEProgressView.h */,
+				3210054119DE0F12001B3680 /* MEProgressView.m */,
+				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
+				325C9CA719D61E4B00E426E9 /* MEViewFinder.m */,
+				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
+				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
+				328F63A619D561CD0010CF1C /* MEShareView.h */,
+				328F63A719D561CD0010CF1C /* MEShareView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		32DD887919870B44008E8BCE = {
@@ -204,17 +221,10 @@
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
 				328F63A019D5220F0010CF1C /* MESectionsManager.h */,
 				328F63A119D5220F0010CF1C /* MESectionsManager.m */,
-				3210054019DE0F12001B3680 /* MEProgressView.h */,
-				3210054119DE0F12001B3680 /* MEProgressView.m */,
-				329B189819D4E526002B42BF /* MESectionHeaderView.h */,
-				329B189919D4E526002B42BF /* MESectionHeaderView.m */,
-				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
-				325C9CA719D61E4B00E426E9 /* MEViewFinder.m */,
-				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
-				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
-				328F63A619D561CD0010CF1C /* MEShareView.h */,
-				328F63A719D561CD0010CF1C /* MEShareView.m */,
+				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
+				325C434B19CA7F8400C93DCC /* CEMovieMaker.m */,
 				32F752691987514300045AFA /* Model */,
+				32640E9719E6001400F023F6 /* Views */,
 				3212C2A619C77717007ED774 /* Cells */,
 				32DD88A019870B44008E8BCE /* Images.xcassets */,
 				3201656B19D225CE00B3ECB1 /* FreePack.xcassets */,
@@ -263,8 +273,6 @@
 				32F752671987513000045AFA /* Image.m */,
 				3226033519D1F4F00082625F /* MEOverlayImage.h */,
 				3226033619D1F4F00082625F /* MEOverlayImage.m */,
-				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
-				325C434B19CA7F8400C93DCC /* CEMovieMaker.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";

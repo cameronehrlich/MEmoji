@@ -8,8 +8,6 @@
 
 #import "MEModel.h"
 
-static NSString *hipHopPackProductIdentifier = @"hiphoppack";
-
 @implementation MEModel
 
 + (instancetype)sharedInstance
@@ -56,7 +54,7 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
         [MagicalRecord setupAutoMigratingCoreDataStack];
         [MagicalRecord setLoggingLevel:MagicalRecordLoggingLevelOff];
         
-        self.numberToLoad = 10;
+        self.numberToLoad = numberToLoadIncrementValue;
         
         [self reloadCurrentImages];
         self.currentOverlays = [[NSMutableArray alloc] init];
@@ -82,8 +80,6 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
     NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
     [fetchRequest setFetchLimit:self.numberToLoad];
     self.currentImages = [[Image MR_executeFetchRequest:fetchRequest] mutableCopy];
-    
-//    self.currentImages = [[Image MR_findAllSortedBy:@"createdAt" ascending:NO] mutableCopy];
 }
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback
@@ -615,11 +611,10 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
-    NSLog(@"Failed in %s with error: %@", __PRETTY_FUNCTION__, error.debugDescription);
     if ([request isEqual:self.productRequest]) {
         [self.productRequest cancel];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"Trying to fetch products again...");
+            NSLog(@"Request failed. Trying to fetch products again...");
             self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
             [self.productRequest setDelegate:self];
             [self.productRequest start];
@@ -644,6 +639,23 @@ static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 - (void)setHipHopPackEnabled:(BOOL)hipHopPackEnabled
 {
     [[NSUserDefaults standardUserDefaults] setBool:hipHopPackEnabled forKey:hipHopPackProductIdentifier];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)watermarkEnabled;
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:watermarkProductIdentifier] == nil) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:watermarkProductIdentifier];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] boolForKey:watermarkProductIdentifier];
+}
+
+
+- (void)setWatermarkEnabled:(BOOL)watermarkEnabled
+{
+    [[NSUserDefaults standardUserDefaults] setBool:watermarkEnabled forKey:watermarkProductIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

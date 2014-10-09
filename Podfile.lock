@@ -6,9 +6,10 @@ PODS:
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - JGProgressHUD (1.2.2)
   - LLARingSpinnerView (0.1.2)
-  - MagicalRecord (2.3.0-beta.3):
+  - MagicalRecord (2.3.0-beta.4):
     - MagicalRecord/Core
-  - MagicalRecord/Core (2.3.0-beta.3)
+  - MagicalRecord/Core (2.3.0-beta.4)
+  - NSURL+ParseQuery (0.1)
   - Parse (1.4.1):
     - Bolts (~> 1.1.2)
   - ReactiveCocoa (2.3.1):
@@ -23,7 +24,7 @@ PODS:
     - UIColor+Hex/NSColor
     - UIColor+Hex/UIColor
   - UIColor+Hex/UIColor (1.0.1)
-  - UIImage+Additions (1.1.0)
+  - UIImage+Additions (1.2.0)
   - UIView+Positioning (1.0.1)
   - UIView+Shimmer (1.0.0)
 
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - JGProgressHUD (~> 1.2)
   - LLARingSpinnerView (~> 0.1)
   - MagicalRecord (from `https://github.com/magicalpanda/MagicalRecord.git`)
+  - NSURL+ParseQuery (~> 0.1)
   - Parse (~> 1.4.1)
   - ReactiveCocoa (~> 2.3)
   - UIAlertView+Blocks (~> 0.8)
@@ -58,13 +60,14 @@ SPEC CHECKSUMS:
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   LLARingSpinnerView: b9ee4453c976bc8edca6cc41a4d7e41280f85fc6
-  MagicalRecord: 23dfe0350eab4767cc1ce7d247af4e4cd54ee72c
+  MagicalRecord: 59e5cec04ba1f9c9d4b70c2ec0a3ea8dceeb352e
+  NSURL+ParseQuery: 044dd433a061d69368a392670341d2ff9006a0f5
   Parse: db1a09c832b7509edcc88a65dc07229f5e578c73
   ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
-  UIImage+Additions: 66ee88773215955a2703ea31b790fdf3438303d9
+  UIImage+Additions: c9088e24e095113a81b4ab31271d5b656850317c
   UIView+Positioning: 870af80983bf495af2cb8a3a15b20e26fcc57ebb
   UIView+Shimmer: 344d5826166c0f2a3040a4cb78b4dc2b3914aaab
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.34.2

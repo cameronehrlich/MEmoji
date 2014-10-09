@@ -44,6 +44,14 @@
     [self.scrollView setShowsHorizontalScrollIndicator:NO];
     [self.view insertSubview:self.scrollView belowSubview:self.viewFinder];
     
+    // Easter egg
+    UILabel *easterEgg = [[UILabel alloc] initWithFrame:CGRectMake(-1*(3*(self.scrollView.width/4)), 0, self.scrollView.width, self.scrollView.height)];
+    [easterEgg setFont:[MEModel mainFontWithSize:11]];
+    [easterEgg setNumberOfLines:3];
+    [easterEgg setText:@"memoji://watermark=0  \n\n;)"];
+    [easterEgg setAdjustsFontSizeToFitWidth:YES];
+    [self.scrollView addSubview:easterEgg];
+    
     // Instruction Label
     self.instructionsLabel = [[UILabel alloc] initWithFrame:self.scrollView.bounds];
     [self.instructionsLabel setFont:[MEModel mainFontWithSize:25]];
@@ -190,15 +198,15 @@
     
     // HipHop Pack
     [RACObserve([MEModel sharedInstance], hipHopPackEnabled) subscribeNext:^(id x) {
-        if (x) {
+        if ((BOOL)x == YES) {
             [self.sectionsManager.hipHopHeader.purchaseButton setTitle:@"Unlocked!" forState:UIControlStateNormal];
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:NO];
-            [self.sectionsManager.hipHopCollectionView setAlpha:1];
             [self.sectionsManager.hipHopCollectionView reloadData];
+            [self.sectionsManager.hipHopCollectionView setAlpha:1];
         }else{
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
-            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
             [self.sectionsManager.hipHopCollectionView reloadData];
+            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
         }
     }];
     
@@ -216,6 +224,11 @@
                 [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:NO];
             }
         }
+    }];
+    
+    [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
+        [[MEModel sharedInstance] setNumberToLoad:MIN([[MEModel sharedInstance] numberToLoad], [[[MEModel sharedInstance] currentImages] count])];
+        [self.sectionsManager.libraryCollectionView reloadData];
     }];
 }
 
@@ -344,12 +357,12 @@
     [self.captureButton setUserInteractionEnabled:NO];
 
     if ([[MEModel sharedInstance] videoFileOutput].isRecording) {
+        [[[MEModel sharedInstance] videoFileOutput] stopRecording];
         [self.captureButton startSpinning];
         [self.captureButton scaleDown];
-        [[[MEModel sharedInstance] videoFileOutput] stopRecording];
     }else{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // TRY HARD
+            // TRY HARD TO WRAP IT UP!
             [self finishRecording];
         });
     }
@@ -368,7 +381,7 @@
 - (void)captureGIF
 {
     [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:NO];
-    [self.sectionsManager.libraryCollectionView reloadData];
+    [self.sectionsManager.libraryCollectionView reloadData]; // TODO : not sure if needed
     
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
@@ -382,7 +395,7 @@
     }
     
     // Finally, add watermark layer
-    if (YES) { // TODO : Allow user to disable watermark somehow
+    if ([[MEModel sharedInstance] watermarkEnabled]) {
         [overlaysToRender addObject:[UIImage imageNamed:@"waterMark"]];
     }
     
@@ -394,7 +407,6 @@
                                                  [self.captureButton setUserInteractionEnabled:YES];
                                                  
                                                  [[MEModel sharedInstance] reloadCurrentImages];
-                                                 [self.sectionsManager.libraryCollectionView reloadData];
                                                  [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                                              });
                                          }];
@@ -480,36 +492,45 @@
     }
 }
 
-- (void)tappedSettingsButtonAtIndex:(NSInteger)buttonIndex
+- (void)tableView:(UITableView*)tableView tappedSettingsButtonAtIndex:(NSIndexPath *)indexPath
 {
-    if (buttonIndex == 0) {
-        if (![MFMailComposeViewController canSendMail]) {
-            [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"It appears your device is not setup to send mail.\nPlease email us at support@luckybunnyapps.com" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
-            return;
-        }else{
-            [[[MEModel sharedInstance] HUD] showInView:self.view];
-            
-            MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
-            [mailController setMailComposeDelegate:self];
-            [mailController setSubject:@"MEmoji Support"];
-            [mailController setMessageBody:@"Dear MEmoji support team,\n" isHTML:NO];
-            [mailController setToRecipients:[NSArray arrayWithObject:@"support@luckybunnyapps.com"]];
-            [self presentViewController:mailController animated:YES completion:^{
-                [[[MEModel sharedInstance] HUD] dismiss];
-            }];
-        }
-    }else if (buttonIndex == 1){
-        //
-    }else if (buttonIndex == 2){
-        [[[MEModel sharedInstance] HUD] showInView:self.view];
-        [[MEModel sharedInstance] restorePurchasesCompletion:^(BOOL success) {
-            [[[MEModel sharedInstance] HUD] dismiss];
-            if (success) {
-                [[[UIAlertView alloc] initWithTitle:@"Restored!" message:@"All of your previous purchases have been restored!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+    switch (indexPath.row) {
+        case 0:
+            if (![MFMailComposeViewController canSendMail]) {
+                [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"It appears your device is not setup to send mail.\nPlease email us at support@luckybunnyapps.com" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                return;
             }else{
-                [[[UIAlertView alloc] initWithTitle:@"Failed!" message:@"We could not find any purchases to restore at this time.\nPlease contact support@luckybunnyapps.com if you believe this is an error." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                [[[MEModel sharedInstance] HUD] showInView:self.view];
+                
+                MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+                [mailController setMailComposeDelegate:self];
+                [mailController setSubject:@"MEmoji Support"];
+                [mailController setMessageBody:@"Dear MEmoji support team,\n" isHTML:NO];
+                [mailController setToRecipients:[NSArray arrayWithObject:@"support@luckybunnyapps.com"]];
+                [self presentViewController:mailController animated:YES completion:^{
+                    [[[MEModel sharedInstance] HUD] dismiss];
+                }];
             }
-        }];
+
+            break;
+        case 1:
+            [[UIApplication sharedApplication] openURL:
+             [NSURL URLWithString:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=921847909&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software"]];
+            break;
+        case 2:
+            [[[MEModel sharedInstance] HUD] showInView:self.view];
+            [[MEModel sharedInstance] restorePurchasesCompletion:^(BOOL success) {
+                [[[MEModel sharedInstance] HUD] dismiss];
+                if (success) {
+                    [[[UIAlertView alloc] initWithTitle:@"Restored!" message:@"All of your previous purchases have been restored!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                }else{
+                    [[[UIAlertView alloc] initWithTitle:@"Failed!" message:@"We could not find any purchases to restore at this time.\nPlease contact support@luckybunnyapps.com if you believe this is an error." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                }
+            }];
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -613,7 +634,7 @@
                                                   UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
                                                   self.instagramOpener = [[FSOpenInInstagram alloc] init];
                                                   
-                                                  [self.instagramOpener postImage:tmpImage caption:@"@MEmojiApp" inView:self.view];
+                                                  [self.instagramOpener postImage:tmpImage caption:nil inView:self.view];
                                               }
                                               
                                               [[MEModel sharedInstance].HUD dismissAnimated:YES];

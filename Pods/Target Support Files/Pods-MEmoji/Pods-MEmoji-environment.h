@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 3
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
 
+// NSURL+ParseQuery
+#define COCOAPODS_POD_AVAILABLE_NSURL_ParseQuery
+#define COCOAPODS_VERSION_MAJOR_NSURL_ParseQuery 0
+#define COCOAPODS_VERSION_MINOR_NSURL_ParseQuery 1
+#define COCOAPODS_VERSION_PATCH_NSURL_ParseQuery 0
+
 // Parse
 #define COCOAPODS_POD_AVAILABLE_Parse
 #define COCOAPODS_VERSION_MAJOR_Parse 1
@@ -111,7 +117,7 @@
 // UIImage+Additions
 #define COCOAPODS_POD_AVAILABLE_UIImage_Additions
 #define COCOAPODS_VERSION_MAJOR_UIImage_Additions 1
-#define COCOAPODS_VERSION_MINOR_UIImage_Additions 1
+#define COCOAPODS_VERSION_MINOR_UIImage_Additions 2
 #define COCOAPODS_VERSION_PATCH_UIImage_Additions 0
 
 // UIView+Positioning

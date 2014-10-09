@@ -175,13 +175,11 @@
                 
                 [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                     [[MEModel sharedInstance] reloadCurrentImages];
-                    [self.libraryCollectionView reloadData];
                 }];
                 
             } completion:^(BOOL finished) {
                 
             }];
-            
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.delegate collectionView:self.libraryCollectionView didSelectImage:[[MEModel sharedInstance] selectedImage]];
@@ -222,13 +220,14 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([collectionView isEqual:self.libraryCollectionView] && [kind isEqualToString:UICollectionElementKindSectionFooter] && indexPath.section == 0 && [[MEModel sharedInstance] currentImages].count > 9) {
+    if ([collectionView isEqual:self.libraryCollectionView] && [kind isEqualToString:UICollectionElementKindSectionFooter] && [self shouldShowLoadMore]) {
 
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer" forIndexPath:indexPath];
         UIButton *loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [loadMoreButton setFrame:view.bounds];
         [loadMoreButton setTitle:@"Load more" forState:UIControlStateNormal];
         [loadMoreButton.titleLabel setFont:[MEModel mainFontWithSize:20]];
+        [loadMoreButton setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.8]];
         [loadMoreButton addTarget:self action:@selector(loadMore:) forControlEvents:UIControlEventTouchUpInside];
         
         [view addSubview:loadMoreButton];
@@ -239,17 +238,33 @@
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if ([collectionView isEqual:self.libraryCollectionView] && section == 0 && [[MEModel sharedInstance] currentImages].count > 9) {
-        return CGSizeMake(collectionView.frame.size.width, 50);
+    if ([collectionView isEqual:self.libraryCollectionView] && [self shouldShowLoadMore]) {
+        return CGSizeMake(collectionView.frame.size.width, captureButtonDiameter/2);
     }
     return CGSizeZero;
 }
 
 - (void)loadMore:(id)sender
 {
-    [[MEModel sharedInstance] setNumberToLoad:[[MEModel sharedInstance] numberToLoad] + 6];
+    [[MEModel sharedInstance] setNumberToLoad:[[MEModel sharedInstance] numberToLoad] + numberToLoadIncrementValue];
     [[MEModel sharedInstance] reloadCurrentImages];
-    [self.libraryCollectionView reloadData];
+}
+
+- (BOOL)shouldShowLoadMore
+{
+    NSUInteger totalNumberOfImages = [Image MR_countOfEntities];
+    
+    // if total number of images is less that the amount needed to trigger a "Load more", NO!
+    if (totalNumberOfImages < numberToLoadIncrementValue /*also the starting value*/) {
+        return NO;
+    }
+    
+    // If still more images to load, YES!
+    if ([[MEModel sharedInstance] currentImages].count < totalNumberOfImages ) {
+        return YES;
+    }
+    // No more to load.
+    return NO;
 }
 
 #pragma mark -
@@ -298,24 +313,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate tappedSettingsButtonAtIndex:indexPath.row];
-    
-    switch (indexPath.row) {
-        case 0:
-            // Mail
-            break;
-        case 1:
-            // Leave a Review
-            [[UIApplication sharedApplication] openURL:
-             [NSURL URLWithString:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=921847909&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software"]];
-            break;
-        case 2:
-            // Restore purchases
-            break;
-            
-        default:
-            break;
-    }
+    [self.delegate tableView:tableView tappedSettingsButtonAtIndex:indexPath];
 }
 
 @end

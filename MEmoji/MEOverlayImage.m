@@ -42,10 +42,9 @@
 {
     if (!_layer) {
         _layer = [CALayer layer];
-        _layer.contents = (id)self.image.CGImage; // Needs to call getter to trigger lazy load
         // MUST INDEPENDENTLY SET LAYER FRAME OR IT WONT WORK
     }
-    
+    _layer.contents = (id)self.image.CGImage; // Make sure the getter is called everytime to get the image.
     return _layer;
 }
 

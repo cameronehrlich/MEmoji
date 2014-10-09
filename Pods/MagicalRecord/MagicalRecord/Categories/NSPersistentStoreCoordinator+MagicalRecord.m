@@ -155,7 +155,8 @@ NSString * const kMagicalRecordPSCMismatchCouldNotRecreateStore = @"kMagicalReco
         {
             MRLogWarn(@"iCloud is not enabled");
         }
-        
+
+
         if ([self respondsToSelector:@selector(performBlockAndWait:)])
         {
             [self performSelector:@selector(performBlockAndWait:) withObject:^{

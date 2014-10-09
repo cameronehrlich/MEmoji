@@ -60,13 +60,16 @@ FOUNDATION_EXTERN NSString* NSStringFromUICornerInset(UICornerInset cornerInset)
 typedef enum __UIImageTintedStyle
 {
     UIImageTintedStyleKeepingAlpha      = 1,
-    UIImageTintedStyleOverAlpha         = 2
+    UIImageTintedStyleOverAlpha         = 2,
+    UIImageTintedStyleOverAlphaExtreme  = 3,
 } UIImageTintedStyle;
 
 typedef enum __UIImageGradientDirection
 {
     UIImageGradientDirectionVertical    = 1,
     UIImageGradientDirectionHorizontal  = 2,
+    UIImageGradientDirectionLeftSlanted = 3,
+    UIImageGradientDirectionRightSlanted = 4
 } UIImageGradientDirection;
 
 @interface UIImage (Additions)
@@ -74,6 +77,7 @@ typedef enum __UIImageGradientDirection
 /*
  * Create images from colors
  */
++ (UIImage*)imageWithColor:(UIColor*)color;
 + (UIImage*)imageWithColor:(UIColor*)color size:(CGSize)size;
 + (UIImage*)imageWithColor:(UIColor*)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius;
 + (UIImage*)imageWithColor:(UIColor*)color size:(CGSize)size cornerInset:(UICornerInset)cornerInset;

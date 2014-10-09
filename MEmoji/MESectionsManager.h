@@ -26,10 +26,11 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay;
 - (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image;
+
+- (void)tableView:(UITableView*)tableView tappedSettingsButtonAtIndex:(NSIndexPath *)indexPath;
+
 - (void)presentShareView;
-- (void)tappedSettingsButtonAtIndex:(NSInteger)buttonIndex;
 
 @end
 
