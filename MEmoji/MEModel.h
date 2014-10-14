@@ -23,6 +23,7 @@
 
 @import AVFoundation;
 @import MediaPlayer;
+@import AssetsLibrary;
 @import ImageIO;
 @import MessageUI;
 @import MobileCoreServices;
@@ -30,12 +31,15 @@
 
 typedef void (^MEmojiCreationCallback)();
 typedef void (^PurchaseCallback)(BOOL success);
+typedef void (^SaveCallback)(BOOL success);
 
-static const CGFloat dimensionOfGIF = 320;
-static const CGFloat stepOfGIF = 0.12;
-static const CGFloat lengthOfGIF = 5.0;
-static const NSInteger numberOfGIFVideoLoops = 10;
-static const NSInteger numberToLoadIncrementValue = 6;
+static const CGFloat dimensionOfGIF               = 320;
+static const CGFloat stepOfGIF                    = 0.12;
+static const CGFloat lengthOfGIF                  = 5;
+static const NSInteger numberOfGIFVideoLoops      = 10;
+static const NSInteger numberToLoadIncrementValue = 8;
+static const NSInteger numberOfGIFsToKeep         = 24;
+
 static NSString *hipHopPackProductIdentifier = @"hiphoppack";
 static NSString *watermarkProductIdentifier = @"watermark";
 
@@ -47,12 +51,13 @@ static NSString *watermarkProductIdentifier = @"watermark";
 @property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
 @property (nonatomic, strong) AVCaptureMovieFileOutput *videoFileOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, strong) CEMovieMaker *movieMaker;
-@property (nonatomic, strong) NSOperationQueue *movieRenderingQueue;
+
 @property (nonatomic, assign) BOOL capturingStill;
+@property (nonatomic, strong) CEMovieMaker *movieMaker;
+@property (copy)              SaveCallback saveCompletion;
 
 @property (nonatomic, assign) NSInteger numberToLoad;
-@property (nonatomic, strong) NSMutableArray *currentImages;
+@property (nonatomic, strong) NSArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;
 @property (nonatomic, strong) Image *selectedImage;
 @property (copy)              MEmojiCreationCallback creationCompletion;
@@ -74,6 +79,8 @@ static NSString *watermarkProductIdentifier = @"watermark";
 + (NSString *)currentVideoPath;
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback;
+- (void)saveMovieFromImage:(Image *)image withCompletion:(SaveCallback)completion;
+
 
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;

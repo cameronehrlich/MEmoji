@@ -16,11 +16,7 @@
     
     if (self) {
 
-        self.maskingView = [[UIImageView alloc] initWithFrame:self.bounds];
-        [self.maskingView setImage:[UIImage imageNamed:@"maskLayerSmall"]];
-        [self.maskingView setAlpha:0.9];
-        [self addSubview:self.maskingView];
-        
+        [self setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"maskLayerSmall"]]];
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
@@ -37,7 +33,8 @@
         [self.selectedImageView.layer setShadowOpacity:0.7];
         [self.selectedImageView.layer setShadowRadius:3];
         [self addSubview:self.selectedImageView];
-
+        
+        [self.selectedImageView setAlpha:0];
         [self setSelected:NO];
     }
     return self;
@@ -53,7 +50,7 @@
         [self.selectedImageView setAlpha:1];
     }else{
         [self.selectedImageView setTransform:CGAffineTransformIdentity];
-        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self.selectedImageView setAlpha:0];
             [self.selectedImageView setTransform:CGAffineTransformMakeScale(2, 2)];
         } completion:nil];
@@ -69,5 +66,6 @@
         [self setAlpha:1];
     }
 }
+
 
 @end

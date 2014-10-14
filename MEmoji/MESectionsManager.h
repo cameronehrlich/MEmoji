@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 
 @end
 
-@interface MESectionsManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
+@interface MESectionsManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate, NSCacheDelegate>
 
 @property (nonatomic, weak) id <MESectionsManagerDelegate> delegate;
 
@@ -50,8 +50,8 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 @property (nonatomic, strong) MESectionHeaderView *settingsHeader;
 @property (nonatomic, strong) UITableView *settingsTableView;
 
-@property (strong, nonatomic) NSMutableDictionary *imageCache;
-@property (strong, nonatomic) NSMutableDictionary *loadingOperations;
+@property (strong, nonatomic) NSCache *overlaysCache;
+@property (strong, nonatomic) NSCache *libraryCache;
 @property (strong, nonatomic) NSOperationQueue *loadingQueue;
 
 @end

@@ -25,8 +25,8 @@
 {
     self = [super init];
     if (self) {
-        _imageName = imageName;
-        _thumbnail = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", imageName, @"-thumbnail"]]; // 160x160
+        _imageName = [imageName stringByReplacingOccurrencesOfString:@" " withString:@""];
+        _thumbnail = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", _imageName, @"-thumbnail"]]; // 160x160
     }
     return self;
 }
@@ -40,12 +40,16 @@
 
 - (CALayer *)layer
 {
-    if (!_layer) {
+    if (!_layer || _layer.contents == nil) {
         _layer = [CALayer layer];
-        // MUST INDEPENDENTLY SET LAYER FRAME OR IT WONT WORK
+        _layer.contents = (id)self.image.CGImage; // Make sure the getter is called everytime to get the image.
     }
-    _layer.contents = (id)self.image.CGImage; // Make sure the getter is called everytime to get the image.
     return _layer;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ : \"%@\">", NSStringFromClass([self class]), _imageName];
 }
 
 @end

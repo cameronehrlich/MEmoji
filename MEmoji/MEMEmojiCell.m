@@ -15,23 +15,29 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        [self setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
+        UILabel *loadingLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        [loadingLabel setFont:[MEModel mainFontWithSize:9]];
+        [loadingLabel setAdjustsFontSizeToFitWidth:YES];
+        [loadingLabel setTextAlignment:NSTextAlignmentCenter];
+        [loadingLabel setText:@"Loading..."];
+        [loadingLabel setTextColor:[UIColor lightTextColor]];
+        [self addSubview:loadingLabel];
         
-        self.imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
-        [self.imageView setAnimatesWhileScrolling:NO];
-        [self addSubview:self.imageView];
+        _imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
+        [_imageView setAnimatesWhileScrolling:YES];
+        [self addSubview:_imageView];
         
         CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/1.5, self.bounds.size.width/1.5);
         deleteViewFrame.origin.x = self.bounds.size.width/2 - (deleteViewFrame.size.width/2);
         deleteViewFrame.origin.y = self.bounds.size.height/2 - (deleteViewFrame.size.height/2);
         
-        self.deleteImageView = [[UIImageView alloc] initWithFrame:deleteViewFrame];
-        [self.deleteImageView setImage:[UIImage imageNamed:@"deleteX"]];
-        [self.deleteImageView setAlpha:0];
-        [self.deleteImageView.layer setShadowColor:[UIColor blackColor].CGColor];
-        [self.deleteImageView.layer setShadowOpacity:0.7];
-        [self.deleteImageView.layer setShadowRadius:2.5];
-        [self addSubview:self.deleteImageView];
+        _deleteImageView = [[UIImageView alloc] initWithFrame:deleteViewFrame];
+        [_deleteImageView setImage:[UIImage imageNamed:@"deleteX"]];
+        [_deleteImageView setAlpha:0];
+        [_deleteImageView.layer setShadowColor:[UIColor blackColor].CGColor];
+        [_deleteImageView.layer setShadowOpacity:0.7];
+        [_deleteImageView.layer setShadowRadius:2];
+        [self addSubview:_deleteImageView];
     }
     return self;
 }

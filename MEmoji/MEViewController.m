@@ -24,6 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES]; // iPad ios 7
+    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
     
     // Setup
     self.viewFinder = [[MEViewFinder alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.width) previewLayer:[[MEModel sharedInstance] previewLayer]];
@@ -69,7 +71,7 @@
     
     // Library Collection View
     self.sectionsManager.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, self.scrollView.height)
-                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+                                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.sectionsManager.libraryCollectionView setDelegate:self.sectionsManager];
     [self.sectionsManager.libraryCollectionView setDataSource:self.sectionsManager];
     [self.sectionsManager.libraryCollectionView setBackgroundColor:[UIColor clearColor]];
@@ -88,10 +90,10 @@
     [self.sectionsManager.libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.sectionsManager.libraryHeader];
-
+    
     // Free Pack
     self.sectionsManager.freeCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, self.scrollView.height)
-                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+                                                                 collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.sectionsManager.freeCollectionView setDelegate:self.sectionsManager];
     [self.sectionsManager.freeCollectionView setDataSource:self.sectionsManager];
     [self.sectionsManager.freeCollectionView setBackgroundColor:[UIColor clearColor]];
@@ -117,7 +119,7 @@
     
     // Hip-Hop Pack
     self.sectionsManager.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
-                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+                                                                   collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.sectionsManager.hipHopCollectionView setDelegate:self.sectionsManager];
     [self.sectionsManager.hipHopCollectionView setDataSource:self.sectionsManager];
     [self.sectionsManager.hipHopCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
@@ -134,7 +136,7 @@
     [self.sectionsManager.hipHopHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.hipHopHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.sectionsManager.hipHopHeader.titleLabel setText:@"Hip Hop Pack"];
-
+    
     [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
     [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.sectionsManager.hipHopHeader];
@@ -174,7 +176,7 @@
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.captureButton addGestureRecognizer:singleTapRecognizer];
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    [longPressRecognier setMinimumPressDuration:0.2];
+    [longPressRecognier setMinimumPressDuration:0.25];
     [longPressRecognier setAllowableMovement:captureButtonDiameter ];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
@@ -201,8 +203,7 @@
         if ((BOOL)x == YES) {
             [self.sectionsManager.hipHopHeader.purchaseButton setTitle:@"Unlocked!" forState:UIControlStateNormal];
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:NO];
-            [self.sectionsManager.hipHopCollectionView reloadData];
-            [self.sectionsManager.hipHopCollectionView setAlpha:1];
+            
         }else{
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
             [self.sectionsManager.hipHopCollectionView reloadData];
@@ -212,9 +213,9 @@
     
     [RACObserve([MEModel sharedInstance], hipHopPackProduct) subscribeNext:^(id x) {
         if (![[MEModel sharedInstance] hipHopPackEnabled]) {
-
+            
             [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
-
+            
             if (x) {
                 NSString *priceString = [MEModel formattedPriceForProduct:x];
                 [self.sectionsManager.hipHopHeader.purchaseButton setTitle:[NSString stringWithFormat:@"Buy %@", priceString] forState:UIControlStateNormal];
@@ -227,16 +228,9 @@
     }];
     
     [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
-        [[MEModel sharedInstance] setNumberToLoad:MIN([[MEModel sharedInstance] numberToLoad], [[[MEModel sharedInstance] currentImages] count])];
         [self.sectionsManager.libraryCollectionView reloadData];
+        [self.sectionsManager.libraryCollectionView.collectionViewLayout invalidateLayout];
     }];
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES]; // iPad ios 7å
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -339,7 +333,7 @@
         [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
         if (error){ NSLog(@"Error: %@", error); return;}
     }
-
+    
     NSURL *url = [NSURL fileURLWithPath:path];
     [self.captureButton scaleUp];
     [[[MEModel sharedInstance] videoFileOutput] startRecordingToOutputFileURL:url recordingDelegate:self];
@@ -355,13 +349,13 @@
 - (void)finishRecording // Be careful not to call this without calling startRecording beforehand
 {
     [self.captureButton setUserInteractionEnabled:NO];
-
+    
     if ([[MEModel sharedInstance] videoFileOutput].isRecording) {
         [[[MEModel sharedInstance] videoFileOutput] stopRecording];
         [self.captureButton startSpinning];
         [self.captureButton scaleDown];
     }else{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // TRY HARD TO WRAP IT UP!
             [self finishRecording];
         });
@@ -381,7 +375,6 @@
 - (void)captureGIF
 {
     [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:NO];
-    [self.sectionsManager.libraryCollectionView reloadData]; // TODO : not sure if needed
     
     NSMutableArray *overlaysToRender = [[NSMutableArray alloc] init];
     
@@ -403,11 +396,11 @@
                                      withOverlays:[overlaysToRender copy]
                                          complete:^{
                                              dispatch_async(dispatch_get_main_queue(), ^{ // Make sure we are on the main queue
+                                                 [[MEModel sharedInstance] reloadCurrentImages];
                                                  [self.captureButton stopSpinning];
                                                  [self.captureButton setUserInteractionEnabled:YES];
-                                                 
-                                                 [[MEModel sharedInstance] reloadCurrentImages];
                                                  [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                                                 [self.sectionsManager.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES]; // Scroll to top
                                              });
                                          }];
 }
@@ -440,6 +433,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image
 {
+    [self presentShareView];
     [self.viewFinder presentImage:image];
 }
 
@@ -471,7 +465,7 @@
                                            delegate:nil
                                   cancelButtonTitle:@"Okay"
                                   otherButtonTitles:nil] show];
-                 return;
+                return;
             }
             if (![[MEModel sharedInstance] hipHopPackProduct]) {
                 [[[UIAlertView alloc] initWithTitle:@"Oops!"
@@ -480,7 +474,7 @@
                                   cancelButtonTitle:@"Okay"
                                   otherButtonTitles:nil] show];
             }
-
+            
             [[MEModel sharedInstance].HUD showInView:self.view];
             [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] hipHopPackProduct] withCompletion:^(BOOL success) {
                 [[MEModel sharedInstance].HUD dismiss];
@@ -511,7 +505,7 @@
                     [[[MEModel sharedInstance] HUD] dismiss];
                 }];
             }
-
+            
             break;
         case 1:
             [[UIApplication sharedApplication] openURL:
@@ -541,10 +535,6 @@
     [MEModel sharedInstance].HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleLight];
     
     switch (option) {
-        case MEShareOptionFacebook: {
-            // Do nothing currently
-            break;
-        }
         case MEShareOptionNone: {
             [self dismissShareView];
             break;
@@ -564,42 +554,17 @@
                                       if (buttonIndex == 1) { // Save as GIF
                                           
                                           ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                                          [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData]
-                                                                           metadata:nil
-                                                                    completionBlock:^(NSURL *assetURL, NSError *error) {
-                                                                        [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                                                    }];
+                                          [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                                          }];
                                           
                                       }else if (buttonIndex == 2){ // Save as Video
-                                          
-                                          if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
-                                              [[[UIAlertView alloc] initWithTitle:@"Oops"
-                                                                          message:@"Non-animated GIFs can't be saved as videos...Silly!"
-                                                                         delegate:nil
-                                                                cancelButtonTitle:@"Okay"
-                                                                 otherButtonTitles:nil, nil] show];
-                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                              return;
-                                          }
-                                          
-                                          NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
-                                          NSError *error;
-                                          if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
-                                              [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
-                                              if (error) {
-                                                  NSLog(@"An Error occured writing to file. %@", error.debugDescription);
-                                              }
-                                          }
-                                          
-                                          [[[[MEModel sharedInstance] selectedImage] movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
-                                          
-                                          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                                          [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
-                                              if (error) {
-                                                  NSLog(@"Error saving asset to camera. %@", error.debugDescription);
+                                          [[MEModel sharedInstance] saveMovieFromImage:[[MEModel sharedInstance] selectedImage] withCompletion:^(BOOL success) {
+                                              if (success) {
+                                                  NSLog(@"Saved movie successfully.");
                                               }
                                               [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                          
+
                                           }];
                                       }
                                   }
@@ -608,16 +573,21 @@
         }
         case MEShareOptionMessages: {
             [self dismissShareView];
-            [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
-            self.messageController = [[MFMessageComposeViewController alloc] init];
-            [self.messageController setMessageComposeDelegate:self];
-            [self.messageController addAttachmentData:[[[MEModel sharedInstance] selectedImage] imageData]
-                                       typeIdentifier:@"com.compuserve.gif"
-                                             filename:[NSString stringWithFormat:@"MEmoji-%@.gif", [[[[MEModel sharedInstance] selectedImage] createdAt] description]]];
             
-            [self presentViewController:self.messageController animated:YES completion:^{
-                [[MEModel sharedInstance].HUD dismissAnimated:YES];
-            }];
+            if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments]) {
+                [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
+                self.messageController = [[MFMessageComposeViewController alloc] init];
+                [self.messageController setMessageComposeDelegate:self];
+                [self.messageController addAttachmentData:[[[MEModel sharedInstance] selectedImage] imageData]
+                                           typeIdentifier:@"com.compuserve.gif"
+                                                 filename:[NSString stringWithFormat:@"MEmoji-%@.gif", [[[[MEModel sharedInstance] selectedImage] createdAt] description]]];
+                
+                [self presentViewController:self.messageController animated:YES completion:^{
+                    [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                }];
+            }else{
+                [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"This device is not yet setup to send text messages." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+            }
             break;
         }
         case MEShareOptionInstagram: {
@@ -626,47 +596,30 @@
             
             if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData]
-                                                 metadata:nil
-                                          completionBlock:^(NSURL *assetURL, NSError *error) {
+                [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
                                               
                                               if ([FSOpenInInstagram canSendInstagram]) {
                                                   UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
                                                   self.instagramOpener = [[FSOpenInInstagram alloc] init];
-                                                  
                                                   [self.instagramOpener postImage:tmpImage caption:nil inView:self.view];
                                               }
-                                              
+                    
                                               [[MEModel sharedInstance].HUD dismissAnimated:YES];
                                           }];
             }else{
-                NSURL *whereToWrite = [NSURL fileURLWithPath:[MEModel currentVideoPath]];
-                NSError *error;
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[MEModel currentVideoPath]]) {
-                    [[NSFileManager defaultManager] removeItemAtURL:whereToWrite error:&error];
-                    if (error) {
-                        NSLog(@"An Error occured writing to file. %@", error.debugDescription);
-                    }
-                }
-                
-                [[[[MEModel sharedInstance] selectedImage] movieData] writeToURL:[NSURL fileURLWithPath:[MEModel currentVideoPath]] atomically:YES];
-                
-                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                [library writeVideoAtPathToSavedPhotosAlbum:whereToWrite completionBlock:^(NSURL *assetURL, NSError *error) {
-                    if (error) {
-                        NSLog(@"Error saving asset to camera. %@", error.debugDescription);
-                    }
+                [[MEModel sharedInstance] saveMovieFromImage:[[MEModel sharedInstance] selectedImage] withCompletion:^(BOOL success){
                     [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                    [UIAlertView showWithTitle:@"Ready to Upload on Instagram!"
-                                       message:@"You can post your MEmoji by selecting it from your library once in Instagram."
-                             cancelButtonTitle:@"Go to Instagram"
-                             otherButtonTitles:nil
-                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                          NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
-                                          if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
-                                              [[UIApplication sharedApplication] openURL:instagramURL];
-                                          }
-                                      }];
+                    if (success) {
+                        NSLog(@"Saved movie successfully.");
+                        
+                        [UIAlertView showWithTitle:@"Ready to Upload on Instagram!" message:@"You can post your MEmoji by selecting it from your library once in Instagram." cancelButtonTitle:@"Go to Instagram" otherButtonTitles:nil
+                                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                              NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
+                                              if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+                                                  [[UIApplication sharedApplication] openURL:instagramURL];
+                                              }
+                                          }];
+                    }
                 }];
             }
             break;
@@ -676,22 +629,18 @@
             [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
             ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-            [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData]
-                                             metadata:nil
-                                      completionBlock:^(NSURL *assetURL, NSError *error) {
-                                          [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                          
-                                          [UIAlertView showWithTitle:@"Saved GIF to Library"
-                                                             message:@"You can tweet your MEmoji by selecting it from your library once in Twitter."
-                                                   cancelButtonTitle:@"Go to Twitter"
-                                                   otherButtonTitles:nil
-                                                            tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                                
-                                                                NSString *stringURL = @"twitter://post";
-                                                                NSURL *url = [NSURL URLWithString:stringURL];
-                                                                [[UIApplication sharedApplication] openURL:url];
-                                                            }];
-                                      }];
+            [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                
+                [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                
+                [UIAlertView showWithTitle:@"Saved GIF to Library" message:@"You can tweet your MEmoji by selecting it from your library once in Twitter." cancelButtonTitle:@"Go to Twitter" otherButtonTitles:nil
+                                  tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                      
+                                      NSString *stringURL = @"twitter://post";
+                                      NSURL *url = [NSURL URLWithString:stringURL];
+                                      [[UIApplication sharedApplication] openURL:url];
+                                  }];
+            }];
             break;
         }
         default:
@@ -732,8 +681,7 @@
 
 - (void)didReceiveMemoryWarning
 {
-    NSLog(@"%s", __FUNCTION__);
-    [[self.sectionsManager imageCache] removeAllObjects];
+    [[self.sectionsManager overlaysCache] removeAllObjects];
     [super didReceiveMemoryWarning];
 }
 

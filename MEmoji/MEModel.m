@@ -56,11 +56,7 @@
         
         self.numberToLoad = numberToLoadIncrementValue;
         
-        [self reloadCurrentImages];
         self.currentOverlays = [[NSMutableArray alloc] init];
-        
-        self.movieRenderingQueue = [[NSOperationQueue alloc] init];
-        [self.movieRenderingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         [self initializeCaptureSession];
         
@@ -75,11 +71,37 @@
     return self;
 }
 
+- (NSArray *)currentImages
+{
+    if (_currentImages == nil) {
+        [self reloadCurrentImages];
+    }
+    return _currentImages;
+}
+
 - (void)reloadCurrentImages
 {
     NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
-    [fetchRequest setFetchLimit:self.numberToLoad];
-    self.currentImages = [[Image MR_executeFetchRequest:fetchRequest] mutableCopy];
+    [fetchRequest setFetchLimit:MIN(numberOfGIFsToKeep, self.numberToLoad)];
+    self.currentImages = [Image MR_executeFetchRequest:fetchRequest];
+
+    if ([Image MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext]] > numberOfGIFsToKeep) {
+
+        NSArray *reversedObjects = [Image MR_executeFetchRequest:fetchRequest];
+        
+        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+            for (NSInteger i = reversedObjects.count-1; i > numberOfGIFsToKeep-1; i--) {
+                [[reversedObjects objectAtIndex:i] MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+            }
+        } completion:^(BOOL contextDidSave, NSError *error) {
+            
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                NSLog(@"Deleted old shit");
+            }];
+
+        }];
+    }
+    
 }
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback
@@ -134,54 +156,50 @@
     NSData *GIFData = [self createGIFwithFrames:emojifiedFrames];
     NSData *frameData = [NSKeyedArchiver archivedDataWithRootObject:emojifiedFrames];
     
-    __block Image *justSaved;
-    
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
         Image *newImage = [Image MR_createEntityInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
         [newImage setFrameData:frameData]; // TODO : Create video only when its needed
         [newImage setAnimated:@(animated)];
-        justSaved = newImage;
-
-    } completion:^(BOOL success, NSError *error) {
-        self.selectedImage = justSaved;
-        self.creationCompletion();
+        self.selectedImage = newImage;
         
-        if (animated) {
-            // TODO : Create video only when its needed
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-                [self.movieRenderingQueue addOperationWithBlock:^{
-                    self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
-                                                                                                        withWidth:dimensionOfGIF
-                                                                                                        andHeight:dimensionOfGIF]];
-                    
-                    NSMutableArray *framesMultiplied = [[NSMutableArray alloc] init];
-                    
-                    for (NSInteger i = 0; i <= numberOfGIFVideoLoops; i++) {
-                        [framesMultiplied addObjectsFromArray:emojifiedFrames];
-                    }
-                    
-                    [self.movieMaker createMovieFromImages:framesMultiplied withCompletion:^(BOOL success, NSURL *fileURL) {
-                        if (!success) {
-                            NSLog(@"There was an error creating the movie");
-                        }
-                        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-                            NSData *movieData = [NSData dataWithContentsOfURL:fileURL];
-                            
-                            [[justSaved MR_inContext:localContext] setMovieData:movieData];
-                            
-                        } completion:^(BOOL success, NSError *error) {
-                            if (error || !success) {
-                                NSLog(@"Error while saving movie: %@", error);
-                            }
-                        }];
-                    }];
-                }];
-            });
-        }
+    } completion:^(BOOL success, NSError *error) {
+        self.creationCompletion();
     }];
+}
+
+- (void)saveMovieFromImage:(Image*)image withCompletion:(SaveCallback)completion
+{
+    self.saveCompletion = completion;
+    if (![image.animated boolValue]) {
+        [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Non-animated GIFs can't be saved as videos...Silly!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+        [[MEModel sharedInstance].HUD dismissAnimated:YES];
+        self.saveCompletion(NO);
+    }else{
+        self.movieMaker = [[CEMovieMaker alloc] initWithSettings:[CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264
+                                                                                            withWidth:dimensionOfGIF
+                                                                                            andHeight:dimensionOfGIF]];
+        NSArray *frames = [NSKeyedUnarchiver unarchiveObjectWithData:image.frameData];
+        
+        NSMutableArray *framesMultiplied = [[NSMutableArray alloc] initWithCapacity:frames.count*numberOfGIFVideoLoops];
+        
+        for (NSInteger i = 0; i <= numberOfGIFVideoLoops; i++) {
+            [framesMultiplied addObjectsFromArray:frames];
+        }
+        
+        [self.movieMaker createMovieFromImages:[framesMultiplied copy] withCompletion:^(NSURL *fileURL) {
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library writeVideoAtPathToSavedPhotosAlbum:fileURL completionBlock:^(NSURL *assetURL, NSError *error) {
+                if (error) {
+                    NSLog(@"Error saving movie to Asset Library: %@", error.debugDescription);
+                }
+                if (self.saveCompletion) {
+                    self.saveCompletion(YES);
+                }
+            }];
+        }];
+    }
 }
 
 - (UIImage *)emojifyFrame:(UIImage *)imgFrame andOverlays:(NSArray *)overlays
@@ -247,11 +265,11 @@
 {
     UIGraphicsBeginImageContextWithOptions(image.size, YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
-
+    
     // flip x
     CGContextTranslateCTM(context, 0, image.size.height);
     CGContextScaleCTM(context, 1.0f, -1.0f);
-
+    
     // then flip Y axis
     CGContextTranslateCTM(context, image.size.width, 0);
     CGContextScaleCTM(context, -1.0f, 1.0f);
@@ -351,112 +369,112 @@
     static NSArray *allImages = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-
+        
         NSArray *imageNames = @[
-                                @"smallTears.png",
-                                @"goldCrown.png",
-                                @"kittyWhiskers.png",
-                                @"nerdGlasses.png",
-                                @"itsDoodoo.png",
-                                @"prayingHands.png",
-                                @"blackPrayingHands.png",
-                                @"eyes.png",
-                                @"creepyEyes.png",
-                                @"stonerEyes.png",
-                                @"blackEyes.png",
-                                @"sunGlasses.png",
-                                @"heartEyes.png",
-                                @"heartArrow.png",
-                                @"heartBroke.png",
-                                @"cheekKiss.png",
-                                @"sexyLips.png",
-                                @"gritTeeth.png",
-                                @"nostrilSmoke.png",
-                                @"tongueLaugh.png",
+                                @"smallTears",
+                                @"goldCrown",
+                                @"kittyWhiskers",
+                                @"nerdGlasses",
+                                @"itsDoodoo",
+                                @"prayingHands",
+                                @"blackPrayingHands",
+                                @"eyes",
+                                @"creepyEyes",
+                                @"stonerEyes",
+                                @"blackEyes",
+                                @"sunGlasses",
+                                @"heartEyes",
+                                @"heartArrow",
+                                @"heartBroke",
+                                @"cheekKiss",
+                                @"sexyLips",
+                                @"gritTeeth",
+                                @"nostrilSmoke",
+                                @"tongueLaugh",
                                 @"bigLaugh.jpg",
-                                @"oneTear.png",
-                                @"bigTears.png",
-                                @"waterfallTears.png",
-                                @"monkeySpeak.png",
-                                @"pigNose.png",
-                                @"santaHatBeard.png",
-                                @"toiletFace.png",
-                                @"afroHair.png",
-                                @"flatTop.png",
-                                @"mohawkBlack.png",
-                                @"mohawkBlonde.png",
-                                @"mustacheNewerThinnerVersion.png",
-                                @"oldTimeyMustache.png",
-                                @"blueHalo.png",
-                                @"pinkBow.png",
-                                @"topHat.png",
-                                @"turbanAllah.png",
-                                @"graduationCap.png",
-                                @"policeHat.png",
-                                @"russianHat.png",
-                                @"chinaHat.png",
-                                @"surgicalMask.png",
-                                @"fmlForehead.png",
-                                @"halfCigarette.png",
-                                @"showerHead.png",
-                                @"blackThumbLeft.png",
-                                @"thumbLeft.png",
-                                @"blackDownThumb.png",
-                                @"downThumb.png",
-                                @"blackDoubleFistLight.png",
-                                @"doubleFist.png",
-                                @"blackLeftFist.png",
-                                @"leftFist.png",
-                                @"blackPointUp.png",
-                                @"pointUp.png ",
-                                @"blackPeaceHand.png ",
-                                @"peaceHand.png ",
-                                @"blackStrongArms.png ",
-                                @"strongArms.png",
-                                @"blackRightThumb.png",
-                                @"rightThumb.png",
-                                @"blackAmbiguousHands.png",
-                                @"ambiguousHands.png",
-                                @"bigFist.png",
-                                @"blackFist.png",
-                                @"blackPalmsHands.png",
-                                @"handsPalms.png",
-                                @"blackClapHands.png",
-                                @"clapHands.png",
-                                @"bigPhone.png",
-                                @"hammerThor.png",
-                                @"umbrellaRain.png",
-                                @"smallCamera.png ",
-                                @"roseRed.png",
-                                @"moneyUSA.png",
-                                @"clapMarker.png",
-                                @"knifeParty.png",
-                                @"darkGun.png",
-                                @"fireFire.png",
-                                @"daBomb.png",
-                                @"musicNotes.png",
-                                @"dropBass.png",
-                                @"sexySaxy.png",
-                                @"donaldTrumpet.png",
-                                @"playViola.png",
-                                @"loudSpeaker.png",
-                                @"questionMark.png",
-                                @"exclamationPoint.png",
-                                @"cartoonOuchie.png",
-                                @"sleepZees.png",
-                                @"lightBulb.png",
-                                @"lollipop.png",
-                                @"iceCream.png",
-                                @"waterMelon.png",
-                                @"coffeeMug.png",
-                                @"babyBottle.png",
-                                @"beerMug.png",
-                                @"maitaiGlass.png",
-                                @"martiniGlass.png",
-                                @"wineGlass.png"];
+                                @"oneTear",
+                                @"bigTears",
+                                @"waterfallTears",
+                                @"monkeySpeak",
+                                @"pigNose",
+                                @"santaHatBeard",
+                                @"toiletFace",
+                                @"afroHair",
+                                @"flatTop",
+                                @"mohawkBlack",
+                                @"mohawkBlonde",
+                                @"mustacheNewerThinnerVersion",
+                                @"oldTimeyMustache",
+                                @"blueHalo",
+                                @"pinkBow",
+                                @"topHat",
+                                @"turbanAllah",
+                                @"graduationCap",
+                                @"policeHat",
+                                @"russianHat",
+                                @"chinaHat",
+                                @"surgicalMask",
+                                @"fmlForehead",
+                                @"halfCigarette",
+                                @"showerHead",
+                                @"blackThumbLeft",
+                                @"thumbLeft",
+                                @"blackDownThumb",
+                                @"downThumb",
+                                @"blackDoubleFistLight",
+                                @"doubleFist",
+                                @"blackLeftFist",
+                                @"leftFist",
+                                @"blackPointUp",
+                                @"pointUp ",
+                                @"blackPeaceHand",
+                                @"peaceHand",
+                                @"blackStrongArms",
+                                @"strongArms",
+                                @"blackRightThumb",
+                                @"rightThumb",
+                                @"blackAmbiguousHands",
+                                @"ambiguousHands",
+                                @"bigFist",
+                                @"blackFist",
+                                @"blackPalmsHands",
+                                @"handsPalms",
+                                @"blackClapHands",
+                                @"clapHands",
+                                @"bigPhone",
+                                @"hammerThor",
+                                @"umbrellaRain",
+                                @"smallCamera ",
+                                @"roseRed",
+                                @"moneyUSA",
+                                @"clapMarker",
+                                @"knifeParty",
+                                @"darkGun",
+                                @"fireFire",
+                                @"daBomb",
+                                @"musicNotes",
+                                @"dropBass",
+                                @"sexySaxy",
+                                @"donaldTrumpet",
+                                @"playViola",
+                                @"loudSpeaker",
+                                @"questionMark",
+                                @"exclamationPoint",
+                                @"cartoonOuchie",
+                                @"sleepZees",
+                                @"lightBulb",
+                                @"lollipop",
+                                @"iceCream",
+                                @"waterMelon",
+                                @"coffeeMug",
+                                @"babyBottle",
+                                @"beerMug",
+                                @"maitaiGlass",
+                                @"martiniGlass",
+                                @"wineGlass"];
         
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
-
+        
         for (NSString *name in imageNames) {
             MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImageName:name];
             [outputImages addObject:tmpImage];
@@ -475,31 +493,31 @@
     dispatch_once(&onceToken, ^{
         
         NSArray *imageNames = @[
-                                @"bandanaLowerFace.png",
-                                @"roundedSunglasses.png",
-                                @"champagne.png",
-                                @"bucketHat.png",
-                                @"styrofoamCupWithDrank.png",
-                                @"grillBlack.png",
-                                @"grillWhite.png",
-                                @"redEyes.png",
-                                @"dollarEyes.png",
-                                @"iceCreamTattoo.png",
-                                @"snapback.png",
-                                @"doRag.png",
-                                @"goldChain.png",
-                                @"goldChain2.png",
-                                @"joint.png",
-                                @"blunt.png",
-                                @"chalice.png",
-                                @"goldMic.png",
-                                @"headphones.png",
-                                @"deuces.png",
-                                @"deucesBlack.png",
-                                @"middleFinger.png",
-                                @"middleFingerBlack.png",
-                                @"westside.png",
-                                @"westsideBlack.png"
+                                @"bandanaLowerFace",
+                                @"roundedSunglasses",
+                                @"champagne",
+                                @"bucketHat",
+                                @"styrofoamCupWithDrank",
+                                @"grillBlack",
+                                @"grillWhite",
+                                @"redEyes",
+                                @"dollarEyes",
+                                @"iceCreamTattoo",
+                                @"snapback",
+                                @"doRag",
+                                @"goldChain",
+                                @"goldChain2",
+                                @"joint",
+                                @"blunt",
+                                @"chalice",
+                                @"goldMic",
+                                @"headphones",
+                                @"deuces",
+                                @"deucesBlack",
+                                @"middleFinger",
+                                @"middleFingerBlack",
+                                @"westside",
+                                @"westsideBlack"
                                 ];
         
         
@@ -598,7 +616,7 @@
 }
 
 - (void)requestDidFinish:(SKRequest *)request
-{    
+{
     for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
         if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
             [self setHipHopPackEnabled:YES];

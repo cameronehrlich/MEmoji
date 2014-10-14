@@ -61,6 +61,7 @@
 		3218C80D19C7691C0035B7BA /* MEOverlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCell.m; sourceTree = "<group>"; };
 		3226033519D1F4F00082625F /* MEOverlayImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayImage.h; sourceTree = "<group>"; };
 		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
+		323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 8.xcdatamodel"; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
 		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
@@ -498,7 +499,6 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -537,7 +537,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -569,7 +569,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "66205679-de60-4d10-a573-737083917971";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -592,7 +592,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "66205679-de60-4d10-a573-737083917971";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -677,13 +677,14 @@
 			children = (
 				32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */,
 				32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */,
+				323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */,
 				32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */,
 				3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */,
 				3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */,
 				3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */,
 				32F7526419874FEA00045AFA /* Model.xcdatamodel */,
 			);
-			currentVersion = 32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */;
+			currentVersion = 323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

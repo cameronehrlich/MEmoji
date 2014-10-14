@@ -13,7 +13,6 @@
 typedef NS_ENUM(NSUInteger, MEShareOption) {
     MEShareOptionSaveToLibrary,
     MEShareOptionInstagram,
-    MEShareOptionFacebook,
     MEShareOptionTwitter,
     MEShareOptionMessages,
     MEShareOptionNone

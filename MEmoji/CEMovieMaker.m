@@ -65,8 +65,7 @@
     __block NSInteger i = 0;
     
     NSInteger frameNumber = [images count];
-    __block BOOL success = YES; // TODO : Implement this
-    
+
     [self.writerInput requestMediaDataWhenReadyOnQueue:mediaInputQueue usingBlock:^{
         while (YES){
             if (i >= frameNumber) {
@@ -93,7 +92,7 @@
         [self.writerInput markAsFinished];
         [self.assetWriter finishWritingWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.completionBlock(success, self.fileURL);
+                self.completionBlock(self.fileURL);
             });
         }];
         
