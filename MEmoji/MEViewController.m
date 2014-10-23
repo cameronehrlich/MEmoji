@@ -50,7 +50,7 @@
     UILabel *easterEgg = [[UILabel alloc] initWithFrame:CGRectMake(-1*(3*(self.scrollView.width/4)), 0, self.scrollView.width, self.scrollView.height)];
     [easterEgg setFont:[MEModel mainFontWithSize:11]];
     [easterEgg setNumberOfLines:3];
-    [easterEgg setText:@"memoji://watermark=0  \n\n;)"];
+    [easterEgg setText:@"Keep going..."];
     [easterEgg setAdjustsFontSizeToFitWidth:YES];
     [self.scrollView addSubview:easterEgg];
     
