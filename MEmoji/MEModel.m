@@ -663,7 +663,7 @@
 - (BOOL)watermarkEnabled;
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:watermarkProductIdentifier] == nil) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:watermarkProductIdentifier];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:watermarkProductIdentifier];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     

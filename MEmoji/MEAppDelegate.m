@@ -19,12 +19,21 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [application setApplicationSupportsShakeToEdit:YES];
     
+    // Appirater Setup
+    [Appirater setAppId:@"921847909"];
+    [Appirater setDaysUntilPrompt:2];
+    [Appirater setUsesUntilPrompt:1];
+    [Appirater setSignificantEventsUntilPrompt:15];
+    [Appirater setTimeBeforeReminding:3];
+    [Appirater appLaunched:YES];
+    
     [[GAI sharedInstance] setTrackUncaughtExceptions:YES];
     [[GAI sharedInstance] setDispatchInterval:5];
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelNone];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-35804692-4"];
     [[[GAI sharedInstance] defaultTracker] setAllowIDFACollection:NO];
     
+    // Parse Push Notifications
     [Parse setApplicationId:@"qordhDuNzL5nBU9u7H3w2krXjn1HC2Nthl0s7K4n"
                   clientKey:@"aOTBL97DNoMle0bzg57AFBCqtKXRQQhVZ0xuNSXG"];
     
@@ -91,7 +100,7 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSDictionary *args = [url parseQuery]; // memoji://?hiphoppack=1?watermark=1
+        NSDictionary *args = [url parseQuery]; // memoji://?hiphoppack=1?watermarkEnabled=1
         
         @try {
             for (NSString *key in args.keyEnumerator.allObjects) {

@@ -365,8 +365,13 @@
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error in %s, %@", __PRETTY_FUNCTION__, error.debugDescription);
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video could not be converted for some reason!\nTry again!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error!"
+                                    message:@"Check that your phone isn't out of space and try again!" delegate:nil
+                          cancelButtonTitle:@"Okay"
+                          otherButtonTitles:nil] show];
+        [[MEModel sharedInstance] reloadCurrentImages];
+        [self.captureButton stopSpinning];
+        [self.captureButton setUserInteractionEnabled:YES];
         return;
     }
     [self captureGIF];
@@ -401,6 +406,7 @@
                                                  [self.captureButton setUserInteractionEnabled:YES];
                                                  [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                                                  [self.sectionsManager.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES]; // Scroll to top
+                                                 [Appirater userDidSignificantEvent:NO];
                                              });
                                          }];
 }
@@ -666,6 +672,7 @@
     } completion:^(BOOL finished) {
         [self.captureButton setUserInteractionEnabled:YES];
         [self.shareView setHidden:YES];
+        [Appirater tryToShowPrompt];
     }];
 }
 

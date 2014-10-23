@@ -78,6 +78,11 @@
     {
         return [[MEModel standardPack] count];
     }else if ([collectionView isEqual:self.hipHopCollectionView]){
+        
+        if ([[MEModel sharedInstance] hipHopPackEnabled]) {
+            [self.hipHopCollectionView setAlpha:0.55];
+        }
+        
         return [[MEModel hipHopPack] count];
     }
     else{

@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Appirater.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MEmoji-Appirater.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MEmoji-Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,87 +102,97 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>02AC01C9D20F84AB48CE359D</key>
+		<key>010CE560E9219775287DD903</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0B4D0C0E7C06FDF5EB6BE4D1</key>
+		<key>085C0E9B2B182E5263C387D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3FBD67E1CC027D4FD9B28BD4</key>
+		<key>1E6C15CC3E08A5390596442B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6B13FAF7674091B2095758A3</key>
+		<key>2A33706D9B140CC7DADD6252</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6BFE193A3DF909B29F53C847</key>
+		<key>2EF5808F06116E67A07BBDB8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8BAA76CA9775236FCACAB207</key>
+		<key>51FD02498EE8367ABDD1FB00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8D7203060F4BEB7944A49CD6</key>
+		<key>6DE6C2235D8D61180031FE72</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A60CBF47D11E80A52D0D40C5</key>
+		<key>73AC846E9ECA78614AC3B170</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B0E2D782C98B1EBF7555893A</key>
+		<key>776496590A21FF1291F9963D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C4EBA51D3B112B3591FFB2DA</key>
+		<key>79FDD964FD0F775813ED8100</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5F8792CE5018288A3ED6E0B</key>
+		<key>B377B2AAE0315B5FFDEB8C5E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D186E415B2BFC3FC417317B1</key>
+		<key>BD355BB62F26F4B4E720CAE1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5104AA4473FFD48B7217ECA</key>
+		<key>C87FD4BFD74A1180F3E85065</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D76C0F607EB03071C4BBC1F6</key>
+		<key>CC7E28B652A0D912770DD176</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E60F8E6B0A3F05895B816D25</key>
+		<key>D57CE9C6FFBA2E71F5BB799E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F699CBE274D39317406CADF1</key>
+		<key>DBB8B58E8DEB8C7DA6C8C498</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FCDA752F7A058438F79B6C14</key>
+		<key>E26A2BF63EF1F51CB987522D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E34EE707D0375A04ED599EE9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EF8329ABB45AFF724DB7824E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

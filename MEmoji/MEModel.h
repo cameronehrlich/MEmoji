@@ -16,6 +16,7 @@
 #import <GAIDictionaryBuilder.h>
 #import <DHAppStoreReceipt.h>
 #import <JGProgressHUD.h>
+#import <Appirater.h>
 #import "CEMovieMaker.h"
 #import "Image.h"
 #import "MEOverlayImage.h"
@@ -41,7 +42,7 @@ static const NSInteger numberToLoadIncrementValue = 8;
 static const NSInteger numberOfGIFsToKeep         = 24;
 
 static NSString *hipHopPackProductIdentifier = @"hiphoppack";
-static NSString *watermarkProductIdentifier = @"watermark";
+static NSString *watermarkProductIdentifier = @"watermarkEnabled";
 
 @interface MEModel : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 

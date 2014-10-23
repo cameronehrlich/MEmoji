@@ -1,5 +1,6 @@
 PODS:
-  - Bolts (1.1.2)
+  - Appirater (2.0.4)
+  - Bolts (1.1.3)
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.1)
   - FSOpenInInstagram (1.0)
@@ -29,6 +30,7 @@ PODS:
   - UIView+Shimmer (1.0.0)
 
 DEPENDENCIES:
+  - Appirater (~> 2.0)
   - DHAppleReceiptParser (~> 1.0)
   - FLAnimatedImage (from `https://github.com/cameronehrlich/FLAnimatedImage`, branch `animatesWhileScrolling`)
   - FSOpenInInstagram (~> 1.0)
@@ -53,7 +55,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/magicalpanda/MagicalRecord.git
 
 SPEC CHECKSUMS:
-  Bolts: 2635e8698a630774689441047f3465d78c48d485
+  Appirater: cbdb7f305562cfde585300bfff86da01ae559deb
+  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   DHAppleReceiptParser: 7cdb2486778146b38cbc65325d22faf5883fd781
   FLAnimatedImage: 0b8eb9d7b000f82d3c8ded247e560454a227d7f1
   FSOpenInInstagram: adae5a504d4573037d42c06f74498914e8a6f7a9
