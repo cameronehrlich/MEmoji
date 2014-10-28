@@ -75,6 +75,7 @@ static NSString *watermarkProductIdentifier = @"watermarkEnabled";
 
 - (void)purchaseProduct:(SKProduct *)product withCompletion:(PurchaseCallback)callback;
 - (void)restorePurchasesCompletion:(PurchaseCallback)callback;
+- (void)initializeCaptureSession;
 
 + (instancetype)sharedInstance;
 + (NSString *)currentVideoPath;

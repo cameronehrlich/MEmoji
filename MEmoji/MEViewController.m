@@ -85,7 +85,7 @@
     [self.sectionsManager.libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
     [self.sectionsManager.libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
     [self.sectionsManager.libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.libraryHeader.titleLabel setText:@"My MEmoji"];
+    [self.sectionsManager.libraryHeader.titleLabel setText:@"Recents"];
     [self.sectionsManager.libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -106,7 +106,7 @@
     [self.sectionsManager.freeHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [self.sectionsManager.freeHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.freeHeader.titleLabel setText:@"Free Pack"];
+    [self.sectionsManager.freeHeader.titleLabel setText:@"MEmoji"];
     [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -181,7 +181,9 @@
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
     [self updateViewFinderButtons];
-    [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+    if ([[[MEModel sharedInstance] currentImages] count] != 0) {
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+    }
     [self setUpObservers];
 }
 
@@ -207,14 +209,11 @@
         }else{
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
             [self.sectionsManager.hipHopCollectionView reloadData];
-            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
         }
     }];
     
     [RACObserve([MEModel sharedInstance], hipHopPackProduct) subscribeNext:^(id x) {
         if (![[MEModel sharedInstance] hipHopPackEnabled]) {
-            
-            [self.sectionsManager.hipHopCollectionView setAlpha:0.55];
             
             if (x) {
                 NSString *priceString = [MEModel formattedPriceForProduct:x];
@@ -239,6 +238,36 @@
     
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    // TODO : Make sure all of this works
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    switch (authStatus) {
+        case AVAuthorizationStatusAuthorized:
+            break;
+        case AVAuthorizationStatusRestricted:
+            break;
+        case AVAuthorizationStatusDenied:
+            [self alertNoCameraPermission];
+            break;
+        case AVAuthorizationStatusNotDetermined: {
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                if(granted){
+                    NSLog(@"Granted access to %@", AVMediaTypeVideo);
+                    [[MEModel sharedInstance] initializeCaptureSession];
+                } else {
+                    NSLog(@"Not granted access to %@", AVMediaTypeVideo);
+                    [self alertNoCameraPermission];
+                }
+            }];
+            break;
+    }
+        default:
+            break;
+    }
+
+    if ([[MEModel sharedInstance] session] == nil || ![[[MEModel sharedInstance] session] isRunning]) {
+        [[MEModel sharedInstance] initializeCaptureSession];
+    }
 }
 
 - (void)clearInterface
@@ -295,6 +324,13 @@
 #pragma mark UIGestureRecognizerHandlers
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender
 {
+    // Alert that Camera has no permission
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus != AVAuthorizationStatusAuthorized) {
+        [self alertNoCameraPermission];
+        return;
+    }
+    
     if (![[[MEModel sharedInstance] videoFileOutput] isRecording]) {
         [[MEModel sharedInstance] setCapturingStill:YES];
         [self startRecording];
@@ -303,6 +339,15 @@
 
 -  (void)handleLongPress:(UILongPressGestureRecognizer *)sender
 {
+    // Alert that Camera has no permission
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus != AVAuthorizationStatusAuthorized) {
+        if (sender.state == UIGestureRecognizerStateBegan) { // Only on the begining of the gesture
+            [self alertNoCameraPermission];
+        }
+        return;
+    }
+    
     if (sender.state == UIGestureRecognizerStateBegan) {
         if (![[[MEModel sharedInstance] videoFileOutput] isRecording]) {
             [[MEModel sharedInstance] setCapturingStill:NO];
@@ -366,7 +411,8 @@
 {
     if (error) {
         [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"Check that your phone isn't out of space and try again!" delegate:nil
+                                    message:@"Check that your phone isn't out of space and try again!\nYou may need to go delete some photos to free up space."
+                                   delegate:nil
                           cancelButtonTitle:@"Okay"
                           otherButtonTitles:nil] show];
         [[MEModel sharedInstance] reloadCurrentImages];
@@ -406,7 +452,6 @@
                                                  [self.captureButton setUserInteractionEnabled:YES];
                                                  [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                                                  [self.sectionsManager.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES]; // Scroll to top
-                                                 [Appirater userDidSignificantEvent:NO];
                                              });
                                          }];
 }
@@ -546,6 +591,13 @@
             break;
         }
         case MEShareOptionSaveToLibrary: {
+            // Check if we have permission
+            if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
+                [self dismissShareView];
+                [self alertNoPhotosPermission];
+                return;
+            }
+            
             [UIAlertView showWithTitle:@"Save to Library"
                                message:@"How you would like to\nsave your MEmoji?"
                      cancelButtonTitle:@"Cancel"
@@ -598,9 +650,17 @@
         }
         case MEShareOptionInstagram: {
             [self dismissShareView];
+            
+            // Check if we have permission
+            if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
+                [self alertNoPhotosPermission];
+                return;
+            }
+            
             [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
             if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
+                
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
                                               
@@ -634,7 +694,15 @@
             [self dismissShareView];
             [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
+            // Check if we have permission
+            if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
+                [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                [self alertNoPhotosPermission];
+                return;
+            }
+            
             ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            // TODO: save as png if not animated so it appears correctly on twitter.
             [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
                 
                 [[MEModel sharedInstance].HUD dismissAnimated:YES];
@@ -672,8 +740,31 @@
     } completion:^(BOOL finished) {
         [self.captureButton setUserInteractionEnabled:YES];
         [self.shareView setHidden:YES];
-        [Appirater tryToShowPrompt];
     }];
+}
+
+
+- (void)alertNoPhotosPermission
+{
+    [[[UIAlertView alloc] initWithTitle:@"Could not save!"
+                                message:@"MEmoji doesn't have permission to access your Photos.\nPlease go to:\n"
+                                        @"Settings > Privacy > Photos\n"
+                                        @"and make sure MEmoji is switched on!"
+                               delegate:nil
+                      cancelButtonTitle:@"Okay"
+                      otherButtonTitles:nil] show];
+}
+
+
+- (void)alertNoCameraPermission
+{
+    [[[UIAlertView alloc] initWithTitle:@"Camera needs permission!"
+                                message:@"Please go to:\n"
+      @"Settings > Privacy > Camera\n"
+      @"and make sure MEmoji is switched on."
+                               delegate:nil
+                      cancelButtonTitle:@"Okay"
+                      otherButtonTitles:nil, nil] show];
 }
 
 #pragma mark -

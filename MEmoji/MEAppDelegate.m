@@ -22,15 +22,16 @@
     // Appirater Setup
     [Appirater setAppId:@"921847909"];
     [Appirater setDaysUntilPrompt:2];
-    [Appirater setUsesUntilPrompt:1];
-    [Appirater setSignificantEventsUntilPrompt:15];
+    [Appirater setUsesUntilPrompt:4];
+    [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:3];
     [Appirater appLaunched:YES];
+    [Appirater setDebug:NO];
     
     [[GAI sharedInstance] setTrackUncaughtExceptions:YES];
     [[GAI sharedInstance] setDispatchInterval:5];
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelNone];
-    [[GAI sharedInstance] trackerWithTrackingId:@"UA-35804692-4"];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-35804692-6"];
     [[[GAI sharedInstance] defaultTracker] setAllowIDFACollection:NO];
     
     // Parse Push Notifications
@@ -61,8 +62,17 @@
     // Store the deviceToken in the current installation and save it to Parse.
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
-    [currentInstallation setChannels:@[ @"global" ]];
+    NSString *countryCode = [self sanitizeChannelName:[[NSLocale currentLocale] objectForKey: NSLocaleCountryCode]];
+    NSString *timeZone = [self sanitizeChannelName:[[NSTimeZone localTimeZone] name]];
+    NSLog(@"Subscribed to channels %@, %@", countryCode, timeZone);
+    [currentInstallation setChannels:@[ @"global", countryCode, timeZone]];
     [currentInstallation saveInBackground];
+}
+
+- (NSString *)sanitizeChannelName:(NSString *)name
+{
+    NSCharacterSet *notAllowedChars = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"] invertedSet];
+    return [[name componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -84,6 +94,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

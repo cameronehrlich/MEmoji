@@ -54,11 +54,10 @@
         [MagicalRecord setupAutoMigratingCoreDataStack];
         [MagicalRecord setLoggingLevel:MagicalRecordLoggingLevelOff];
         
-        self.numberToLoad = numberToLoadIncrementValue;
-        
-        self.currentOverlays = [[NSMutableArray alloc] init];
-        
         [self initializeCaptureSession];
+        
+        self.numberToLoad = numberToLoadIncrementValue;
+        self.currentOverlays = [[NSMutableArray alloc] init];
         
         self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
         [self.productRequest setDelegate:self];
