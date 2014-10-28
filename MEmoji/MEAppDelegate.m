@@ -64,7 +64,6 @@
     [currentInstallation setDeviceTokenFromData:deviceToken];
     NSString *countryCode = [self sanitizeChannelName:[[NSLocale currentLocale] objectForKey: NSLocaleCountryCode]];
     NSString *timeZone = [self sanitizeChannelName:[[NSTimeZone localTimeZone] name]];
-    NSLog(@"Subscribed to channels %@, %@", countryCode, timeZone);
     [currentInstallation setChannels:@[ @"global", countryCode, timeZone]];
     [currentInstallation saveInBackground];
 }
