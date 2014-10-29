@@ -634,7 +634,7 @@
             [UIAlertView showWithTitle:@"Save to Library"
                                message:@"How you would like to\nsave your MEmoji?"
                      cancelButtonTitle:@"Cancel"
-                     otherButtonTitles:@[@"Save as GIF", @"Save as Video"]
+                     otherButtonTitles:@[@"Save as Image", @"Save as Video"]
                               tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                   
                                   [self dismissShareView];
@@ -644,11 +644,19 @@
                                       
                                       if (buttonIndex == 1) { // Save as GIF
                                           
-                                          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                                          [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                          }];
-                                          
+                                          if ([[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
+                                              ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                                              [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                  [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                                              }];
+                                          }else{
+                                              
+                                              UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
+                                              ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                                              [library writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(tmpImage, 1) metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                  [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                                              }];
+                                          }
                                       }else if (buttonIndex == 2){ // Save as Video
                                           [[MEModel sharedInstance] saveMovieFromImage:[[MEModel sharedInstance] selectedImage] withCompletion:^(BOOL success) {
                                               if (success) {
@@ -690,28 +698,38 @@
                 return;
             }
             
+            if (![FSOpenInInstagram canSendInstagram]) {
+                [[[UIAlertView alloc] initWithTitle:@"Can't Open Instagram"
+                                            message:@"Check that you have Instagram installed on your phone and try again."
+                                           delegate:nil
+                                  cancelButtonTitle:@"Okay"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            
             [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
             if (![[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
                 
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
                 [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-                                              
-                                              if ([FSOpenInInstagram canSendInstagram]) {
-                                                  UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
-                                                  self.instagramOpener = [[FSOpenInInstagram alloc] init];
-                                                  [self.instagramOpener postImage:tmpImage caption:nil inView:self.view];
-                                              }
                     
-                                              [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                                          }];
+                    
+                    UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
+                    self.instagramOpener = [[FSOpenInInstagram alloc] init];
+                    [self.instagramOpener postImage:tmpImage caption:@"@thememojiapp" inView:self.view];
+                    
+                    [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                }];
             }else{
                 [[MEModel sharedInstance] saveMovieFromImage:[[MEModel sharedInstance] selectedImage] withCompletion:^(BOOL success){
                     [[MEModel sharedInstance].HUD dismissAnimated:YES];
                     if (success) {
-                        NSLog(@"Saved movie successfully.");
                         
-                        [UIAlertView showWithTitle:@"Ready to Upload on Instagram!" message:@"You can post your MEmoji by selecting it from your library once in Instagram." cancelButtonTitle:@"Go to Instagram" otherButtonTitles:nil
+                        [UIAlertView showWithTitle:@"Ready to Upload on Instagram!"
+                                           message:@"You can post your MEmoji by selecting it from your library once in Instagram."
+                                 cancelButtonTitle:@"Go to Instagram"
+                                 otherButtonTitles:nil
                                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                               NSURL *instagramURL = [NSURL URLWithString:@"instagram://camera"];
                                               if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
@@ -725,7 +743,6 @@
         }
         case MEShareOptionTwitter: {
             [self dismissShareView];
-            [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
             // Check if we have permission
             if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
@@ -733,6 +750,17 @@
                 [self alertNoPhotosPermission];
                 return;
             }
+            
+            if (![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://post"]]) {
+                [[[UIAlertView alloc] initWithTitle:@"Can't Open Twitter"
+                                            message:@"Check that you have Twitter installed on your phone and try again."
+                                           delegate:nil
+                                  cancelButtonTitle:@"Okay"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            
+            [[MEModel sharedInstance].HUD showInView:self.view animated:YES];
             
             if ([[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
                 ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
