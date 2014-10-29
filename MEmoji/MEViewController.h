@@ -14,17 +14,18 @@
 #import "MECaptureButton.h"
 #import "MEShareView.h"
 #import "MEViewFinder.h"
+#import "MEIntroductionView.h"
 
 @import MessageUI;
 @import MobileCoreServices;
 @import AssetsLibrary;
 
-@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MESectionsManagerDelegate, MEShareViewDelegate, MEViewFinderDelegate>
-
+@interface MEViewController : UIViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIScrollViewDelegate, MESectionsManagerDelegate, MEShareViewDelegate, MEViewFinderDelegate, MEIntroductionViewDelegate>
 
 @property (strong, nonatomic) MEViewFinder *viewFinder;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) MECaptureButton *captureButton;
+@property (strong, nonatomic) MEIntroductionView *introductionView;
 
 @property (strong, nonatomic) MESectionsManager *sectionsManager;
 

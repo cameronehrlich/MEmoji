@@ -10,6 +10,8 @@
 #import "MECaptureButton.h"
 #import "MESettingsCell.h"
 
+static const NSInteger numberOfItemsPerRow = 4;
+
 @implementation MESectionsManager
 
 - (instancetype)init
@@ -39,10 +41,10 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.libraryCollectionView]) {
-        CGFloat sideLength = (collectionView.bounds.size.width/2) - 3;
+        CGFloat sideLength = (collectionView.bounds.size.width/2) - 1 ;
         return CGSizeMake(sideLength, sideLength);
     }else {
-        CGFloat sideLength = (collectionView.bounds.size.width/3) - 2;
+        CGFloat sideLength = (collectionView.bounds.size.width/numberOfItemsPerRow - 1);
         return CGSizeMake(sideLength, sideLength);
     }
 }
@@ -64,7 +66,7 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(2 + (captureButtonDiameter/2), 2, 2, 2);
+    return UIEdgeInsetsMake((captureButtonDiameter/2), 0, 0, 0);
 }
 
 #pragma mark -
@@ -80,6 +82,8 @@
     }else if ([collectionView isEqual:self.hipHopCollectionView]){
         
         if ([[MEModel sharedInstance] hipHopPackEnabled]) {
+            [self.hipHopCollectionView setAlpha:1];
+        }else{
             [self.hipHopCollectionView setAlpha:0.55];
         }
         
@@ -151,7 +155,6 @@
             NSLog(@"Error in %s", __PRETTY_FUNCTION__);
         }
         
-        
         if ([self.overlaysCache objectForKey:overlayImage]) {
             [cell.imageView setImage:[self.overlaysCache objectForKey:overlayImage]];
         }else{
@@ -175,13 +178,12 @@
     }
 }
 
--(void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.libraryCollectionView]) {
         [[(MEMEmojiCell *)cell imageView] startAnimating];
     }
 }
-
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -224,6 +226,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Test here for usability of "Unlockable" packs
     if ([collectionView isEqual:self.hipHopCollectionView]) {
         return [[MEModel sharedInstance] hipHopPackEnabled];
     }
@@ -239,10 +242,9 @@
         [loadMoreButton setFrame:footerView.bounds];
         [loadMoreButton setTitle:@"Load more" forState:UIControlStateNormal];
         [loadMoreButton.titleLabel setFont:[MEModel mainFontWithSize:20]];
-        [loadMoreButton setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.8]];
+        [loadMoreButton setBackgroundColor:[MEModel mainColor]];
         [loadMoreButton addTarget:self action:@selector(loadMore:) forControlEvents:UIControlEventTouchUpInside];
         [footerView addSubview:loadMoreButton];
-        
         
         UILabel *limitWarningLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2*(footerView.bounds.size.height/3), footerView.bounds.size.width, footerView.bounds.size.height/3)];
         [limitWarningLabel setFont:[MEModel mainFontWithSize:9]];
@@ -296,24 +298,36 @@
 
 #pragma mark -
 #pragma mark UITableViewDelegate and Datasource
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MESettingsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
     [cell setBackgroundColor:[UIColor clearColor]];
-    [cell.textLabel setFont:[MEModel mainFontWithSize:26]];
+    [cell.textLabel setFont:[MEModel mainFontWithSize:23]];
     [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
     [cell.textLabel setTextColor:[UIColor lightTextColor]];
     
     switch (indexPath.row) {
-        case 0:
-            [cell.textLabel setText:@"Contact us"];
+        case MESettingsOptionWatermark:
+            if ([[MEModel sharedInstance] watermarkProduct]) {
+                [cell.textLabel setText:[NSString stringWithFormat:@"Disable Watermark %@", [MEModel formattedPriceForProduct:[[MEModel sharedInstance] watermarkProduct]]]];
+            }else{
+                [cell.textLabel setText:@"Disable Watermark"];
+            }
+            if (![[MEModel sharedInstance] watermarkEnabled]) {
+                [cell.textLabel setText:@"Watermark Disabled"];
+            }
             break;
-        case 1:
-            [cell.textLabel setText:@"Leave a nice review!"];
+        case MESettingsOptionContact:
+            [cell.textLabel setText:@"Contact Us"];
             break;
-        case 2:
+        case MESettingsOptionReview:
+            [cell.textLabel setText:@"Leave a Nice Review!"];
+            break;
+        case MESettingsOptionRestore:
             [cell.textLabel setText:@"Restore Purchases"];
+            break;
+        case MESettingsOptionIntroduction:
+            [cell.textLabel setText:@"View Introduction"];
             break;
         default:
             break;
@@ -335,7 +349,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return MESettingsOptionNumberOfTypes;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

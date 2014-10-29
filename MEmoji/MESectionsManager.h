@@ -15,13 +15,6 @@
 
 @import Foundation;
 
-typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
-    MEHeaderButtonTypeRightArrow,
-    MEHeaderButtonTypeLeftArrow,
-    MEHeaderButtonTypeDelete,
-    MEHeaderButtonTypePurchaseHipHopPack,
-};
-
 @protocol MESectionsManagerDelegate <NSObject>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay;
@@ -29,7 +22,6 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image;
 
 - (void)tableView:(UITableView*)tableView tappedSettingsButtonAtIndex:(NSIndexPath *)indexPath;
-
 - (void)presentShareView;
 
 @end

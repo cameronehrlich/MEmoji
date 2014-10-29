@@ -11,6 +11,7 @@
 		3210054219DE0F12001B3680 /* MEProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210054119DE0F12001B3680 /* MEProgressView.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
+		323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 323E26761A0067F100C33196 /* MEIntroductionView.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C9CA719D61E4B00E426E9 /* MEViewFinder.m */; };
 		325E995C19DD2CD6004E8DBA /* HipHipPack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */; };
@@ -62,6 +63,8 @@
 		3226033519D1F4F00082625F /* MEOverlayImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayImage.h; sourceTree = "<group>"; };
 		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
 		323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 8.xcdatamodel"; sourceTree = "<group>"; };
+		323E26751A0067F100C33196 /* MEIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIntroductionView.h; sourceTree = "<group>"; };
+		323E26761A0067F100C33196 /* MEIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIntroductionView.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
 		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
@@ -166,14 +169,16 @@
 		32640E9719E6001400F023F6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3210054019DE0F12001B3680 /* MEProgressView.h */,
-				3210054119DE0F12001B3680 /* MEProgressView.m */,
 				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
 				325C9CA719D61E4B00E426E9 /* MEViewFinder.m */,
-				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
-				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
+				323E26751A0067F100C33196 /* MEIntroductionView.h */,
+				323E26761A0067F100C33196 /* MEIntroductionView.m */,
 				328F63A619D561CD0010CF1C /* MEShareView.h */,
 				328F63A719D561CD0010CF1C /* MEShareView.m */,
+				3210054019DE0F12001B3680 /* MEProgressView.h */,
+				3210054119DE0F12001B3680 /* MEProgressView.m */,
+				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
+				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 				32DD889219870B44008E8BCE /* main.m in Sources */,
 				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
 				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
+				323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */,
 				32F752681987513000045AFA /* Image.m in Sources */,
 				328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */,
 				32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */,
@@ -558,13 +564,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "707cdeae-ce52-4aea-821d-8e3639f7ef0f";
+				PROVISIONING_PROFILE = "a5123be5-7f0f-4e33-b069-2b9f664af2dd";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -579,13 +586,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "707cdeae-ce52-4aea-821d-8e3639f7ef0f";
+				PROVISIONING_PROFILE = "a5123be5-7f0f-4e33-b069-2b9f664af2dd";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

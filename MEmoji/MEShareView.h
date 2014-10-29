@@ -10,14 +10,6 @@
 
 @class MEShareView;
 
-typedef NS_ENUM(NSUInteger, MEShareOption) {
-    MEShareOptionSaveToLibrary,
-    MEShareOptionInstagram,
-    MEShareOptionTwitter,
-    MEShareOptionMessages,
-    MEShareOptionNone
-};
-
 @protocol MEShareViewDelegate <NSObject>
 
 - (void)shareview:(MEShareView *)shareView didSelectOption:(MEShareOption)option;

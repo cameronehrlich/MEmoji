@@ -59,7 +59,7 @@
         self.numberToLoad = numberToLoadIncrementValue;
         self.currentOverlays = [[NSMutableArray alloc] init];
         
-        self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
+        self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, watermarkProductIdentifier, nil]];
         [self.productRequest setDelegate:self];
         [self.productRequest start];
         
@@ -95,7 +95,7 @@
         } completion:^(BOOL contextDidSave, NSError *error) {
             
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                NSLog(@"Deleted old shit");
+                // Do nothing?
             }];
 
         }];
@@ -370,11 +370,15 @@
     dispatch_once(&onceToken, ^{
         
         NSArray *imageNames = @[
-                                @"smallTears",
-                                @"goldCrown",
+                                @"itsDoodoo",
                                 @"kittyWhiskers",
                                 @"nerdGlasses",
-                                @"itsDoodoo",
+                                @"champagne",
+                                @"blunt",
+                                @"middleFingerBlack",
+                                @"middleFinger",
+                                @"smallTears",
+                                @"goldCrown",
                                 @"prayingHands",
                                 @"blackPrayingHands",
                                 @"eyes",
@@ -470,7 +474,8 @@
                                 @"beerMug",
                                 @"maitaiGlass",
                                 @"martiniGlass",
-                                @"wineGlass"];
+                                @"wineGlass"
+                                ];
         
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
         
@@ -494,7 +499,6 @@
         NSArray *imageNames = @[
                                 @"bandanaLowerFace",
                                 @"roundedSunglasses",
-                                @"champagne",
                                 @"bucketHat",
                                 @"styrofoamCupWithDrank",
                                 @"grillBlack",
@@ -507,14 +511,11 @@
                                 @"goldChain",
                                 @"goldChain2",
                                 @"joint",
-                                @"blunt",
                                 @"chalice",
                                 @"goldMic",
                                 @"headphones",
                                 @"deuces",
                                 @"deucesBlack",
-                                @"middleFinger",
-                                @"middleFingerBlack",
                                 @"westside",
                                 @"westsideBlack"
                                 ];
@@ -540,9 +541,21 @@
     self.purchaseCompletion = callback;
     
     if (![SKPaymentQueue canMakePayments]) {
-        
-        NSLog(@"User can't make payments on this device, should be checking earlier in the callchain");
-        self.purchaseCompletion(NO);
+        if (self.purchaseCompletion) {
+            self.purchaseCompletion(NO);
+        }
+        return;
+    }
+    
+    if (!product) {
+        [[[UIAlertView alloc] initWithTitle:@"Couldn't Connect"
+                                    message:@"Please check your internet connection and try again later!"
+                                  delegate:nil
+                         cancelButtonTitle:@"Okay"
+                          otherButtonTitles: nil] show];
+        if (self.purchaseCompletion) {
+            self.purchaseCompletion(NO);
+        }
         return;
     }
     
@@ -556,8 +569,12 @@
     for (SKProduct *product in response.products) {
         if ([product.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
             self.hipHopPackProduct = product;
+        }else if ([product.productIdentifier isEqualToString:watermarkProductIdentifier]){
+            self.watermarkProduct = product;
         }
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
@@ -568,9 +585,14 @@
                 // Do nothing???
                 break;
             case SKPaymentTransactionStatePurchased:
+                
+                // Enable corresponding product
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
+                }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
+                    [self setWatermarkEnabled:NO];
                 }
+                
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 if (self.purchaseCompletion) {
                     self.purchaseCompletion(YES);
@@ -583,9 +605,12 @@
                 }
                 break;
             case SKPaymentTransactionStateRestored:
-                
+
+                // Restore corresponding product
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
+                }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
+                    [self setWatermarkEnabled:NO];
                 }
                 
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
@@ -619,6 +644,8 @@
     for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
         if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
             [self setHipHopPackEnabled:YES];
+        }else if ([inAppReceipt.productId isEqualToString:watermarkProductIdentifier]){
+            [self setWatermarkEnabled:NO];
         }
     }
     if (self.restoreCompletion) {
@@ -642,6 +669,7 @@
     }
 }
 
+
 - (BOOL)hipHopPackEnabled
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:hipHopPackProductIdentifier] == nil) {
@@ -655,8 +683,11 @@
 
 - (void)setHipHopPackEnabled:(BOOL)hipHopPackEnabled
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
     [[NSUserDefaults standardUserDefaults] setBool:hipHopPackEnabled forKey:hipHopPackProductIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
 }
 
 - (BOOL)watermarkEnabled;
@@ -672,6 +703,9 @@
 
 - (void)setWatermarkEnabled:(BOOL)watermarkEnabled
 {
+    if (watermarkEnabled) {
+        [[[UIAlertView alloc] initWithTitle:@"Watermark Disabled!" message:@"Your MEmoji will no long have a watermark on them!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil] show];
+    }
     [[NSUserDefaults standardUserDefaults] setBool:watermarkEnabled forKey:watermarkProductIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

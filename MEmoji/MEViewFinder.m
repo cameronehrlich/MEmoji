@@ -74,6 +74,13 @@
         self.bottomRightButton.y -= margin;
         self.bottomRightButton.x -= margin;
         
+        // Set button images
+        [self.topRightButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
+        [self.bottomRightButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
+        [self.bottomLeftButton setImage:[UIImage imageNamed:@"recentButton"] forState:UIControlStateNormal];
+        [self.topLeftButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
+        
+        
         self.progressView = [[MEProgressView alloc] initWithFrame:CGRectMake(0, 0, self.width, 8) andColor:[UIColor redColor]];
         [self.progressView setDuration:lengthOfGIF];
         [self addSubview:self.progressView];
@@ -107,7 +114,6 @@
         } completion:nil];
     }];
 }
-
 
 - (void)setShowingMask:(BOOL)showingMask
 {
@@ -154,6 +160,18 @@
         }
         
     }];
+}
+
+- (void)updateButtons
+{
+    // Hide and show the "Clear" button
+    if ([[[MEModel sharedInstance] currentOverlays] count] > 0) {
+        [self.bottomRightButton setUserInteractionEnabled:YES];
+        [self.bottomRightButton setAlpha:1];
+    }else{
+        [self.bottomRightButton setUserInteractionEnabled:NO];
+        [self.bottomRightButton setAlpha:0];
+    }
 }
 
 @end

@@ -22,7 +22,7 @@
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
         [self addSubview:self.imageView];
         
-        CGRect selectedImageFrame = CGRectMake(0, 0, 45, 45);
+        CGRect selectedImageFrame = CGRectMake(0, 0, self.bounds.size.width/3, self.bounds.size.width/3);
         selectedImageFrame.origin.y += (frame.size.height/2) - (selectedImageFrame.size.height/2);
         selectedImageFrame.origin.x += (frame.size.width/2) - (selectedImageFrame.size.width/2);
         
@@ -39,7 +39,6 @@
     }
     return self;
 }
-
 
 - (void)setSelected:(BOOL)selected
 {
@@ -66,6 +65,5 @@
         [self setAlpha:1];
     }
 }
-
 
 @end

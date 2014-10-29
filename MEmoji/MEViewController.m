@@ -24,16 +24,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES]; // iPad ios 7
-    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
     
     // Setup
     self.viewFinder = [[MEViewFinder alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.width) previewLayer:[[MEModel sharedInstance] previewLayer]];
     [self.viewFinder setDelegate:self];
-    [self.viewFinder.topRightButton setImage:[UIImage imageNamed:@"flipCamera"] forState:UIControlStateNormal];
-    [self.viewFinder.bottomRightButton setImage:[UIImage imageNamed:@"deleteXBlack"] forState:UIControlStateNormal];
-    [self.viewFinder.bottomLeftButton setImage:[UIImage imageNamed:@"recentButton"] forState:UIControlStateNormal];
-    [self.viewFinder.topLeftButton setImage:[UIImage imageNamed:@"toggleMask"] forState:UIControlStateNormal];
     [self.view addSubview:self.viewFinder];
     
     // Scroll view
@@ -47,9 +41,9 @@
     [self.view insertSubview:self.scrollView belowSubview:self.viewFinder];
     
     // Easter egg
-    UILabel *easterEgg = [[UILabel alloc] initWithFrame:CGRectMake(-1*(3*(self.scrollView.width/4)), 0, self.scrollView.width, self.scrollView.height)];
+    UILabel *easterEgg = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
+    [easterEgg setX:-self.scrollView.width/2];
     [easterEgg setFont:[MEModel mainFontWithSize:11]];
-    [easterEgg setNumberOfLines:3];
     [easterEgg setText:@"Keep going..."];
     [easterEgg setAdjustsFontSizeToFitWidth:YES];
     [self.scrollView addSubview:easterEgg];
@@ -60,7 +54,8 @@
     [self.instructionsLabel setTextAlignment:NSTextAlignmentCenter];
     [self.instructionsLabel setTextColor:[UIColor lightTextColor]];
     [self.instructionsLabel setAdjustsFontSizeToFitWidth:YES];
-    [self.instructionsLabel setText:@"Tap button for still,\nhold for GIF."];
+    [self.instructionsLabel setText:@"Tap button for still,\n"
+                                    @"hold for GIF."];
     [self.instructionsLabel setNumberOfLines:2];
     [self.instructionsLabel startShimmering];
     [self.scrollView addSubview:self.instructionsLabel];
@@ -70,7 +65,7 @@
     [self.sectionsManager setDelegate:self];
     
     // Library Collection View
-    self.sectionsManager.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, self.scrollView.height)
+    self.sectionsManager.libraryCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)
                                                                     collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.sectionsManager.libraryCollectionView setDelegate:self.sectionsManager];
     [self.sectionsManager.libraryCollectionView setDataSource:self.sectionsManager];
@@ -80,7 +75,7 @@
     [self.sectionsManager.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.scrollView addSubview:self.sectionsManager.libraryCollectionView];
     
-    self.sectionsManager.libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 0, 0, self.scrollView.width, captureButtonDiameter/2)];
+    self.sectionsManager.libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, captureButtonDiameter/2)];
     [self.sectionsManager.libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
     [self.sectionsManager.libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
     [self.sectionsManager.libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
@@ -106,12 +101,12 @@
     [self.sectionsManager.freeHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [self.sectionsManager.freeHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.freeHeader.titleLabel setText:@"MEmoji"];
+    [self.sectionsManager.freeHeader.titleLabel setText:@"Free MEmoji"];
     [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.sectionsManager.freeHeader.purchaseButton setTitle:@"More Packs" forState:UIControlStateNormal];
+    [self.sectionsManager.freeHeader.purchaseButton setTitle:@"More MEmoji" forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.purchaseButton setTag:MEHeaderButtonTypeRightArrow];
     [self.sectionsManager.freeHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -177,18 +172,25 @@
     [self.captureButton addGestureRecognizer:singleTapRecognizer];
     UILongPressGestureRecognizer *longPressRecognier = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [longPressRecognier setMinimumPressDuration:0.25];
-    [longPressRecognier setAllowableMovement:captureButtonDiameter ];
+    [longPressRecognier setAllowableMovement:captureButtonDiameter];
     [self.captureButton addGestureRecognizer:longPressRecognier];
     
-    [self updateViewFinderButtons];
-    if ([[[MEModel sharedInstance] currentImages] count] != 0) {
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
-    }
+    [self.viewFinder updateButtons];
     [self setUpObservers];
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+    
+    // Check if its the first run, show intro if so!
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:firstRunKey] == nil) {
+        [self presentIntroduction];
+    }
 }
 
 - (void)setUpObservers
 {
+    [[NSNotificationCenter defaultCenter] addObserverForName:reloadPurchaseableContentKey object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        [self reloadAllCollections];
+    }];
+    
     // instruction Label
     [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
         if ([[[MEModel sharedInstance] currentImages] count] == 0) {
@@ -208,7 +210,7 @@
             
         }else{
             [self.sectionsManager.hipHopHeader.purchaseButton setUserInteractionEnabled:YES];
-            [self.sectionsManager.hipHopCollectionView reloadData];
+            [self reloadAllCollections];
         }
     }];
     
@@ -235,16 +237,18 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self reloadAllCollections];
     
     [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
     [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
     
-    // TODO : Make sure all of this works
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     switch (authStatus) {
         case AVAuthorizationStatusAuthorized:
+            // do nothing
             break;
         case AVAuthorizationStatusRestricted:
+            // do nothing
             break;
         case AVAuthorizationStatusDenied:
             [self alertNoCameraPermission];
@@ -252,10 +256,8 @@
         case AVAuthorizationStatusNotDetermined: {
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
                 if(granted){
-                    NSLog(@"Granted access to %@", AVMediaTypeVideo);
                     [[MEModel sharedInstance] initializeCaptureSession];
                 } else {
-                    NSLog(@"Not granted access to %@", AVMediaTypeVideo);
                     [self alertNoCameraPermission];
                 }
             }];
@@ -263,10 +265,6 @@
     }
         default:
             break;
-    }
-
-    if ([[MEModel sharedInstance] session] == nil || ![[[MEModel sharedInstance] session] isRunning]) {
-        [[MEModel sharedInstance] initializeCaptureSession];
     }
 }
 
@@ -277,23 +275,16 @@
     }
     
     [[[MEModel sharedInstance] currentOverlays] removeAllObjects];
-    [self.sectionsManager.freeCollectionView reloadData];
-    [self.sectionsManager.hipHopCollectionView reloadData];
-    
-    [self updateViewFinderButtons];
+    [self reloadAllCollections];
+    [self.viewFinder updateButtons];
 }
 
-- (void)updateViewFinderButtons
+- (void)reloadAllCollections
 {
-    [UIView animateWithDuration:0.2 animations:^{
-        if ([[[MEModel sharedInstance] currentOverlays] count] > 0) {
-            [self.viewFinder.bottomRightButton setUserInteractionEnabled:YES];
-            [self.viewFinder.bottomRightButton setAlpha:1];
-        }else{
-            [self.viewFinder.bottomRightButton setUserInteractionEnabled:NO];
-            [self.viewFinder.bottomRightButton setAlpha:0];
-        }
-    }];
+    [self.sectionsManager.libraryCollectionView reloadData];
+    [self.sectionsManager.freeCollectionView reloadData];
+    [self.sectionsManager.hipHopCollectionView reloadData];
+    [self.sectionsManager.settingsTableView reloadData];
 }
 
 #pragma mark -
@@ -411,7 +402,8 @@
 {
     if (error) {
         [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"Check that your phone isn't out of space and try again!\nYou may need to go delete some photos to free up space."
+                                    message:@"Check that your phone isn't out of space and try again!\n"
+                                            @"You may need to go delete some photos to free up space."
                                    delegate:nil
                           cancelButtonTitle:@"Okay"
                           otherButtonTitles:nil] show];
@@ -450,7 +442,8 @@
                                                  [[MEModel sharedInstance] reloadCurrentImages];
                                                  [self.captureButton stopSpinning];
                                                  [self.captureButton setUserInteractionEnabled:YES];
-                                                 [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                                                 [self.sectionsManager collectionView:self.sectionsManager.libraryCollectionView
+                                                             didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                                                  [self.sectionsManager.libraryCollectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES]; // Scroll to top
                                              });
                                          }];
@@ -471,15 +464,14 @@
     [overlay.layer setFrame:self.viewFinder.bounds];
     [self.viewFinder.previewLayer addSublayer:overlay.layer];
     
-    [self updateViewFinderButtons];
+    [self.viewFinder updateButtons];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselctOverlay:(MEOverlayImage *)overlay;
 {
     [[[MEModel sharedInstance] currentOverlays] removeObject:overlay];
     [overlay.layer removeFromSuperlayer];
-    
-    [self updateViewFinderButtons];
+    [self.viewFinder updateButtons];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectImage:(Image *)image
@@ -540,9 +532,32 @@
 - (void)tableView:(UITableView*)tableView tappedSettingsButtonAtIndex:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
-        case 0:
+        case MESettingsOptionWatermark: {
+            
+            if (![[MEModel sharedInstance] watermarkEnabled]) {
+                [[[UIAlertView alloc] initWithTitle:@"Already Purchased"
+                                           message:@"You've disabled the watermark, silly!"
+                                          delegate:nil cancelButtonTitle:@"Okay"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            
+            [[[MEModel sharedInstance] HUD] showInView:self.view];
+            
+            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] watermarkProduct] withCompletion:^(BOOL success) {
+                [[[MEModel sharedInstance] HUD] dismiss];
+                [self reloadAllCollections];
+            }];
+            
+            break;
+        }
+        case MESettingsOptionContact:
             if (![MFMailComposeViewController canSendMail]) {
-                [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"It appears your device is not setup to send mail.\nPlease email us at support@luckybunnyapps.com" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Oops"
+                                            message:@"It appears your device is not setup to send mail.\nPlease email us at support@luckybunnyapps.com"
+                                           delegate:nil
+                                  cancelButtonTitle:@"Okay"
+                                  otherButtonTitles:nil] show];
                 return;
             }else{
                 [[[MEModel sharedInstance] HUD] showInView:self.view];
@@ -558,22 +573,39 @@
             }
             
             break;
-        case 1:
+        case MESettingsOptionReview:
             [[UIApplication sharedApplication] openURL:
              [NSURL URLWithString:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=921847909&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software"]];
             break;
-        case 2:
+        case MESettingsOptionRestore:
             [[[MEModel sharedInstance] HUD] showInView:self.view];
             [[MEModel sharedInstance] restorePurchasesCompletion:^(BOOL success) {
                 [[[MEModel sharedInstance] HUD] dismiss];
                 if (success) {
-                    [[[UIAlertView alloc] initWithTitle:@"Restored!" message:@"All of your previous purchases have been restored!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                    [[[UIAlertView alloc] initWithTitle:@"Restored!"
+                                                message:@"All of your previous purchases have been restored!"
+                                               delegate:nil
+                                      cancelButtonTitle:@"Okay"
+                                      otherButtonTitles:nil, nil] show];
                 }else{
-                    [[[UIAlertView alloc] initWithTitle:@"Failed!" message:@"We could not find any purchases to restore at this time.\nPlease contact support@luckybunnyapps.com if you believe this is an error." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+                    [[[UIAlertView alloc] initWithTitle:@"Failed!"
+                                                message:@"We could not find any purchases to restore at this time.\n"
+                                                        @"Please contact support@luckybunnyapps.com if you believe this is an error."
+                                               delegate:nil
+                                      cancelButtonTitle:@"Okay" 
+                                      otherButtonTitles:nil, nil] show];
                 }
             }];
             break;
             
+        case MESettingsOptionIntroduction: {
+            [UIView animateWithDuration:0.8 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
+            } completion:^(BOOL finished) {
+                [self presentIntroduction];
+            }];
+            break;
+        }
         default:
             break;
     }
@@ -701,20 +733,36 @@
                 return;
             }
             
-            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-            // TODO: save as png if not animated so it appears correctly on twitter.
-            [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-                
-                [[MEModel sharedInstance].HUD dismissAnimated:YES];
-                
-                [UIAlertView showWithTitle:@"Saved GIF to Library" message:@"You can tweet your MEmoji by selecting it from your library once in Twitter." cancelButtonTitle:@"Go to Twitter" otherButtonTitles:nil
-                                  tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                      
-                                      NSString *stringURL = @"twitter://post";
-                                      NSURL *url = [NSURL URLWithString:stringURL];
-                                      [[UIApplication sharedApplication] openURL:url];
-                                  }];
-            }];
+            if ([[[[MEModel sharedInstance] selectedImage] animated] boolValue]) {
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                [library writeImageDataToSavedPhotosAlbum:[[[MEModel sharedInstance] selectedImage] imageData] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                    
+                    [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                    
+                    [UIAlertView showWithTitle:@"Saved GIF to Library" message:@"You can tweet your MEmoji by selecting it from your library once in Twitter."
+                             cancelButtonTitle:@"Go to Twitter" otherButtonTitles:nil
+                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                          NSString *stringURL = @"twitter://post";
+                                          NSURL *url = [NSURL URLWithString:stringURL];
+                                          [[UIApplication sharedApplication] openURL:url];
+                                      }];
+                }];
+            }else{
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                UIImage *tmpImage = [UIImage imageWithData:[[[MEModel sharedInstance] selectedImage] imageData]];
+                [library writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(tmpImage, 1) metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                    
+                    [[MEModel sharedInstance].HUD dismissAnimated:YES];
+                    
+                    [UIAlertView showWithTitle:@"Saved Image to Library" message:@"You can tweet your MEmoji by selecting it from your library once in Twitter."
+                             cancelButtonTitle:@"Go to Twitter" otherButtonTitles:nil
+                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                          NSString *stringURL = @"twitter://post";
+                                          NSURL *url = [NSURL URLWithString:stringURL];
+                                          [[UIApplication sharedApplication] openURL:url];
+                                      }];
+                }];
+            }
             break;
         }
         default:
@@ -744,6 +792,9 @@
 }
 
 
+
+#pragma mark - 
+#pragma mark Alerts
 - (void)alertNoPhotosPermission
 {
     [[[UIAlertView alloc] initWithTitle:@"Could not save!"
@@ -768,6 +819,27 @@
 }
 
 #pragma mark -
+#pragma mark MEIntroductionViewControllerDelegate
+- (void)introductionViewDidComplete
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.introductionView setAlpha:0];
+    } completion:^(BOOL finished) {
+        [self.introductionView removeFromSuperview];
+        self.introductionView = nil;
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:firstRunKey];
+    }];
+}
+
+- (void)presentIntroduction
+{
+    self.introductionView = [[MEIntroductionView alloc] initWithFrame:self.view.bounds];
+    [self.introductionView setDelegate:self];
+    [self.view addSubview:self.introductionView];
+    
+}
+
+#pragma mark -
 #pragma mark Other Delegate methods
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
@@ -787,7 +859,6 @@
 {
     return YES;
 }
-
 
 #pragma mark -
 #pragma mark MFMailComposeViewControllerDelegate

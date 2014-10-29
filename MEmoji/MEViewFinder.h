@@ -44,4 +44,6 @@
 - (void)presentImage:(Image *)image;
 - (void)dismissImage;
 
+- (void)updateButtons;
+
 @end

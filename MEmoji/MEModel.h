@@ -34,15 +34,41 @@ typedef void (^MEmojiCreationCallback)();
 typedef void (^PurchaseCallback)(BOOL success);
 typedef void (^SaveCallback)(BOOL success);
 
+typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
+    MEHeaderButtonTypeRightArrow,
+    MEHeaderButtonTypeLeftArrow,
+    MEHeaderButtonTypeDelete,
+    MEHeaderButtonTypePurchaseHipHopPack,
+};
+
+typedef NS_ENUM(NSUInteger, MEShareOption) {
+    MEShareOptionSaveToLibrary,
+    MEShareOptionInstagram,
+    MEShareOptionTwitter,
+    MEShareOptionMessages,
+    MEShareOptionNone
+};
+
+typedef NS_ENUM(NSUInteger, MESettingsOption) {
+    MESettingsOptionWatermark,
+    MESettingsOptionRestore,
+    MESettingsOptionReview,
+    MESettingsOptionContact,
+    MESettingsOptionIntroduction,
+    MESettingsOptionNumberOfTypes, // Should be the total number of types
+};
+
 static const CGFloat dimensionOfGIF               = 320;
 static const CGFloat stepOfGIF                    = 0.12;
 static const CGFloat lengthOfGIF                  = 5;
 static const NSInteger numberOfGIFVideoLoops      = 10;
 static const NSInteger numberToLoadIncrementValue = 8;
-static const NSInteger numberOfGIFsToKeep         = 24;
+static const NSInteger numberOfGIFsToKeep         = 32;
 
 static NSString *hipHopPackProductIdentifier = @"hiphoppack";
-static NSString *watermarkProductIdentifier = @"watermarkEnabled";
+static NSString *watermarkProductIdentifier = @"watermark";
+static NSString *reloadPurchaseableContentKey = @"reloadPurchaseableSections";
+static NSString *firstRunKey = @"firstRunKey";
 
 @interface MEModel : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
@@ -64,6 +90,7 @@ static NSString *watermarkProductIdentifier = @"watermarkEnabled";
 @property (copy)              MEmojiCreationCallback creationCompletion;
 
 @property (nonatomic, strong) SKProduct *hipHopPackProduct;
+@property (nonatomic, strong) SKProduct *watermarkProduct;
 @property (nonatomic, strong) SKProductsRequest *productRequest;
 @property (nonatomic, strong) SKReceiptRefreshRequest *receiptRequest;
 @property (copy)              PurchaseCallback purchaseCompletion;
@@ -82,7 +109,6 @@ static NSString *watermarkProductIdentifier = @"watermarkEnabled";
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback;
 - (void)saveMovieFromImage:(Image *)image withCompletion:(SaveCallback)completion;
-
 
 - (NSData *)createGIFwithFrames:(NSArray *)images;
 - (void)toggleCameras;
