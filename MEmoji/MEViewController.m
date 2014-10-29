@@ -661,6 +661,8 @@
                                           [[MEModel sharedInstance] saveMovieFromImage:[[MEModel sharedInstance] selectedImage] withCompletion:^(BOOL success) {
                                               if (success) {
                                                   NSLog(@"Saved movie successfully.");
+                                              }else{
+                                                  // TODO : Tell user the video couldn't be saved?
                                               }
                                               [[MEModel sharedInstance].HUD dismissAnimated:YES];
 
