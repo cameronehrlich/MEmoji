@@ -112,7 +112,7 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSDictionary *args = [url parseQuery]; // memoji://?hiphoppack=1?watermarkEnabled=1
+        NSDictionary *args = [url parseQuery]; // memoji://?hiphoppack=1?watermark=1
         
         @try {
             for (NSString *key in args.keyEnumerator.allObjects) {

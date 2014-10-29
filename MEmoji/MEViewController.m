@@ -54,8 +54,8 @@
     [self.instructionsLabel setTextAlignment:NSTextAlignmentCenter];
     [self.instructionsLabel setTextColor:[UIColor lightTextColor]];
     [self.instructionsLabel setAdjustsFontSizeToFitWidth:YES];
-    [self.instructionsLabel setText:@"Tap button for still,\n"
-                                    @"hold for GIF."];
+    [self.instructionsLabel setText:@"Tap button for Photo,\n"
+                                    @"hold for Video."];
     [self.instructionsLabel setNumberOfLines:2];
     [self.instructionsLabel startShimmering];
     [self.scrollView addSubview:self.instructionsLabel];
@@ -181,6 +181,7 @@
     
     // Check if its the first run, show intro if so!
     if ([[NSUserDefaults standardUserDefaults] objectForKey:firstRunKey] == nil) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:watermarkProductIdentifier]; // TODO : Remove after a few updates
         [self presentIntroduction];
     }
 }
