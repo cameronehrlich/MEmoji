@@ -16,7 +16,7 @@
     
     if (self) {
 
-        [self setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"maskLayerSmall"]]];
+        [self setBackgroundColor:[UIColor whiteColor]];
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
