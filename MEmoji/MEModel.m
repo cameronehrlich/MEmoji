@@ -83,9 +83,9 @@
     NSFetchRequest *fetchRequest = [Image MR_requestAllSortedBy:@"createdAt" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
     [fetchRequest setFetchLimit:MIN(numberOfGIFsToKeep, self.numberToLoad)];
     self.currentImages = [Image MR_executeFetchRequest:fetchRequest];
-
+    
     if ([Image MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext]] > numberOfGIFsToKeep) {
-
+        
         NSArray *reversedObjects = [Image MR_executeFetchRequest:fetchRequest];
         
         [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
@@ -97,7 +97,7 @@
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 // Do nothing?
             }];
-
+            
         }];
     }
     
@@ -159,8 +159,9 @@
         Image *newImage = [Image MR_createEntityInContext:localContext];
         [newImage setCreatedAt:[NSDate date]];
         [newImage setImageData:GIFData];
-        [newImage setFrameData:frameData]; // TODO : Create video only when its needed
+        [newImage setFrameData:frameData];
         [newImage setAnimated:@(animated)];
+        
         self.selectedImage = newImage;
         
     } completion:^(BOOL success, NSError *error) {
@@ -373,14 +374,47 @@
                                 @"itsDoodoo",
                                 @"kittyWhiskers",
                                 @"nerdGlasses",
-                                @"champagne",
+                                @"pinkGirlHand",
+                                @"pinkGirlhandblack",
                                 @"blunt",
                                 @"goldCrown",
-                                @"smallTears",
                                 @"middleFingerBlack",
                                 @"middleFinger",
-                                @"prayingHands",
-                                @"blackPrayingHands",
+                                @"pinkHandup",
+                                @"pinkHandupblack",
+                                @"pinkNails",
+                                @"pinkNailsblack",
+                                @"bridesMaid",
+                                @"bridesMaidblack",
+                                @"pinkGirlmassage",
+                                @"pinkGirlmassageblack",
+                                @"pinkHandheadblack",
+                                @"pinkNobitch",
+                                @"pinkNobitchblack",
+                                @"creepyfamilyBoy",
+                                @"birdbabyBeak",
+                                @"moonEyes",
+                                @"champagne",
+                                @"smallTears",
+                                @"bananaMouth",
+                                @"burgerYumm",
+                                @"devilHorns",
+                                @"fireEyes",
+                                @"flowerFace",
+                                @"kissHeart",
+                                @"lipStick",
+                                @"lolipopEyes",
+                                @"palmTree",
+                                @"champagne",
+                                @"smallTears",
+                                @"pizzaYumm",
+                                @"powEyes",
+                                @"queenHead",
+                                @"rabbitFace",
+                                @"snowMan",
+                                @"starEyes",
+                                @"suitGuy",
+                                @"threeDrops",
                                 @"eyes",
                                 @"creepyEyes",
                                 @"stonerEyes",
@@ -394,7 +428,7 @@
                                 @"gritTeeth",
                                 @"nostrilSmoke",
                                 @"tongueLaugh",
-                                @"bigLaugh.jpg",
+                                @"bigLaugh",
                                 @"oneTear",
                                 @"bigTears",
                                 @"waterfallTears",
@@ -420,6 +454,8 @@
                                 @"fmlForehead",
                                 @"halfCigarette",
                                 @"showerHead",
+                                @"prayingHands",
+                                @"blackPrayingHands",
                                 @"blackThumbLeft",
                                 @"thumbLeft",
                                 @"blackDownThumb",
@@ -440,6 +476,8 @@
                                 @"ambiguousHands",
                                 @"bigFist",
                                 @"blackFist",
+                                @"backwardsOK",
+                                @"backwardsOKblack",
                                 @"blackPalmsHands",
                                 @"handsPalms",
                                 @"blackClapHands",
@@ -474,44 +512,7 @@
                                 @"beerMug",
                                 @"maitaiGlass",
                                 @"martiniGlass",
-                                @"wineGlass",
-                                @"backwardsOK",
-                                @"backwardsOKblack",
-                                @"bananaMouth",
-                                @"birdbabyBeak",
-                                @"bridesMaid",
-                                @"bridesMaidblack",
-                                @"burgerYumm",
-                                @"creepyfamilyBoy",
-                                @"devilHorns",
-                                @"fireEyes",
-                                @"flowerFace",
-                                @"girlsDancing",
-                                @"girlsDancingblack",
-                                @"kissHeart",
-                                @"lipStick",
-                                @"lolipopEyes",
-                                @"palmTree",
-                                @"pinkGirlHand",
-                                @"pinkGirlhandblack",
-                                @"pinkGirlmassage",
-                                @"pinkGirlmassageblack",
-                                @"pinkHandhead",
-                                @"pinkHandheadblack",
-                                @"pinkHandup",
-                                @"pinkHandupblack",
-                                @"pinkNails",
-                                @"pinkNailsblack",
-                                @"pinkNobitch",
-                                @"pinkNobitchblack",
-                                @"pizzaYumm",
-                                @"powEyes",
-                                @"queenHead",
-                                @"rabbitFace",
-                                @"snowMan",
-                                @"starEyes",
-                                @"suitGuy",
-                                @"threeDrops"
+                                @"wineGlass"
                                 ];
         
         NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
@@ -587,8 +588,8 @@
     if (!product) {
         [[[UIAlertView alloc] initWithTitle:@"Couldn't Connect"
                                     message:@"Please check your internet connection and try again later!"
-                                  delegate:nil
-                         cancelButtonTitle:@"Okay"
+                                   delegate:nil
+                          cancelButtonTitle:@"Okay"
                           otherButtonTitles: nil] show];
         if (self.purchaseCompletion) {
             self.purchaseCompletion(NO);
@@ -642,7 +643,7 @@
                 }
                 break;
             case SKPaymentTransactionStateRestored:
-
+                
                 // Restore corresponding product
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
