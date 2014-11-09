@@ -59,7 +59,8 @@
         self.numberToLoad = numberToLoadIncrementValue;
         self.currentOverlays = [[NSMutableArray alloc] init];
         
-        self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, watermarkProductIdentifier, nil]];
+        self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, holidayPackProductIdentifier, watermarkProductIdentifier, nil]];
+        
         [self.productRequest setDelegate:self];
         [self.productRequest start];
         
@@ -102,7 +103,7 @@
     }
 }
 
-- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback
+- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(CreationCallback)callback
 {
     self.creationCompletion = callback;
     
@@ -172,7 +173,9 @@
 {
     self.saveCompletion = completion;
     if (![image.animated boolValue]) {
-        [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Non-animated GIFs can't be saved as videos...Silly!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Oops"
+                                    message:@"Non-animated GIFs can't be saved as videos...Silly!"
+                                   delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] show];
         [[MEModel sharedInstance].HUD dismissAnimated:YES];
         self.saveCompletion(NO);
     }else{
@@ -571,6 +574,64 @@
     return allImages;
 }
 
+
++ (NSArray *)holidayPack;
+
+{
+    static NSArray *allImages = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSArray *imageNames = @[
+                                @"balloons",
+                                @"balloonsAndConfetti",
+                                @"candyCaneLeft",
+                                @"candyCaneRight",
+                                @"champagneGlassToast",
+                                @"christmasLights",
+                                @"david",
+                                @"dreidel",
+                                @"elfHat",
+                                @"fireworks",
+                                @"giftBox",
+                                @"glassesNewYearsBlue",
+                                @"glassesNewYearsGreen",
+                                @"glassesNewYearsRed",
+                                @"headDress",
+                                @"kwanzaaHat",
+                                @"menorah",
+                                @"milkAndCookies",
+                                @"mistletoe",
+                                @"newYearsCrown",
+                                @"newYearsTopHat",
+                                @"pilgrimHat",
+                                @"rudolphNoseAndAntlers",
+                                @"santaHat",
+                                @"shamRock",
+                                @"snowman",
+                                @"stockingsLeft",
+                                @"stockingsRight",
+                                @"turkey",
+                                @"turkeyBeak",
+                                @"turkeyLeg",
+                                @"wreath",
+                                @"xmasTree"
+                                ];
+        
+        
+        NSMutableArray *outputImages = [[NSMutableArray alloc] initWithCapacity:imageNames.count];
+        
+        for (NSString *name in imageNames) {
+            MEOverlayImage *tmpImage = [[MEOverlayImage alloc] initWithImageName:name];
+            [outputImages addObject:tmpImage];
+        }
+        
+        allImages = [outputImages copy];
+    });
+    
+    return allImages;
+}
+
 #pragma mark -
 #pragma mark StoreKitShit
 - (void)purchaseProduct:(SKProduct *)product withCompletion:(PurchaseCallback)callback;
@@ -608,6 +669,8 @@
             self.hipHopPackProduct = product;
         }else if ([product.productIdentifier isEqualToString:watermarkProductIdentifier]){
             self.watermarkProduct = product;
+        }else if ([product.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+            self.holidayPackProduct = product;
         }
     }
     
@@ -626,10 +689,13 @@
                 // Enable corresponding product
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
+                }else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+                    [self setHolidayPackEnabled:YES];
                 }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
                     [self setWatermarkEnabled:NO];
                 }
                 
+                // Finish the trasaction
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 if (self.purchaseCompletion) {
                     self.purchaseCompletion(YES);
@@ -646,6 +712,8 @@
                 // Restore corresponding product
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
+                }else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+                    [self setHolidayPackEnabled:YES];
                 }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
                     [self setWatermarkEnabled:NO];
                 }
@@ -681,7 +749,10 @@
     for (DHInAppReceipt *inAppReceipt in [[DHAppStoreReceipt mainBundleReceipt] inAppReceipts]) {
         if ([inAppReceipt.productId isEqualToString:hipHopPackProductIdentifier]) {
             [self setHipHopPackEnabled:YES];
-        }else if ([inAppReceipt.productId isEqualToString:watermarkProductIdentifier]){
+        }else if ([inAppReceipt.productId isEqualToString:holidayPackProductIdentifier]){
+            [self setHolidayPackEnabled:YES];
+        }
+        else if ([inAppReceipt.productId isEqualToString:watermarkProductIdentifier]){
             [self setWatermarkEnabled:NO];
         }
     }
@@ -696,7 +767,6 @@
         [self.productRequest cancel];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSLog(@"Request failed. Trying to fetch products again...");
-            self.productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects:hipHopPackProductIdentifier, nil]];
             [self.productRequest setDelegate:self];
             [self.productRequest start];
         });
@@ -706,7 +776,9 @@
     }
 }
 
-
+#pragma mark -
+#pragma mark IAP Gettters and Setters
+// Hip Hop Pack
 - (BOOL)hipHopPackEnabled
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:hipHopPackProductIdentifier] == nil) {
@@ -717,16 +789,40 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:hipHopPackProductIdentifier];
 }
 
-
 - (void)setHipHopPackEnabled:(BOOL)hipHopPackEnabled
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
     [[NSUserDefaults standardUserDefaults] setBool:hipHopPackEnabled forKey:hipHopPackProductIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        // Publish that IAP status has changed
+        [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
+    }];
 }
 
+// Holiday Pack
+- (BOOL)holidayPackEnabled
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:holidayPackProductIdentifier] == nil) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:holidayPackProductIdentifier];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] boolForKey:holidayPackProductIdentifier];
+}
+
+- (void)setHolidayPackEnabled:(BOOL)holidayPackEnabled
+{
+    [[NSUserDefaults standardUserDefaults] setBool:holidayPackEnabled forKey:holidayPackProductIdentifier];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        // Publish that IAP status has changed
+        [[NSNotificationCenter defaultCenter] postNotificationName:reloadPurchaseableContentKey object:nil];
+    }];
+}
+
+// Disable watermark
 - (BOOL)watermarkEnabled;
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:watermarkProductIdentifier] == nil) {
@@ -741,8 +837,13 @@
 - (void)setWatermarkEnabled:(BOOL)watermarkEnabled
 {
     if (watermarkEnabled) {
-        [[[UIAlertView alloc] initWithTitle:@"Watermark Disabled!" message:@"Your MEmoji will no long have a watermark on them!" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Watermark Disabled!"
+                                    message:@"Your MEmoji will no long have a watermark on them!"
+                                   delegate:nil
+                          cancelButtonTitle:@"Okay"
+                          otherButtonTitles: nil] show];
     }
+    
     [[NSUserDefaults standardUserDefaults] setBool:watermarkEnabled forKey:watermarkProductIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

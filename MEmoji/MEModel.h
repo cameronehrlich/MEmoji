@@ -30,7 +30,7 @@
 @import MobileCoreServices;
 @import StoreKit;
 
-typedef void (^MEmojiCreationCallback)();
+typedef void (^CreationCallback)();
 typedef void (^PurchaseCallback)(BOOL success);
 typedef void (^SaveCallback)(BOOL success);
 
@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
     MEHeaderButtonTypeLeftArrow,
     MEHeaderButtonTypeDelete,
     MEHeaderButtonTypePurchaseHipHopPack,
+    MEHeaderButtonTypePurchaseHolidayPack,
 };
 
 typedef NS_ENUM(NSUInteger, MEShareOption) {
@@ -89,16 +90,20 @@ static NSString *firstRunKey = @"firstRunKey";
 @property (nonatomic, strong) NSArray *currentImages;
 @property (nonatomic, strong) NSMutableArray *currentOverlays;
 @property (nonatomic, strong) Image *selectedImage;
-@property (copy)              MEmojiCreationCallback creationCompletion;
+@property (copy)              CreationCallback creationCompletion;
 
 @property (nonatomic, strong) SKProduct *hipHopPackProduct;
+@property (nonatomic, strong) SKProduct *holidayPackProduct;
 @property (nonatomic, strong) SKProduct *watermarkProduct;
+@property (nonatomic, assign) BOOL hipHopPackEnabled;
+@property (nonatomic, assign) BOOL holidayPackEnabled;
+@property (nonatomic, assign) BOOL watermarkEnabled;
+
 @property (nonatomic, strong) SKProductsRequest *productRequest;
 @property (nonatomic, strong) SKReceiptRefreshRequest *receiptRequest;
 @property (copy)              PurchaseCallback purchaseCompletion;
 @property (copy)              PurchaseCallback restoreCompletion;
-@property (nonatomic, assign) BOOL hipHopPackEnabled;
-@property (nonatomic, assign) BOOL watermarkEnabled;
+
 
 @property (nonatomic, strong) JGProgressHUD *HUD;
 
@@ -109,7 +114,7 @@ static NSString *firstRunKey = @"firstRunKey";
 + (instancetype)sharedInstance;
 + (NSString *)currentVideoPath;
 
-- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback;
+- (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(CreationCallback)callback;
 - (void)saveMovieFromImage:(Image *)image withCompletion:(SaveCallback)completion;
 
 - (NSData *)createGIFwithFrames:(NSArray *)images;
@@ -118,6 +123,7 @@ static NSString *firstRunKey = @"firstRunKey";
 
 + (NSArray *)standardPack;
 + (NSArray *)hipHopPack;
++ (NSArray *)holidayPack;
 
 + (UIColor *)mainColor;
 + (UIFont *)mainFontWithSize:(NSInteger)size;
