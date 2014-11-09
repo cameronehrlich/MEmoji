@@ -100,7 +100,6 @@
             
         }];
     }
-    
 }
 
 - (void)createImageAnimated:(BOOL)animated withOverlays:(NSArray *)overlays complete:(MEmojiCreationCallback)callback

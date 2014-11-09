@@ -66,7 +66,9 @@ static const NSInteger numberToLoadIncrementValue = 8;
 static const NSInteger numberOfGIFsToKeep         = 32;
 
 static NSString *hipHopPackProductIdentifier = @"hiphoppack";
+static NSString *holidayPackProductIdentifier = @"holidaypack";
 static NSString *watermarkProductIdentifier = @"watermark";
+
 static NSString *reloadPurchaseableContentKey = @"reloadPurchaseableSections";
 static NSString *firstRunKey = @"firstRunKey";
 

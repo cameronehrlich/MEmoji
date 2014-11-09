@@ -18,7 +18,7 @@
 
         [self setBackgroundColor:[UIColor whiteColor]];
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [self.imageView setContentMode:UIViewContentModeScaleAspectFill];
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
         [self addSubview:self.imageView];
         
