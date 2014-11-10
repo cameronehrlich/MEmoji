@@ -378,7 +378,7 @@
                                 @"nerdGlasses",
                                 @"pinkGirlHand",
                                 @"pinkGirlhandblack",
-                                @"blunt",
+                                @"freeBlunt",
                                 @"goldCrown",
                                 @"middleFingerBlack",
                                 @"middleFinger",
