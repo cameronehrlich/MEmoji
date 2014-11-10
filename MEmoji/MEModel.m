@@ -556,8 +556,13 @@
                                 @"headphones",
                                 @"deuces",
                                 @"deucesBlack",
-                                @"westside",
-                                @"westsideBlack"
+                                @"westSideHands",
+                                @"westSideHandsBlack",
+                                @"pharellHat",
+                                @"blunt",
+                                @"cigar",
+                                @"j",
+                                @"rickRossBeard"
                                 ];
         
         
