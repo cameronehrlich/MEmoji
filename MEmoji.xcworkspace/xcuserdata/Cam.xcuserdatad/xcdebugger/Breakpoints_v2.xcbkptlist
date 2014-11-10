@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "772"
             endingLineNumber = "772"
-            landmarkName = "-requestDidFinish:"
+            landmarkName = "-restorePurchasesCompletion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

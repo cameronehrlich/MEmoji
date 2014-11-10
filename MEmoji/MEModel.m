@@ -539,11 +539,18 @@
         NSArray *imageNames = @[
                                 @"bandanaLowerFace",
                                 @"roundedSunglasses",
-                                @"bucketHat",
                                 @"styrofoamCupWithDrank",
+                                @"blunt",
+                                @"j",
                                 @"grillBlack",
                                 @"grillWhite",
                                 @"redEyes",
+                                @"westSideHands",
+                                @"westSideHandsBlack",
+                                @"pharellHat",
+                                @"cigar",
+                                @"rickRossBeard",
+                                @"bucketHat",
                                 @"dollarEyes",
                                 @"iceCreamTattoo",
                                 @"snapback",
@@ -555,14 +562,7 @@
                                 @"goldMic",
                                 @"headphones",
                                 @"deuces",
-                                @"deucesBlack",
-                                @"westSideHands",
-                                @"westSideHandsBlack",
-                                @"pharellHat",
-                                @"blunt",
-                                @"cigar",
-                                @"j",
-                                @"rickRossBeard"
+                                @"deucesBlack"
                                 ];
         
         
