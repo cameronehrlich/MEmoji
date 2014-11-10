@@ -36,8 +36,11 @@
 @property (nonatomic, strong) MESectionHeaderView *freeHeader;
 @property (nonatomic, strong) UICollectionView *freeCollectionView;
 
-@property (nonatomic, strong) MESectionHeaderView *hipHopHeader;
+@property (nonatomic, strong) MESectionHeaderView *holidayHeader;
 @property (nonatomic, strong) UICollectionView *hipHopCollectionView;
+
+@property (nonatomic, strong) MESectionHeaderView *hipHopHeader;
+@property (nonatomic, strong) UICollectionView *holidayCollectionView;
 
 @property (nonatomic, strong) MESectionHeaderView *settingsHeader;
 @property (nonatomic, strong) UITableView *settingsTableView;

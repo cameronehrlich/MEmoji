@@ -366,7 +366,7 @@
     return absolutePath;
 }
 
-+ (NSArray *)standardPack
++ (NSArray *)freePack
 {
     static NSArray *allImages = nil;
     static dispatch_once_t onceToken;
@@ -639,9 +639,16 @@
     self.purchaseCompletion = callback;
     
     if (![SKPaymentQueue canMakePayments]) {
+        [[[UIAlertView alloc] initWithTitle:@"In-App Purchases Disabled"
+                                    message:@"It appears that this device is not able to make In-App purchases, perhaps check your parental controls?"
+                                   delegate:nil
+                          cancelButtonTitle:@"Okay"
+                          otherButtonTitles:nil] show];
+        
         if (self.purchaseCompletion) {
             self.purchaseCompletion(NO);
         }
+
         return;
     }
     
@@ -665,12 +672,18 @@
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
     for (SKProduct *product in response.products) {
+        // Hip Hop Pack
         if ([product.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
             self.hipHopPackProduct = product;
-        }else if ([product.productIdentifier isEqualToString:watermarkProductIdentifier]){
-            self.watermarkProduct = product;
-        }else if ([product.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+        }
+        // Holiday pack
+        else if ([product.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+            NSLog(@"Did receive holiday pack");
             self.holidayPackProduct = product;
+        }
+        // Watermark
+        else if ([product.productIdentifier isEqualToString:watermarkProductIdentifier]){
+            self.watermarkProduct = product;
         }
     }
     
@@ -687,11 +700,16 @@
             case SKPaymentTransactionStatePurchased:
                 
                 // Enable corresponding product
+                // Hip Hop Pack
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
-                }else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+                }
+                // Holiday Pack
+                else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
                     [self setHolidayPackEnabled:YES];
-                }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
+                }
+                // Watermark
+                else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
                     [self setWatermarkEnabled:NO];
                 }
                 
@@ -709,12 +727,17 @@
                 break;
             case SKPaymentTransactionStateRestored:
                 
-                // Restore corresponding product
+                // Enable corresponding product
+                // Hip Hop Pack
                 if ([transaction.payment.productIdentifier isEqualToString:hipHopPackProductIdentifier]) {
                     [self setHipHopPackEnabled:YES];
-                }else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
+                }
+                // Holiday Pack
+                else if([transaction.payment.productIdentifier isEqualToString:holidayPackProductIdentifier]){
                     [self setHolidayPackEnabled:YES];
-                }else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
+                }
+                // Watermark
+                else if ([transaction.payment.productIdentifier isEqualToString:watermarkProductIdentifier]){
                     [self setWatermarkEnabled:NO];
                 }
                 

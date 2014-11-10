@@ -117,19 +117,24 @@
         @try {
             for (NSString *key in args.keyEnumerator.allObjects) {
                 BOOL enabled = [@([[args objectForKey:key] integerValue]) boolValue];
+                // Hip Hop Pack
                 if ([key isEqualToString:hipHopPackProductIdentifier]) {
                     [[MEModel sharedInstance] setHipHopPackEnabled:enabled];
-                }else if ([key isEqualToString:watermarkProductIdentifier]){
+                }
+                // Holiday Pack
+                if ([key isEqualToString:holidayPackProductIdentifier]) {
+                    [[MEModel sharedInstance] setHolidayPackEnabled:enabled];
+                }
+                // Watermark
+                else if ([key isEqualToString:watermarkProductIdentifier]){
                     [[MEModel sharedInstance] setWatermarkEnabled:enabled];
                 }
             }
         }
         @catch (NSException *exception) {
-
+            NSLog(@"Invalid URL passed in.");
         }
-        
     });
-
     return YES;
 }
 

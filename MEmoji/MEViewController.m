@@ -32,7 +32,7 @@
     
     // Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.viewFinder.bottom, self.view.width, self.view.height - self.viewFinder.height)];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width*4, self.scrollView.height)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width * 5, self.scrollView.height)];
     [self.scrollView setBackgroundColor:[UIColor lightGrayColor]];
     [self.scrollView setDelegate:self];
     [self.scrollView setPagingEnabled:YES];
@@ -112,8 +112,35 @@
     
     [self.scrollView addSubview:self.sectionsManager.freeHeader];
     
+    
+    
+    // Holiday Pack
+    self.sectionsManager.holidayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
+                                                                   collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    [self.sectionsManager.holidayCollectionView setDelegate:self.sectionsManager];
+    [self.sectionsManager.holidayCollectionView setDataSource:self.sectionsManager];
+    [self.sectionsManager.holidayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
+    [self.sectionsManager.holidayCollectionView setBackgroundColor:[UIColor clearColor]];
+    [self.sectionsManager.holidayCollectionView setAlwaysBounceVertical:YES];
+    [self.sectionsManager.holidayCollectionView setAllowsMultipleSelection:YES];
+    [self.scrollView addSubview:self.sectionsManager.holidayCollectionView];
+    
+    self.sectionsManager.holidayHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
+    [self.sectionsManager.holidayHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
+    [self.sectionsManager.holidayHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
+    [self.sectionsManager.holidayHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.holidayHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
+    [self.sectionsManager.holidayHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
+    [self.sectionsManager.holidayHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.holidayHeader.titleLabel setText:@"Holiday Pack"];
+    
+    [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHolidayPack];
+    [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.sectionsManager.holidayHeader];
+    
+    
     // Hip-Hop Pack
-    self.sectionsManager.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
+    self.sectionsManager.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height)
                                                                    collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     [self.sectionsManager.hipHopCollectionView setDelegate:self.sectionsManager];
     [self.sectionsManager.hipHopCollectionView setDataSource:self.sectionsManager];
@@ -123,7 +150,7 @@
     [self.sectionsManager.hipHopCollectionView setAllowsMultipleSelection:YES];
     [self.scrollView addSubview:self.sectionsManager.hipHopCollectionView];
     
-    self.sectionsManager.hipHopHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
+    self.sectionsManager.hipHopHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, captureButtonDiameter/2)];
     [self.sectionsManager.hipHopHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [self.sectionsManager.hipHopHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
     [self.sectionsManager.hipHopHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +164,7 @@
     [self.scrollView addSubview:self.sectionsManager.hipHopHeader];
     
     // Settings page
-    self.sectionsManager.settingsTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height) style:UITableViewStylePlain];
+    self.sectionsManager.settingsTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.scrollView.width * 4, 0, self.scrollView.width, self.scrollView.height) style:UITableViewStylePlain];
     [self.sectionsManager.settingsTableView registerClass:[MESettingsCell class] forCellReuseIdentifier:@"SettingsCell"];
     [self.sectionsManager.settingsTableView setDelegate:self.sectionsManager];
     [self.sectionsManager.settingsTableView setDataSource:self.sectionsManager];
@@ -147,7 +174,7 @@
     [self.sectionsManager.settingsTableView setSeparatorColor:[UIColor clearColor]];
     [self.scrollView addSubview:self.sectionsManager.settingsTableView];
     
-    self.sectionsManager.settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width *3, 0, self.scrollView.width, captureButtonDiameter/2)];
+    self.sectionsManager.settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 4, 0, self.scrollView.width, captureButtonDiameter/2)];
     [self.sectionsManager.settingsHeader.titleLabel setText:@"Settings"];
     [self.sectionsManager.settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
     [self.sectionsManager.settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
@@ -192,6 +219,11 @@
         [self reloadAllCollections];
     }];
     
+    [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
+        [self.sectionsManager.libraryCollectionView reloadData];
+        [self.sectionsManager.libraryCollectionView.collectionViewLayout invalidateLayout];
+    }];
+    
     // instruction Label
     [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
         if ([[[MEModel sharedInstance] currentImages] count] == 0) {
@@ -228,11 +260,33 @@
             }
         }
     }];
-    
-    [RACObserve([MEModel sharedInstance], currentImages) subscribeNext:^(id x) {
-        [self.sectionsManager.libraryCollectionView reloadData];
-        [self.sectionsManager.libraryCollectionView.collectionViewLayout invalidateLayout];
+
+    // Holiday Pack
+    [RACObserve([MEModel sharedInstance], holidayPackEnabled) subscribeNext:^(id x) {
+        if ((BOOL)x == YES) {
+            [self.sectionsManager.holidayHeader.purchaseButton setTitle:@"Unlocked!" forState:UIControlStateNormal];
+            [self.sectionsManager.holidayHeader.purchaseButton setUserInteractionEnabled:NO];
+            
+        }else{
+            [self.sectionsManager.holidayHeader.purchaseButton setUserInteractionEnabled:YES];
+            [self reloadAllCollections];
+        }
     }];
+    
+    [RACObserve([MEModel sharedInstance], holidayPackProduct) subscribeNext:^(id x) {
+        if (![[MEModel sharedInstance] holidayPackEnabled]) {
+            if (x) {
+                NSString *priceString = [MEModel formattedPriceForProduct:x];
+                [self.sectionsManager.holidayHeader.purchaseButton setTitle:[NSString stringWithFormat:@"Buy %@", priceString] forState:UIControlStateNormal];
+                [self.sectionsManager.holidayHeader.purchaseButton setUserInteractionEnabled:YES];
+            }else{
+                [self.sectionsManager.holidayHeader.purchaseButton setTitle:@"Buy" forState:UIControlStateNormal];
+                [self.sectionsManager.holidayHeader.purchaseButton setUserInteractionEnabled:NO];
+            }
+        }
+    }];
+
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -500,25 +554,15 @@
             [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:!self.sectionsManager.libraryCollectionView.allowsMultipleSelection];
             [self.sectionsManager.libraryCollectionView reloadData];
             break;
-            
+        case MEHeaderButtonTypePurchaseHolidayPack: {
+            [[MEModel sharedInstance].HUD showInView:self.view];
+            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] holidayPackProduct] withCompletion:^(BOOL success) {
+                [[MEModel sharedInstance].HUD dismiss];
+            }];
+            break;
+        }
         case MEHeaderButtonTypePurchaseHipHopPack:
         {
-            if (![SKPaymentQueue canMakePayments]) {
-                [[[UIAlertView alloc] initWithTitle:@"In-App Purchases Disabled"
-                                            message:@"It appears that this device is not able to make In-App purchases, perhaps check your parental controls?"
-                                           delegate:nil
-                                  cancelButtonTitle:@"Okay"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            if (![[MEModel sharedInstance] hipHopPackProduct]) {
-                [[[UIAlertView alloc] initWithTitle:@"Oops!"
-                                            message:@"It appears there was an error, check your internet connection?"
-                                           delegate:nil
-                                  cancelButtonTitle:@"Okay"
-                                  otherButtonTitles:nil] show];
-            }
-            
             [[MEModel sharedInstance].HUD showInView:self.view];
             [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] hipHopPackProduct] withCompletion:^(BOOL success) {
                 [[MEModel sharedInstance].HUD dismiss];
@@ -544,7 +588,6 @@
             }
             
             [[[MEModel sharedInstance] HUD] showInView:self.view];
-            
             [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] watermarkProduct] withCompletion:^(BOOL success) {
                 [[[MEModel sharedInstance] HUD] dismiss];
                 [self reloadAllCollections];
@@ -575,8 +618,7 @@
             
             break;
         case MESettingsOptionReview:
-            [[UIApplication sharedApplication] openURL:
-             [NSURL URLWithString:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=921847909&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software"]];
+            [Appirater rateApp];
             break;
         case MESettingsOptionRestore:
             [[[MEModel sharedInstance] HUD] showInView:self.view];
@@ -858,7 +900,7 @@
     } completion:^(BOOL finished) {
         [self.introductionView removeFromSuperview];
         self.introductionView = nil;
-        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:firstRunKey];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:firstRunKey];
     }];
 }
 

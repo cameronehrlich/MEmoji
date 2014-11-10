@@ -121,7 +121,7 @@ static NSString *firstRunKey = @"firstRunKey";
 - (void)toggleCameras;
 - (void)reloadCurrentImages;
 
-+ (NSArray *)standardPack;
++ (NSArray *)freePack;
 + (NSArray *)hipHopPack;
 + (NSArray *)holidayPack;
 

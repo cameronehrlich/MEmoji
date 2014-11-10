@@ -73,20 +73,34 @@ static const NSInteger numberOfItemsPerRow = 4;
 #pragma mark UICollectionViewDataSource and Delegate Methods
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    // Recents
     if ([collectionView isEqual:self.libraryCollectionView])
     {
         return [[[MEModel sharedInstance] currentImages] count];
-    }else if ([collectionView isEqual:self.freeCollectionView])
+    }
+    // Free Pack
+    else if ([collectionView isEqual:self.freeCollectionView])
     {
-        return [[MEModel standardPack] count];
-    }else if ([collectionView isEqual:self.hipHopCollectionView]){
+        return [[MEModel freePack] count];
+    }
+    // Holiday Pack
+    else if ([collectionView isEqual:self.holidayCollectionView]){
+        
+        if ([[MEModel sharedInstance] holidayPackEnabled]) {
+            [self.holidayCollectionView setAlpha:1];
+        }else{
+            [self.holidayCollectionView setAlpha:0.55];
+        }
+        return [[MEModel holidayPack] count];
+    }
+    // Hip Hop Pack
+    else if ([collectionView isEqual:self.hipHopCollectionView]){
         
         if ([[MEModel sharedInstance] hipHopPackEnabled]) {
             [self.hipHopCollectionView setAlpha:1];
         }else{
             [self.hipHopCollectionView setAlpha:0.55];
         }
-        
         return [[MEModel hipHopPack] count];
     }
     else{
@@ -145,13 +159,23 @@ static const NSInteger numberOfItemsPerRow = 4;
         MEOverlayImage *overlayImage;
         MEOverlayCell *cell;
         
+        // Free Pack
         if ([collectionView isEqual:self.freeCollectionView]) {
             cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-            overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.item];
-        }else if ([collectionView isEqual:self.hipHopCollectionView]){
+            overlayImage = [[MEModel freePack] objectAtIndex:indexPath.item];
+        }
+        // Holiday Pack
+        else if ([collectionView isEqual:self.holidayCollectionView]){
+            cell = [self.holidayCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            overlayImage = [[MEModel holidayPack] objectAtIndex:indexPath.item];
+        }
+        
+        // Hip Hop Pack
+        else if ([collectionView isEqual:self.hipHopCollectionView]){
             cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
-        }else{
+        }
+        else{
             NSLog(@"Error in %s", __PRETTY_FUNCTION__);
         }
         
@@ -201,12 +225,20 @@ static const NSInteger numberOfItemsPerRow = 4;
             [self.delegate collectionView:self.libraryCollectionView didSelectImage:[[MEModel sharedInstance] selectedImage]];
         }
     }
+    // Free Pack
     else if ([collectionView isEqual:self.freeCollectionView]) {
         
-        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.row];
+        MEOverlayImage *overlayImage = [[MEModel freePack] objectAtIndex:indexPath.row];
         [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
         
     }
+    // Holiday Pack
+    else if ([collectionView isEqual:self.holidayCollectionView]){
+        MEOverlayImage *overlayImage = [[MEModel holidayPack] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
+    }
+    
+    // Hip Hop Pack
     else if ([collectionView isEqual:self.hipHopCollectionView]){
         MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.row];
         [self.delegate collectionView:collectionView didSelectOverlay:overlayImage];
@@ -215,10 +247,18 @@ static const NSInteger numberOfItemsPerRow = 4;
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Free Pack
     if ([collectionView isEqual:self.freeCollectionView]) {
-        MEOverlayImage *overlayImage = [[MEModel standardPack] objectAtIndex:indexPath.row];
+        MEOverlayImage *overlayImage = [[MEModel freePack] objectAtIndex:indexPath.row];
         [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
-    }else if ([collectionView isEqual:self.hipHopCollectionView]){
+    }
+    // Holiday Pack
+    else if ([collectionView isEqual:self.holidayCollectionView]){
+        MEOverlayImage *overlayImage = [[MEModel holidayPack] objectAtIndex:indexPath.row];
+        [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
+    }
+    // Hip Hop Pack
+    else if ([collectionView isEqual:self.hipHopCollectionView]){
         MEOverlayImage *overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.row];
         [self.delegate collectionView:collectionView didDeselctOverlay:overlayImage];
     }
@@ -227,8 +267,13 @@ static const NSInteger numberOfItemsPerRow = 4;
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // Test here for usability of "Unlockable" packs
+    // Hip Hop Pack
     if ([collectionView isEqual:self.hipHopCollectionView]) {
         return [[MEModel sharedInstance] hipHopPackEnabled];
+    }
+    // Holiday Pack
+    else if ([collectionView isEqual:self.holidayCollectionView]){
+        return [[MEModel sharedInstance] holidayPackEnabled];
     }
     return YES;
 }
