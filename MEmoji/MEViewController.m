@@ -18,6 +18,7 @@
 #import "MESectionHeaderView.h"
 #import "MECaptureButton.h"
 #import "MESettingsCell.h"
+#import "MEPackCollectionView.h"
 
 @implementation MEViewController
 
@@ -37,16 +38,7 @@
     [self.scrollView setDelegate:self];
     [self.scrollView setPagingEnabled:YES];
     [self.scrollView setDirectionalLockEnabled:YES];
-    [self.scrollView setShowsHorizontalScrollIndicator:NO];
     [self.view insertSubview:self.scrollView belowSubview:self.viewFinder];
-    
-    // Easter egg
-    UILabel *easterEgg = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
-    [easterEgg setX:-self.scrollView.width/2];
-    [easterEgg setFont:[MEModel mainFontWithSize:11]];
-    [easterEgg setText:@"Keep going..."];
-    [easterEgg setAdjustsFontSizeToFitWidth:YES];
-    [self.scrollView addSubview:easterEgg];
     
     // Instruction Label
     self.instructionsLabel = [[UILabel alloc] initWithFrame:self.scrollView.bounds];
@@ -75,92 +67,40 @@
     [self.sectionsManager.libraryCollectionView setAlwaysBounceVertical:YES];
     [self.scrollView addSubview:self.sectionsManager.libraryCollectionView];
     
-    self.sectionsManager.libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, captureButtonDiameter/2)];
+    self.sectionsManager.libraryHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, captureButtonDiameter/2) withDelegate:self];
     [self.sectionsManager.libraryHeader.leftButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
-    [self.sectionsManager.libraryHeader.leftButton setTransform:CGAffineTransformMakeScale(1, 1)];
     [self.sectionsManager.libraryHeader.leftButton setTag:MEHeaderButtonTypeDelete];
-    [self.sectionsManager.libraryHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.sectionsManager.libraryHeader.titleLabel setText:@"Recents"];
-    [self.sectionsManager.libraryHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
     [self.sectionsManager.libraryHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [self.sectionsManager.libraryHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.sectionsManager.libraryHeader];
     
     // Free Pack
-    self.sectionsManager.freeCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, self.scrollView.height)
-                                                                 collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
-    [self.sectionsManager.freeCollectionView setDelegate:self.sectionsManager];
-    [self.sectionsManager.freeCollectionView setDataSource:self.sectionsManager];
-    [self.sectionsManager.freeCollectionView setBackgroundColor:[UIColor clearColor]];
-    [self.sectionsManager.freeCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.sectionsManager.freeCollectionView setAlwaysBounceVertical:YES];
-    [self.sectionsManager.freeCollectionView setAllowsMultipleSelection:YES];
+    self.sectionsManager.freeCollectionView = [[MEPackCollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, self.scrollView.height) andSectionManager:self.sectionsManager];
     [self.scrollView addSubview:self.sectionsManager.freeCollectionView];
-    
-    self.sectionsManager.freeHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [self.sectionsManager.freeHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [self.sectionsManager.freeHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [self.sectionsManager.freeHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.sectionsManager.freeHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 1, 0, self.scrollView.width, captureButtonDiameter/2) withDelegate:self];
     [self.sectionsManager.freeHeader.titleLabel setText:@"Free MEmoji"];
-    [self.sectionsManager.freeHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [self.sectionsManager.freeHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [self.sectionsManager.freeHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.sectionsManager.freeHeader.purchaseButton setTitle:@"More MEmoji" forState:UIControlStateNormal];
     [self.sectionsManager.freeHeader.purchaseButton setTag:MEHeaderButtonTypeRightArrow];
-    [self.sectionsManager.freeHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.scrollView addSubview:self.sectionsManager.freeHeader];
     
-    
-    
     // Holiday Pack
-    self.sectionsManager.holidayCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height)
-                                                                   collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
-    [self.sectionsManager.holidayCollectionView setDelegate:self.sectionsManager];
-    [self.sectionsManager.holidayCollectionView setDataSource:self.sectionsManager];
-    [self.sectionsManager.holidayCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.sectionsManager.holidayCollectionView setBackgroundColor:[UIColor clearColor]];
-    [self.sectionsManager.holidayCollectionView setAlwaysBounceVertical:YES];
-    [self.sectionsManager.holidayCollectionView setAllowsMultipleSelection:YES];
+    self.sectionsManager.holidayCollectionView = [[MEPackCollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, self.scrollView.height) andSectionManager:self.sectionsManager];
     [self.scrollView addSubview:self.sectionsManager.holidayCollectionView];
     
-    self.sectionsManager.holidayHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [self.sectionsManager.holidayHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [self.sectionsManager.holidayHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [self.sectionsManager.holidayHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.holidayHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [self.sectionsManager.holidayHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [self.sectionsManager.holidayHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.sectionsManager.holidayHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 2, 0, self.scrollView.width, captureButtonDiameter/2) withDelegate:self];
     [self.sectionsManager.holidayHeader.titleLabel setText:@"Holiday Pack"];
     
-    [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHolidayPack];
-    [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.holidayHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHolidayPack];
     [self.scrollView addSubview:self.sectionsManager.holidayHeader];
     
     
     // Hip-Hop Pack
-    self.sectionsManager.hipHopCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height)
-                                                                   collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
-    [self.sectionsManager.hipHopCollectionView setDelegate:self.sectionsManager];
-    [self.sectionsManager.hipHopCollectionView setDataSource:self.sectionsManager];
-    [self.sectionsManager.hipHopCollectionView registerClass:[MEOverlayCell class] forCellWithReuseIdentifier:@"OverlayCell"];
-    [self.sectionsManager.hipHopCollectionView setBackgroundColor:[UIColor clearColor]];
-    [self.sectionsManager.hipHopCollectionView setAlwaysBounceVertical:YES];
-    [self.sectionsManager.hipHopCollectionView setAllowsMultipleSelection:YES];
+    self.sectionsManager.hipHopCollectionView = [[MEPackCollectionView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, self.scrollView.height) andSectionManager:self.sectionsManager];
     [self.scrollView addSubview:self.sectionsManager.hipHopCollectionView];
     
-    self.sectionsManager.hipHopHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, captureButtonDiameter/2)];
-    [self.sectionsManager.hipHopHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [self.sectionsManager.hipHopHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [self.sectionsManager.hipHopHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sectionsManager.hipHopHeader.rightButton setImage:[UIImage imageNamed:@"arrowRight"] forState:UIControlStateNormal];
-    [self.sectionsManager.hipHopHeader.rightButton setTag:MEHeaderButtonTypeRightArrow];
-    [self.sectionsManager.hipHopHeader.rightButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.sectionsManager.hipHopHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 3, 0, self.scrollView.width, captureButtonDiameter/2) withDelegate:self];
     [self.sectionsManager.hipHopHeader.titleLabel setText:@"Hip Hop Pack"];
-    
     [self.sectionsManager.hipHopHeader.purchaseButton setTag:MEHeaderButtonTypePurchaseHipHopPack];
-    [self.sectionsManager.hipHopHeader.purchaseButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.sectionsManager.hipHopHeader];
     
     // Settings page
@@ -174,16 +114,15 @@
     [self.sectionsManager.settingsTableView setSeparatorColor:[UIColor clearColor]];
     [self.scrollView addSubview:self.sectionsManager.settingsTableView];
     
-    self.sectionsManager.settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 4, 0, self.scrollView.width, captureButtonDiameter/2)];
+    self.sectionsManager.settingsHeader = [[MESectionHeaderView alloc] initWithFrame:CGRectMake(self.scrollView.width * 4, 0, self.scrollView.width, captureButtonDiameter/2) withDelegate:self];
     [self.sectionsManager.settingsHeader.titleLabel setText:@"Settings"];
-    [self.sectionsManager.settingsHeader.leftButton setImage:[UIImage imageNamed:@"arrowLeft"] forState:UIControlStateNormal];
-    [self.sectionsManager.settingsHeader.leftButton setTag:MEHeaderButtonTypeLeftArrow];
-    [self.sectionsManager.settingsHeader.leftButton addTarget:self action:@selector(headerButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sectionsManager.settingsHeader.rightButton setEnabled:NO];
+    [self.sectionsManager.settingsHeader.rightButton setHidden:YES];
     [self.scrollView addSubview:self.sectionsManager.settingsHeader];
     
+    // Share View
     self.shareView = [[MEShareView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.width, self.scrollView.height)];
     [self.shareView setDelegate:self];
-    [self.shareView setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.9]];
     [self.shareView setBottom:self.viewFinder.bottom];
     [self.shareView setHidden:YES];
     [self.view addSubview:self.shareView];
@@ -339,6 +278,7 @@
     [self.sectionsManager.libraryCollectionView reloadData];
     [self.sectionsManager.freeCollectionView reloadData];
     [self.sectionsManager.hipHopCollectionView reloadData];
+    [self.sectionsManager.holidayCollectionView reloadData];
     [self.sectionsManager.settingsTableView reloadData];
 }
 
@@ -512,7 +452,7 @@
 }
 
 #pragma mark -
-#pragma mark MECollectionViewControllerDelegate
+#pragma mark MESectionsManagerDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectOverlay:(MEOverlayImage *)overlay
 {
     [[[MEModel sharedInstance] currentOverlays] addObject:overlay];
@@ -533,45 +473,6 @@
 {
     [self presentShareView];
     [self.viewFinder presentImage:image];
-}
-
-- (void)headerButtonWasTapped:(UIButton *)sender
-{
-    switch (sender.tag) {
-        case MEHeaderButtonTypeLeftArrow: {
-            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [self.scrollView setContentOffset:CGPointMake(MAX(0,self.scrollView.contentOffset.x - self.scrollView.width), 0)];
-            } completion:nil];
-            break;
-        }
-        case MEHeaderButtonTypeRightArrow:{
-            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                [self.scrollView setContentOffset:CGPointMake(MIN(self.scrollView.contentSize.width - self.scrollView.width, self.scrollView.contentOffset.x + self.scrollView.width), 0)];
-            } completion:nil];
-            break;
-        }
-        case MEHeaderButtonTypeDelete:
-            [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:!self.sectionsManager.libraryCollectionView.allowsMultipleSelection];
-            [self.sectionsManager.libraryCollectionView reloadData];
-            break;
-        case MEHeaderButtonTypePurchaseHolidayPack: {
-            [[MEModel sharedInstance].HUD showInView:self.view];
-            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] holidayPackProduct] withCompletion:^(BOOL success) {
-                [[MEModel sharedInstance].HUD dismiss];
-            }];
-            break;
-        }
-        case MEHeaderButtonTypePurchaseHipHopPack:
-        {
-            [[MEModel sharedInstance].HUD showInView:self.view];
-            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] hipHopPackProduct] withCompletion:^(BOOL success) {
-                [[MEModel sharedInstance].HUD dismiss];
-            }];
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 - (void)tableView:(UITableView*)tableView tappedSettingsButtonAtIndex:(NSIndexPath *)indexPath
@@ -646,6 +547,48 @@
                 [self.scrollView setContentOffset:CGPointMake(self.scrollView.width, 0)];
             } completion:^(BOOL finished) {
                 [self presentIntroduction];
+            }];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+#pragma mark - 
+#pragma mark MESectionHeaderViewDelegate
+- (void)sectionHeader:(MESectionHeaderView *)header tappedButton:(UIButton *)sender
+{
+    switch (sender.tag) {
+        case MEHeaderButtonTypeLeftArrow: {
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [self.scrollView setContentOffset:CGPointMake(MAX(0,self.scrollView.contentOffset.x - self.scrollView.width), 0)];
+            } completion:nil];
+            break;
+        }
+        case MEHeaderButtonTypeRightArrow:{
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                [self.scrollView setContentOffset:CGPointMake(MIN(self.scrollView.contentSize.width - self.scrollView.width, self.scrollView.contentOffset.x + self.scrollView.width), 0)];
+            } completion:nil];
+            break;
+        }
+        case MEHeaderButtonTypeDelete:
+            [self.sectionsManager.libraryCollectionView setAllowsMultipleSelection:!self.sectionsManager.libraryCollectionView.allowsMultipleSelection];
+            [self.sectionsManager.libraryCollectionView reloadData];
+            break;
+        case MEHeaderButtonTypePurchaseHolidayPack:
+        {
+            [[MEModel sharedInstance].HUD showInView:self.view];
+            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] holidayPackProduct] withCompletion:^(BOOL success) {
+                [[MEModel sharedInstance].HUD dismiss];
+            }];
+            break;
+        }
+        case MEHeaderButtonTypePurchaseHipHopPack:
+        {
+            [[MEModel sharedInstance].HUD showInView:self.view];
+            [[MEModel sharedInstance] purchaseProduct:[[MEModel sharedInstance] hipHopPackProduct] withCompletion:^(BOOL success) {
+                [[MEModel sharedInstance].HUD dismiss];
             }];
             break;
         }

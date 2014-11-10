@@ -15,6 +15,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self setBackgroundColor:[[MEModel mainColor] colorWithAlphaComponent:0.9]];
         CGFloat numberOfDivisions = 8;
         CGFloat buttonSideLength = self.bounds.size.width/numberOfDivisions;
         CGRect shareButtonRect = CGRectMake(0, 0, buttonSideLength, buttonSideLength);

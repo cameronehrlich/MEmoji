@@ -43,16 +43,10 @@
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    
     if (selected) {
-        [self.selectedImageView setTransform:CGAffineTransformIdentity];
         [self.selectedImageView setAlpha:1];
     }else{
-        [self.selectedImageView setTransform:CGAffineTransformIdentity];
-        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            [self.selectedImageView setAlpha:0];
-            [self.selectedImageView setTransform:CGAffineTransformMakeScale(2, 2)];
-        } completion:nil];
+        [self.selectedImageView setAlpha:0];
     }
 }
 

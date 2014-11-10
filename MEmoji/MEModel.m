@@ -678,7 +678,6 @@
         }
         // Holiday pack
         else if ([product.productIdentifier isEqualToString:holidayPackProductIdentifier]){
-            NSLog(@"Did receive holiday pack");
             self.holidayPackProduct = product;
         }
         // Watermark

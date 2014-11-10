@@ -9,8 +9,10 @@
 #import "MESectionsManager.h"
 #import "MECaptureButton.h"
 #import "MESettingsCell.h"
+#import "MEPackCollectionView.h"
 
 static const NSInteger numberOfItemsPerRow = 4;
+static NSString *CellIdentifier = @"MEmojiCell";
 
 @implementation MESectionsManager
 
@@ -111,10 +113,8 @@ static const NSInteger numberOfItemsPerRow = 4;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if ([collectionView isEqual:self.libraryCollectionView])
     {
-        static NSString *CellIdentifier = @"MEmojiCell";
         MEMEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         Image *thisImage = [[[MEModel sharedInstance] currentImages] objectAtIndex:indexPath.row];
     
@@ -154,25 +154,24 @@ static const NSInteger numberOfItemsPerRow = 4;
     }
     
     else {
-        static NSString *CellIdentifier = @"OverlayCell";
         
         MEOverlayImage *overlayImage;
         MEOverlayCell *cell;
         
         // Free Pack
         if ([collectionView isEqual:self.freeCollectionView]) {
-            cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [self.freeCollectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel freePack] objectAtIndex:indexPath.item];
         }
         // Holiday Pack
         else if ([collectionView isEqual:self.holidayCollectionView]){
-            cell = [self.holidayCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [self.holidayCollectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel holidayPack] objectAtIndex:indexPath.item];
         }
         
         // Hip Hop Pack
         else if ([collectionView isEqual:self.hipHopCollectionView]){
-            cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [self.hipHopCollectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
             overlayImage = [[MEModel hipHopPack] objectAtIndex:indexPath.item];
         }
         else{
@@ -191,6 +190,7 @@ static const NSInteger numberOfItemsPerRow = 4;
                 });
             }];
         }
+
         return cell;
     }
 }
@@ -304,7 +304,7 @@ static const NSInteger numberOfItemsPerRow = 4;
     return nil;
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([collectionView isEqual:self.libraryCollectionView] && [self shouldShowLoadMore]) {
         return CGSizeMake(collectionView.frame.size.width, captureButtonDiameter/2);

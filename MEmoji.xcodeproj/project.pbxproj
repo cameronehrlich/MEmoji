@@ -12,6 +12,7 @@
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
 		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
 		323DF6971A1027AA00FC8D04 /* HolidayPack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 323DF6961A1027AA00FC8D04 /* HolidayPack.xcassets */; };
+		323DF69A1A10464E00FC8D04 /* MEPackCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */; };
 		323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 323E26761A0067F100C33196 /* MEIntroductionView.m */; };
 		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
 		325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C9CA719D61E4B00E426E9 /* MEViewFinder.m */; };
@@ -65,6 +66,8 @@
 		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
 		323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 8.xcdatamodel"; sourceTree = "<group>"; };
 		323DF6961A1027AA00FC8D04 /* HolidayPack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HolidayPack.xcassets; sourceTree = "<group>"; };
+		323DF6981A10464E00FC8D04 /* MEPackCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPackCollectionView.h; sourceTree = "<group>"; };
+		323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPackCollectionView.m; sourceTree = "<group>"; };
 		323E26751A0067F100C33196 /* MEIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIntroductionView.h; sourceTree = "<group>"; };
 		323E26761A0067F100C33196 /* MEIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIntroductionView.m; sourceTree = "<group>"; };
 		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -227,6 +230,8 @@
 				32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */,
 				32DD889D19870B44008E8BCE /* MEViewController.h */,
 				32DD889E19870B44008E8BCE /* MEViewController.m */,
+				323DF6981A10464E00FC8D04 /* MEPackCollectionView.h */,
+				323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */,
 				328F63A019D5220F0010CF1C /* MESectionsManager.h */,
 				328F63A119D5220F0010CF1C /* MESectionsManager.m */,
 				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
@@ -436,6 +441,7 @@
 				328F63A819D561CD0010CF1C /* MEShareView.m in Sources */,
 				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
 				32DD889219870B44008E8BCE /* main.m in Sources */,
+				323DF69A1A10464E00FC8D04 /* MEPackCollectionView.m in Sources */,
 				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
 				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
 				323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */,

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MEmoji/MEModel.m"
-            timestampString = "437271212.012525"
+            timestampString = "437274864.535913"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "773"
-            endingLineNumber = "773"
+            startingLineNumber = "772"
+            endingLineNumber = "772"
             landmarkName = "-requestDidFinish:"
             landmarkType = "5">
          </BreakpointContent>
