@@ -605,7 +605,7 @@
                                 @"dreidel",
                                 @"david",
                                 @"menorah",
-                                @"xmasLights",
+                                @"christmasLights",
                                 @"milkAndCookies",
                                 @"turkeyLeg",
                                 @"turkeyBeak",
