@@ -6,44 +6,18 @@
 //  Copyright (c) 2014 Jonas Gessner. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "JGProgressHUD-Defines.h"
 
-@class JGProgressHUDIndicatorView;
-@class JGProgressHUDAnimation;
+#import "JGProgressHUDAnimation.h"
+#import "JGProgressHUDFadeAnimation.h"
+#import "JGProgressHUDFadeZoomAnimation.h"
 
-/**
- Positions of the HUD.
- */
-typedef NS_ENUM(NSUInteger, JGProgressHUDPosition) {
-    JGProgressHUDPositionCenter = 0,
-    JGProgressHUDPositionTopLeft,
-    JGProgressHUDPositionTopCenter,
-    JGProgressHUDPositionTopRight,
-    JGProgressHUDPositionCenterLeft,
-    JGProgressHUDPositionCenterRight,
-    JGProgressHUDPositionBottomLeft,
-    JGProgressHUDPositionBottomCenter,
-    JGProgressHUDPositionBottomRight
-};
-
-/**
- Appearance styles of the HUD.
- */
-typedef NS_ENUM(NSUInteger, JGProgressHUDStyle) {
-    JGProgressHUDStyleExtraLight = 0,
-    JGProgressHUDStyleLight,
-    JGProgressHUDStyleDark
-};
-
-/**
- Interaction types.
- */
-typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
-    JGProgressHUDInteractionTypeBlockAllTouches = 0,
-    JGProgressHUDInteractionTypeBlockTouchesOnHUDView,
-    JGProgressHUDInteractionTypeBlockNoTouches
-};
+#import "JGProgressHUDIndicatorView.h"
+#import "JGProgressHUDErrorIndicatorView.h"
+#import "JGProgressHUDSuccessIndicatorView.h"
+#import "JGProgressHUDRingIndicatorView.h"
+#import "JGProgressHUDPieIndicatorView.h"
+#import "JGProgressHUDIndeterminateIndicatorView.h"
 
 @class JGProgressHUD;
 
@@ -78,23 +52,26 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 @end
 
 /**
- A HUD view to indicate progress, success, error, warnings or other notifications to the user.
- @note Remember to call every method from the main thread! UIKit = always main thread!
+ A HUD to indicate progress, success, error, warnings or other notifications to the user.
+ @note Remember to call every method from the main thread! UIKit => main thread!
  @attention This applies only to iOS 8 and higher: You may not add JGProgressHUD to a view which has an alpha value < 1.0 or to a view which is a subview of a view with an alpha value < 1.0.
  */
 @interface JGProgressHUD : UIView
 
 /**
- Always initialize JGProgressHUD using this method or it's convenience method @c progressHUDWithStyle:.
+ Designated initializer.
  @param style The appearance style of the HUD.
  */
 - (instancetype)initWithStyle:(JGProgressHUDStyle)style;
 
 /**
- Convenience method to initialize a new HUD.
+ Convenience initializer.
  @param style The appearance style of the HUD.
  */
 + (instancetype)progressHUDWithStyle:(JGProgressHUDStyle)style;
+
+
+
 
 /**
  The view in which the HUD is presented.
@@ -110,14 +87,14 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 /**
  A block to be invoked when the HUD view is tapped.
  
- @note The interaction type of the HUD must be JGProgressHUDInteractionTypeBlockTouchesOnHUDView or JGProgressHUDInteractionTypeBlockNoTouches, if not this block won't be fired.
+ @note The interaction type of the HUD must be @c JGProgressHUDInteractionTypeBlockTouchesOnHUDView or @c JGProgressHUDInteractionTypeBlockAllTouches, otherwise this block won't be fired.
  */
 @property (nonatomic, copy) void (^tapOnHUDViewBlock)(JGProgressHUD *HUD);
 
 /**
  A block to be invoked when the area outside of the HUD view is tapped.
  
- @note The interaction type of the HUD must be JGProgressHUDInteractionTypeBlockNoTouches, if not this block won't be fired.
+ @note The interaction type of the HUD must be @c JGProgressHUDInteractionTypeBlockAllTouches, otherwise this block won't be fired.
  */
 @property (nonatomic, copy) void (^tapOutsideBlock)(JGProgressHUD *HUD);
 
@@ -132,12 +109,12 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 @property (nonatomic, strong, readonly) UIView *contentView;
 
 /**
- The label used to present text on the HUD. set the @c text property of this label to change the displayed text. You may not change the label's @c frame or @c bounds.
+ The label used to present text on the HUD. Set the @c text property of this label to change the displayed text. You may not change the label's @c frame or @c bounds.
  */
 @property (nonatomic, strong, readonly) UILabel *textLabel;
 
 /**
- The label used to present detail text on the HUD. set the @c text property of this label to change the displayed text. You may not change the label's @c frame or @c bounds.
+ The label used to present detail text on the HUD. Set the @c text property of this label to change the displayed text. You may not change the label's @c frame or @c bounds.
  */
 @property (nonatomic, strong, readonly) UILabel *detailTextLabel;
 
@@ -149,13 +126,22 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 @property (nonatomic, strong) JGProgressHUDIndicatorView *indicatorView;
 
 /**
- Interaction type of the HUD.
+ Interaction type of the HUD. Determines whether touches should be let through to the views behind the HUD.
  
  @sa JGProgressHUDInteractionType.
  
  @b Default: JGProgressHUDInteractionTypeBlockAllTouches.
  */
 @property (nonatomic, assign) JGProgressHUDInteractionType interactionType;
+
+/**
+ Parallax mode for the HUD. This setting determines whether the HUD should have a parallax (@c UIDeviceMotion) effect.
+ 
+ @sa JGProgressHUDParallaxMode.
+ 
+ @b Default: JGProgressHUDParallaxModeDevice.
+ */
+@property (nonatomic, assign) JGProgressHUDParallaxMode parallaxMode;
 
 /**
  The appearance style of the HUD.
@@ -235,22 +221,31 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
  */
 - (void)setProgress:(float)progress animated:(BOOL)animated;
 
+/**
+ Specifies a minimum time that the HUD will be on-screen. Useful to prevent the HUD from flashing quickly on the screen when indeterminate tasks complete more quickly than expected.
+ 
+ @b Default: 0.0.
+ */
+@property (nonatomic, assign) NSTimeInterval minimumDisplayTime;
 
-/////////////
-// Showing //
-/////////////
+/**
+ Determines whether Voice Over announcements should be made upon displaying the HUD (if Voice Over is active).
+ @b Default: YES
+ */
+@property (nonatomic, assign) BOOL voiceOverEnabled;
+
 
 
 /**
- Shows the HUD animated. You should preferably show the HUD in a UIViewController's view.
+ Shows the HUD animated. You should preferably show the HUD in a UIViewController's view. The HUD will be repositioned in response to rotation and keyboard show/hide notifications.
  @param view The view to show the HUD in. The frame of the @c view will be used to calculate the position of the HUD.
  */
 - (void)showInView:(UIView *)view;
 
 /**
- Shows the HUD. You should preferably show the HUD in a UIViewController's view.
+ Shows the HUD. You should preferably show the HUD in a UIViewController's view.  The HUD will be repositioned in response to rotation and keyboard show/hide notifications.
  @param view The view to show the HUD in. The frame of the @c view will be used to calculate the position of the HUD.
- @param animated If th HUD should show with an animation.
+ @param animated If the HUD should show with an animation.
  */
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
 
@@ -262,19 +257,13 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 - (void)showInRect:(CGRect)rect inView:(UIView *)view;
 
 /**
- Shows the HUD animated. You should preferably show the HUD in a UIViewController's view.
+ Shows the HUD. You should preferably show the HUD in a UIViewController's view.
  @param view The view to show the HUD in.
  @param rect The rect allocated in @c view for displaying the HUD.
- @param animated If th HUD should show with an animation.
+ @param animated If the HUD should show with an animation.
  */
 - (void)showInRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated;
 
-
-
-
-////////////////
-// Dismissing //
-////////////////
 
 
 
@@ -302,8 +291,8 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
  */
 - (void)dismissAfterDelay:(NSTimeInterval)delay animated:(BOOL)animated;
 
-
 @end
+
 
 
 
@@ -315,7 +304,6 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
  */
 + (NSArray *)allProgressHUDsInView:(UIView *)view;
 
-
 /**
  @param view The view to return all visible progress HUDs for.
  @return All visible progress HUDs in the view and its subviews.
@@ -323,27 +311,3 @@ typedef NS_ENUM(NSUInteger, JGProgressHUDInteractionType) {
 + (NSArray *)allProgressHUDsInViewHierarchy:(UIView *)view;
 
 @end
-
-
-
-@interface JGProgressHUD (Deprecated)
-
-/**
- @warning Deprecated. Use @c indicatorView.
- */
-@property (nonatomic, strong) JGProgressHUDIndicatorView *progressIndicatorView DEPRECATED_ATTRIBUTE;
-/**
- @warning Deprecated this no longer has any effect. To show no indicator view set @c indicatorView to @c nil, otherwise assign an indicator view to @c indicatorView (By default @c indicatorView is @c JGProgressHUDIndeterminateIndicatorView).
- @sa indicatorView.
- */
-@property (nonatomic, assign) BOOL useProgressIndicatorView DEPRECATED_ATTRIBUTE;
-
-@end
-
-
-/**
- Macro for safe floating point comparison (for internal use in JGProgressHUD).
- */
-#ifndef fequal
-#define fequal(a,b) (fabs((a) - (b)) < FLT_EPSILON)
-#endif

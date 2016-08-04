@@ -22,12 +22,12 @@
     id value = [objectData valueForKeyPath:keyPath];
     
     NSAttributeType attributeType = [self attributeType];
-    NSString *desiredAttributeType = [[self userInfo] valueForKey:kMagicalRecordImportAttributeValueClassNameKey];
+    NSString *desiredAttributeType = [[self userInfo] objectForKey:kMagicalRecordImportAttributeValueClassNameKey];
     if (desiredAttributeType) 
     {
         if ([desiredAttributeType hasSuffix:@"Color"])
         {
-            value = colorFromString(value);
+            value = MR_colorFromString(value);
         }
     }
     else 
@@ -36,7 +36,7 @@
         {
             if (![value isKindOfClass:[NSDate class]]) 
             {
-                NSString *dateFormat = [[self userInfo] valueForKey:kMagicalRecordImportCustomDateFormatKey];
+                NSString *dateFormat = [[self userInfo] objectForKey:kMagicalRecordImportCustomDateFormatKey];
                 if ([value isKindOfClass:[NSNumber class]]) {
                     value = MR_dateFromNumber(value, [dateFormat isEqualToString:kMagicalRecordImportUnixTimeString]);
                 }

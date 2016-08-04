@@ -41,7 +41,8 @@
 		32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFAB9F19DD097000D0051F /* MESettingsCell.m */; };
 		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
 		32F752681987513000045AFA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F752671987513000045AFA /* Image.m */; };
-		B70966644BFC49138AC4B007 /* libPods-MEmoji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */; };
+		58346CB6AD853836E1A08436 /* libPods-MEmoji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 168F27F2A249C88D5E9A3E04 /* libPods-MEmoji.a */; };
+		AD38C7DAEAE4B7FFB1005624 /* libPods-MEmojiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686EE9E14CA0DFB1D640B436 /* libPods-MEmojiTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		168F27F2A249C88D5E9A3E04 /* libPods-MEmoji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEmoji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3201656B19D225CE00B3ECB1 /* FreePack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FreePack.xcassets; sourceTree = "<group>"; };
 		3210054019DE0F12001B3680 /* MEProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEProgressView.h; sourceTree = "<group>"; };
 		3210054119DE0F12001B3680 /* MEProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEProgressView.m; sourceTree = "<group>"; };
@@ -117,9 +119,11 @@
 		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
-		44D715BB95BC35D25908B3A1 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
-		67E171B79A82CDFAFBD5200A /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
-		BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEmoji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		686EE9E14CA0DFB1D640B436 /* libPods-MEmojiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEmojiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68F4B1EF7CCC8AA397854620 /* Pods-MEmojiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmojiTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmojiTests/Pods-MEmojiTests.release.xcconfig"; sourceTree = "<group>"; };
+		A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
+		AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
+		DD792C2FCDD156D9C7A871C4 /* Pods-MEmojiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmojiTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmojiTests/Pods-MEmojiTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +134,7 @@
 				32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */,
 				32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */,
 				32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */,
-				B70966644BFC49138AC4B007 /* libPods-MEmoji.a in Frameworks */,
+				58346CB6AD853836E1A08436 /* libPods-MEmoji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,21 +145,13 @@
 				32DD88A819870B44008E8BCE /* XCTest.framework in Frameworks */,
 				32DD88AA19870B44008E8BCE /* UIKit.framework in Frameworks */,
 				32DD88A919870B44008E8BCE /* Foundation.framework in Frameworks */,
+				AD38C7DAEAE4B7FFB1005624 /* libPods-MEmojiTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2109F77D9F51CDC01FED1EBD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				67E171B79A82CDFAFBD5200A /* Pods-MEmoji.debug.xcconfig */,
-				44D715BB95BC35D25908B3A1 /* Pods-MEmoji.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		3212C2A619C77717007ED774 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,7 +191,7 @@
 				32DD88AD19870B44008E8BCE /* MEmojiTests */,
 				32DD888419870B44008E8BCE /* Frameworks */,
 				32DD888319870B44008E8BCE /* Products */,
-				2109F77D9F51CDC01FED1EBD /* Pods */,
+				88FA6B9B9E374358AF762650 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -216,7 +212,8 @@
 				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
 				32DD888919870B44008E8BCE /* UIKit.framework */,
 				32DD88A719870B44008E8BCE /* XCTest.framework */,
-				BA0BFE5DBE1C4B67A21DB372 /* libPods-MEmoji.a */,
+				168F27F2A249C88D5E9A3E04 /* libPods-MEmoji.a */,
+				686EE9E14CA0DFB1D640B436 /* libPods-MEmojiTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -291,6 +288,17 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		88FA6B9B9E374358AF762650 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */,
+				A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */,
+				DD792C2FCDD156D9C7A871C4 /* Pods-MEmojiTests.debug.xcconfig */,
+				68F4B1EF7CCC8AA397854620 /* Pods-MEmojiTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -298,11 +306,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32DD88B719870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmoji" */;
 			buildPhases = (
-				790A48745724412D88DC492A /* Check Pods Manifest.lock */,
+				310C9CC441759C46737130FE /* [CP] Check Pods Manifest.lock */,
 				32DD887E19870B44008E8BCE /* Sources */,
 				32DD887F19870B44008E8BCE /* Frameworks */,
 				32DD888019870B44008E8BCE /* Resources */,
-				C6552BDD0D8D4118B98CE1D6 /* Copy Pods Resources */,
+				03B488256937ED8E804D4376 /* [CP] Embed Pods Frameworks */,
+				26013C5BC9098A9B05908CF9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -317,9 +326,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32DD88BA19870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmojiTests" */;
 			buildPhases = (
+				DF77DAEC9E9E1DB575E0E44A /* [CP] Check Pods Manifest.lock */,
 				32DD88A219870B44008E8BCE /* Sources */,
 				32DD88A319870B44008E8BCE /* Frameworks */,
 				32DD88A419870B44008E8BCE /* Resources */,
+				5D7604872C94CD535260C172 /* [CP] Embed Pods Frameworks */,
+				61D194321E0014BE6C5F43D4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -338,7 +350,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ME;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Lucky Bunny LLC";
 				TargetAttributes = {
 					32DD888119870B44008E8BCE = {
@@ -394,34 +406,94 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		790A48745724412D88DC492A /* Check Pods Manifest.lock */ = {
+		03B488256937ED8E804D4376 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C6552BDD0D8D4118B98CE1D6 /* Copy Pods Resources */ = {
+		26013C5BC9098A9B05908CF9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		310C9CC441759C46737130FE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5D7604872C94CD535260C172 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmojiTests/Pods-MEmojiTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		61D194321E0014BE6C5F43D4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmojiTests/Pods-MEmojiTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF77DAEC9E9E1DB575E0E44A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -515,6 +587,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -569,7 +642,7 @@
 		};
 		32DD88B819870B44008E8BCE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 67E171B79A82CDFAFBD5200A /* Pods-MEmoji.debug.xcconfig */;
+			baseConfigurationReference = AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -580,6 +653,7 @@
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LuckyBunny.MEmoji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "66205679-de60-4d10-a573-737083917971";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
@@ -591,7 +665,7 @@
 		};
 		32DD88B919870B44008E8BCE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44D715BB95BC35D25908B3A1 /* Pods-MEmoji.release.xcconfig */;
+			baseConfigurationReference = A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -602,6 +676,7 @@
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LuckyBunny.MEmoji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "66205679-de60-4d10-a573-737083917971";
 				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
@@ -612,6 +687,7 @@
 		};
 		32DD88BB19870B44008E8BCE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD792C2FCDD156D9C7A871C4 /* Pods-MEmojiTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MEmoji.app/MEmoji";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -626,6 +702,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "MEmojiTests/MEmojiTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.LuckyBunny.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -634,6 +711,7 @@
 		};
 		32DD88BC19870B44008E8BCE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68F4B1EF7CCC8AA397854620 /* Pods-MEmojiTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MEmoji.app/MEmoji";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -644,6 +722,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmojiTests/MEmojiTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.LuckyBunny.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

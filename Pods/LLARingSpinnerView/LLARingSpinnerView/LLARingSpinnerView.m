@@ -13,14 +13,12 @@ static NSString *kLLARingSpinnerAnimationKey = @"llaringspinnerview.rotation";
 @interface LLARingSpinnerView ()
 
 @property (nonatomic, readonly) CAShapeLayer *progressLayer;
-@property (nonatomic, readwrite) BOOL isAnimating;
 
 @end
 
 @implementation LLARingSpinnerView
 
 @synthesize progressLayer = _progressLayer;
-@synthesize isAnimating = _isAnimating;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -37,6 +35,8 @@ static NSString *kLLARingSpinnerAnimationKey = @"llaringspinnerview.rotation";
 }
 
 - (void)initialize {
+    _timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
     [self.layer addSublayer:self.progressLayer];
 }
 
@@ -54,19 +54,16 @@ static NSString *kLLARingSpinnerAnimationKey = @"llaringspinnerview.rotation";
 }
 
 - (void)startAnimating {
-    if (self.isAnimating)
-        return;
-
-    CABasicAnimation *animation = [CABasicAnimation animation];
-    animation.keyPath = @"transform.rotation";
-    animation.duration = 1.0f;
-    animation.fromValue = @(0.0f);
-    animation.toValue = @(2 * M_PI);
-    animation.repeatCount = INFINITY;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-
-    [self.progressLayer addAnimation:animation forKey:kLLARingSpinnerAnimationKey];
-    self.isAnimating = true;
+    if (!self.isAnimating) {
+        CABasicAnimation *animation = [CABasicAnimation animation];
+        animation.keyPath = @"transform.rotation";
+        animation.duration = 1.0f;
+        animation.fromValue = @(0.0f);
+        animation.toValue = @(2 * M_PI);
+        animation.repeatCount = INFINITY;
+        animation.timingFunction = self.timingFunction;
+        [self.progressLayer addAnimation:animation forKey:kLLARingSpinnerAnimationKey];
+    }
     
     if (self.hidesWhenStopped) {
         self.hidden = NO;
@@ -74,11 +71,9 @@ static NSString *kLLARingSpinnerAnimationKey = @"llaringspinnerview.rotation";
 }
 
 - (void)stopAnimating {
-    if (!self.isAnimating)
-        return;
-
-    [self.progressLayer removeAnimationForKey:kLLARingSpinnerAnimationKey];
-    self.isAnimating = false;
+    if (self.isAnimating) {
+        [self.progressLayer removeAnimationForKey:kLLARingSpinnerAnimationKey];
+    }
     
     if (self.hidesWhenStopped) {
         self.hidden = YES;
@@ -109,7 +104,7 @@ static NSString *kLLARingSpinnerAnimationKey = @"llaringspinnerview.rotation";
 }
 
 - (BOOL)isAnimating {
-    return _isAnimating;
+    return [self.progressLayer animationForKey:kLLARingSpinnerAnimationKey] != nil;
 }
 
 - (CGFloat)lineWidth {

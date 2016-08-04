@@ -6,16 +6,29 @@
 //  Copyright 2011 Magical Panda Software LLC. All rights reserved.
 //
 
-#import "CoreData+MagicalRecord.h"
 #import "NSEntityDescription+MagicalDataImport.h"
+#import "NSManagedObject+MagicalDataImport.h"
+#import "NSManagedObject+MagicalRecord.h"
+#import "MagicalImportFunctions.h"
+#import "MagicalRecordLogging.h"
 
 @implementation NSEntityDescription (MagicalRecord_DataImport)
 
 - (NSAttributeDescription *) MR_primaryAttributeToRelateBy;
 {
-    NSString *lookupKey = [[self userInfo] valueForKey:kMagicalRecordImportRelationshipLinkedByKey] ?: MR_primaryKeyNameFromString([self name]);
+    NSString *lookupKey = [[self userInfo] objectForKey:kMagicalRecordImportRelationshipLinkedByKey] ?: MR_primaryKeyNameFromString([self name]);
+    NSAttributeDescription *attributeDescription = [self MR_attributeDescriptionForName:lookupKey];
 
-    return [self MR_attributeDescriptionForName:lookupKey];
+    if (attributeDescription == nil)
+    {
+        MRLogError(
+            @"Invalid value for key '%@' in '%@' entity. Remove this key or add attribute '%@'\n",
+            kMagicalRecordImportRelationshipLinkedByKey,
+            self.name,
+            lookupKey);
+    }
+
+    return attributeDescription;
 }
 
 - (NSManagedObject *) MR_createInstanceInContext:(NSManagedObjectContext *)context;

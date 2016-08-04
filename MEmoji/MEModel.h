@@ -9,14 +9,16 @@
 #define MR_LOGGING_ENABLED 0
 #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
 
-#import <CoreData+MagicalRecord.h>
-#import <UIImage+Additions.h>
+#import <MagicalRecord/MagicalRecord.h>
+#import <UIImage+Additions/UIImage+Additions.h>
+#import <DHAppleReceiptParser/DHAppStoreReceipt.h>
+#import <JGProgressHUD/JGProgressHUD.h>
+#import <Appirater/Appirater.h>
+
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
-#import <DHAppStoreReceipt.h>
-#import <JGProgressHUD.h>
-#import <Appirater.h>
+
 #import "CEMovieMaker.h"
 #import "Image.h"
 #import "MEOverlayImage.h"

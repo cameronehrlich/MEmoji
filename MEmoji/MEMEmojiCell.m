@@ -24,7 +24,6 @@
         [self addSubview:loadingLabel];
         
         _imageView = [[FLAnimatedImageView alloc] initWithFrame:self.bounds];
-        [_imageView setAnimatesWhileScrolling:YES];
         [self addSubview:_imageView];
         
         CGRect deleteViewFrame = CGRectMake(0, 0, self.bounds.size.width/1.5, self.bounds.size.width/1.5);

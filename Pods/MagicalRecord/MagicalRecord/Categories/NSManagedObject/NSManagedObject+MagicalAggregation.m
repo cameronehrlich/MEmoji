@@ -57,11 +57,7 @@
 
 + (NSUInteger) MR_countOfEntitiesWithContext:(NSManagedObjectContext *)context;
 {
-	NSError *error = nil;
-	NSUInteger count = [context countForFetchRequest:[self MR_createFetchRequestInContext:context] error:&error];
-	[MagicalRecord handleErrors:error];
-	
-    return count;
+    return [self MR_countOfEntitiesWithPredicate:nil inContext:context];
 }
 
 + (NSUInteger) MR_countOfEntitiesWithPredicate:(NSPredicate *)searchFilter;
@@ -76,7 +72,11 @@
 {
 	NSError *error = nil;
 	NSFetchRequest *request = [self MR_createFetchRequestInContext:context];
-	[request setPredicate:searchFilter];
+
+    if (searchFilter)
+    {
+        [request setPredicate:searchFilter];
+    }
 	
 	NSUInteger count = [context countForFetchRequest:request error:&error];
 	[MagicalRecord handleErrors:error];
@@ -173,12 +173,12 @@
 
     NSAttributeDescription *attributeDescription = [[[self MR_entityDescriptionInContext:context] attributesByName] objectForKey:attributeName];
     [expressionDescription setExpressionResultType:[attributeDescription attributeType]];
-    NSArray *properties = [NSArray arrayWithObjects:groupingKeyPath, expressionDescription, nil];
+    NSArray *properties = @[groupingKeyPath, expressionDescription];
 
     NSFetchRequest *fetchRequest = [self MR_requestAllWithPredicate:predicate inContext:context];
     [fetchRequest setPropertiesToFetch:properties];
     [fetchRequest setResultType:NSDictionaryResultType];
-    [fetchRequest setPropertiesToGroupBy:[NSArray arrayWithObject:groupingKeyPath]];
+    [fetchRequest setPropertiesToGroupBy:@[groupingKeyPath]];
 
     NSArray *results = [self MR_executeFetchRequest:fetchRequest inContext:context];
 

@@ -7,21 +7,26 @@
 //
 
 #import "JGProgressHUDSuccessIndicatorView.h"
+#import "JGProgressHUD.h"
 
 @implementation JGProgressHUDSuccessIndicatorView
 
-- (instancetype)initWithContentView:(UIView * __unused)contentView {
-    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"JGProgressHUD Resources" ofType:@"bundle"];
+- (instancetype)initWithContentView:(UIView *__unused)contentView {
+    NSBundle *resourceBundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[JGProgressHUD class]] pathForResource:@"JGProgressHUD Resources" ofType:@"bundle"]];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[bundlePath stringByAppendingPathComponent:@"jg_hud_success.png"]]];
+    NSString *imgPath = [resourceBundle pathForResource:@"jg_hud_success" ofType:@"png"];
     
-    self = [super initWithContentView:imageView];
+    self = [super initWithImage:[UIImage imageWithContentsOfFile:imgPath]];
     
     return self;
 }
 
 - (instancetype)init {
     return [self initWithContentView:nil];
+}
+
+- (void)updateAccessibility {
+    self.accessibilityLabel = NSLocalizedString(@"Success",);
 }
 
 @end

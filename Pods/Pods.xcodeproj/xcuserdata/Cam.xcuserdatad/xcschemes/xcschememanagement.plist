@@ -4,92 +4,57 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Appirater-Appirater.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Appirater.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-Appirater.xcscheme</key>
+		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-Bolts.xcscheme</key>
+		<key>DHAppleReceiptParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-DHAppleReceiptParser.xcscheme</key>
+		<key>FLAnimatedImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-FLAnimatedImage.xcscheme</key>
+		<key>FSOpenInInstagram.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-FSOpenInInstagram.xcscheme</key>
+		<key>JGProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-GoogleAnalytics-iOS-SDK.xcscheme</key>
+		<key>LLARingSpinnerView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-JGProgressHUD.xcscheme</key>
+		<key>MagicalRecord.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-LLARingSpinnerView.xcscheme</key>
+		<key>NSURL+ParseQuery.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmoji-MagicalRecord.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-NSURL+ParseQuery.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-Parse.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-ReactiveCocoa.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-UIAlertView+Blocks.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-UIColor+Hex.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-UIImage+Additions.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-UIView+Positioning.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MEmoji-UIView+Shimmer.xcscheme</key>
+		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -99,100 +64,135 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MEmojiTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReactiveCocoa.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIAlertView+Blocks.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIColor+Hex.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIImage+Additions.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIView+Positioning.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIView+Shimmer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>010CE560E9219775287DD903</key>
+		<key>0767C39F0856E120BA4ACFC79417CC60</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>085C0E9B2B182E5263C387D3</key>
+		<key>0C0EB3D4FAADBF64DAF0E9D62823CAE3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1E6C15CC3E08A5390596442B</key>
+		<key>146D4D3BEC39209E7FD55AD619B9712E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2A33706D9B140CC7DADD6252</key>
+		<key>1A79BA86DB198181905CBBFC1F1E6701</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2EF5808F06116E67A07BBDB8</key>
+		<key>24F1225711DA9E8F6D9E80077848B864</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>51FD02498EE8367ABDD1FB00</key>
+		<key>2D9AC06AD9A682EAD385F4331387B077</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6DE6C2235D8D61180031FE72</key>
+		<key>3116F685117B044E8E119EA475203BA9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>73AC846E9ECA78614AC3B170</key>
+		<key>34C1E981B3F679EDD6293D57BFCFE08F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>776496590A21FF1291F9963D</key>
+		<key>56C88F63B278DCDA3A2D605B7267045C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>79FDD964FD0F775813ED8100</key>
+		<key>5F27FB0EBB6FBC65F8AF2EEDD4A26700</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B377B2AAE0315B5FFDEB8C5E</key>
+		<key>5F9CDF21330F4787AC04D56E0E745343</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BD355BB62F26F4B4E720CAE1</key>
+		<key>7B37C17804EB846BEC101E203223AA10</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C87FD4BFD74A1180F3E85065</key>
+		<key>7E61B2DFA55E1017BADC5FC48CF3007D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CC7E28B652A0D912770DD176</key>
+		<key>A132C8D211C6B8B9D671B650DC3ACD64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D57CE9C6FFBA2E71F5BB799E</key>
+		<key>BC0E7DF2A6C2074A58E7EF187B81DBE4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DBB8B58E8DEB8C7DA6C8C498</key>
+		<key>CBA9C9F6A582DF509DC7D779E374E359</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E26A2BF63EF1F51CB987522D</key>
+		<key>D4A7761A8F2BC0797FAC7B0D855B7522</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E34EE707D0375A04ED599EE9</key>
+		<key>D54AB3ECEB9A8FBA15D4F73CBE326692</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EF8329ABB45AFF724DB7824E</key>
+		<key>EF7E265F20CE4ED56ACAEBF50CD2D47C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

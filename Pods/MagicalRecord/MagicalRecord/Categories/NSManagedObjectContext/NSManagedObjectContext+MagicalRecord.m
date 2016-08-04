@@ -5,9 +5,13 @@
 //  Copyright 2010 Magical Panda Software, LLC All rights reserved.
 //
 
-#import "CoreData+MagicalRecord.h"
+#import "NSManagedObjectContext+MagicalRecord.h"
+#import "NSManagedObjectContext+MagicalObserving.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSPersistentStoreCoordinator+MagicalRecord.h"
+#import "MagicalRecord+ErrorHandling.h"
+#import "MagicalRecord+iCloud.h"
 #import "MagicalRecordLogging.h"
-#import <objc/runtime.h>
 
 static NSString * const MagicalRecordContextWorkingName = @"MagicalRecordContextWorkingName";
 
@@ -47,6 +51,7 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 
 + (NSManagedObjectContext *) MR_rootSavingContext;
 {
+    NSAssert(MagicalRecordRootSavingContext != nil, @"Root saving context is nil! Did you forget to initialize the Core Data Stack?");
     return MagicalRecordRootSavingContext;
 }
 
@@ -95,14 +100,38 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 
 #pragma mark - Debugging
 
-- (void) MR_setWorkingName:(NSString *)workingName
+- (void)MR_setWorkingName:(NSString *)workingName
 {
-    [[self userInfo] setObject:workingName forKey:MagicalRecordContextWorkingName];
+    void (^setWorkingName)() = ^{
+        [[self userInfo] setObject:workingName forKey:MagicalRecordContextWorkingName];
+    };
+
+    if (self.concurrencyType == NSMainQueueConcurrencyType && [NSThread isMainThread])
+    {
+        setWorkingName();
+    }
+    else
+    {
+        [self performBlockAndWait:setWorkingName];
+    }
 }
 
-- (NSString *) MR_workingName
+- (NSString *)MR_workingName
 {
-    NSString *workingName = [[self userInfo] objectForKey:MagicalRecordContextWorkingName];
+    __block NSString *workingName;
+
+    void (^getWorkingName)() = ^{
+        workingName = [[self userInfo] objectForKey:MagicalRecordContextWorkingName];
+    };
+
+    if (self.concurrencyType == NSMainQueueConcurrencyType && [NSThread isMainThread])
+    {
+        getWorkingName();
+    }
+    else
+    {
+        [self performBlockAndWait:getWorkingName];
+    }
 
     if ([workingName length] == 0)
     {
@@ -183,7 +212,7 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
     }
 }
 
-+ (void) rootContextDidSave:(NSNotification *)notification
++ (void)rootContextDidSave:(NSNotification *)notification
 {
     if ([notification object] != [self MR_rootSavingContext])
     {
@@ -197,6 +226,11 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
         });
 
         return;
+    }
+
+    for (NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey])
+    {
+        [[[self MR_defaultContext] objectWithID:[object objectID]] willAccessValueForKey:nil];
     }
 
     [[self MR_defaultContext] mergeChangesFromContextDidSaveNotification:notification];
@@ -278,8 +312,8 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 
     MagicalRecordRootSavingContext = context;
     
-    [context performBlock:^{
-        [context MR_obtainPermanentIDsBeforeSaving];
+    [MagicalRecordRootSavingContext performBlock:^{
+        [MagicalRecordRootSavingContext MR_obtainPermanentIDsBeforeSaving];
         [MagicalRecordRootSavingContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
         [MagicalRecordRootSavingContext MR_setWorkingName:@"MagicalRecord Root Saving Context"];
     }];
