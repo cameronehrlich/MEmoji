@@ -8,8 +8,8 @@
 
 @import UIKit;
 
-#import <FLAnimatedImage.h>
-#import <FLAnimatedImageView.h>
+@import FLAnimatedImage;
+#import "MEModel.h"
 #import "MEProgressView.h"
 #import "Image.h"
 

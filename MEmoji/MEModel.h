@@ -9,15 +9,15 @@
 #define MR_LOGGING_ENABLED 0
 #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
 
-#import <MagicalRecord/MagicalRecord.h>
-#import <UIImage+Additions/UIImage+Additions.h>
-#import <DHAppleReceiptParser/DHAppStoreReceipt.h>
-#import <JGProgressHUD/JGProgressHUD.h>
-#import <Appirater/Appirater.h>
+@import MagicalRecord;
+@import UIImage_Additions;
+@import JGProgressHUD;
+@import Appirater;
 
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+#import <DHAppleReceiptParser/DHAppStoreReceipt.h>
 
 #import "CEMovieMaker.h"
 #import "Image.h"
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, MEHeaderButtonType) {
     MEHeaderButtonTypePurchaseHolidayPack,
 };
 
-typedef NS_ENUM(NSUInteger, MEShareOption) {
+typedef NS_ENUM(NSInteger, MEShareOption) {
     MEShareOptionSaveToLibrary,
     MEShareOptionInstagram,
     MEShareOptionTwitter,

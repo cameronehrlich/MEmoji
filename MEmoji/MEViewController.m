@@ -8,13 +8,14 @@
 
 #import "MEViewController.h"
 
-#import <FLAnimatedImageView.h>
-#import <FLAnimatedImage.h>
-#import <UIView+Positioning.h>
-#import <UIColor+Hex.h>
-#import <UIView+Shimmer.h>
-#import <UIAlertView+Blocks.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+@import FLAnimatedImage;
+@import UIView_Positioning;
+@import UIColor_Hex;
+@import UIView_Shimmer;
+@import UIAlertView_Blocks;
+@import ReactiveCocoa;
+
+#import "MEModel.h"
 #import "MEOverlayCell.h"
 #import "MESectionHeaderView.h"
 #import "MECaptureButton.h"

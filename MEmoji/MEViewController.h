@@ -5,10 +5,12 @@
 //  Created by Cameron Ehrlich on 7/28/14.
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
-#import <UIView+Positioning.h>
-#import <LLARingSpinnerView.h>
-#import <FSOpenInInstagram.h>
 
+@import UIView_Positioning;
+@import LLARingSpinnerView;
+@import FSOpenInInstagram;
+
+#import "MEModel.h"
 #import "MEMEmojiCell.h"
 #import "MESectionsManager.h"
 #import "MECaptureButton.h"

@@ -7,7 +7,9 @@
 //
 
 #import "MEAppDelegate.h"
-#import <NSURL+ParseQuery/NSURL+QueryParser.h>
+#import "MEModel.h"
+
+@import NSURL_ParseQuery;
 
 @implementation MEAppDelegate
 

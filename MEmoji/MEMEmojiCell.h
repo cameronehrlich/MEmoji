@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-#import <FLAnimatedImageView.h>
+@import FLAnimatedImage;
 
 @interface MEMEmojiCell : UICollectionViewCell
 

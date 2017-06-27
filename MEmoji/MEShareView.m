@@ -7,7 +7,8 @@
 //
 
 #import "MEShareView.h"
-#import <UIView+Positioning.h>
+#import "MEModel.h"
+@import UIView_Positioning;
 
 @implementation MEShareView
 

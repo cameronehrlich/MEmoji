@@ -7,6 +7,7 @@
 //
 
 @import UIKit;
+#import "MEModel.h"
 
 @class MEShareView;
 

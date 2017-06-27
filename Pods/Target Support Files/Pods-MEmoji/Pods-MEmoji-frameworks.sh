@@ -59,8 +59,13 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements "$1"
+    local code_sign_cmd="/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements '$1'"
+
+    if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+      code_sign_cmd="$code_sign_cmd &"
+    fi
+    echo "$code_sign_cmd"
+    eval "$code_sign_cmd"
   fi
 }
 
@@ -82,3 +87,43 @@ strip_invalid_archs() {
   fi
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/Appirater/Appirater.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DHAppleReceiptParser/DHAppleReceiptParser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FSOpenInInstagram/FSOpenInInstagram.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JGProgressHUD/JGProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/LLARingSpinnerView/LLARingSpinnerView.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MagicalRecord/MagicalRecord.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSURL+ParseQuery/NSURL_ParseQuery.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIAlertView+Blocks/UIAlertView_Blocks.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIImage+Additions/UIImage_Additions.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIView+Positioning/UIView_Positioning.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIView+Shimmer/UIView_Shimmer.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/Appirater/Appirater.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DHAppleReceiptParser/DHAppleReceiptParser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FSOpenInInstagram/FSOpenInInstagram.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JGProgressHUD/JGProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/LLARingSpinnerView/LLARingSpinnerView.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MagicalRecord/MagicalRecord.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSURL+ParseQuery/NSURL_ParseQuery.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIAlertView+Blocks/UIAlertView_Blocks.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIImage+Additions/UIImage_Additions.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIView+Positioning/UIView_Positioning.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIView+Shimmer/UIView_Shimmer.framework"
+fi
+if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+  wait
+fi

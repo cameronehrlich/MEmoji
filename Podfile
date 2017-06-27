@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, "8.0"
+platform :ios, "10.3"
 
 inhibit_all_warnings!
 use_frameworks!
@@ -23,9 +23,5 @@ target "MEmoji" do
     pod 'FSOpenInInstagram', '~> 1.0'
     pod 'NSURL+ParseQuery', '~> 0.1'
     pod 'Appirater', '~> 2.0.5'
-end
-
-target "MEmojiTests" do
-
 end
 

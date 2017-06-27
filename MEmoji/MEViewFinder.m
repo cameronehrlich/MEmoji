@@ -7,7 +7,8 @@
 //
 
 #import "MEViewFinder.h"
-#import <UIView+Positioning.h>
+
+@import UIView_Positioning;
 
 @implementation MEViewFinder
 

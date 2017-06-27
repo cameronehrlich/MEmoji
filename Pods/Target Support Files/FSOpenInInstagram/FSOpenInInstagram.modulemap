@@ -1,0 +1,6 @@
+framework module FSOpenInInstagram {
+  umbrella header "FSOpenInInstagram-umbrella.h"
+
+  export *
+  module * { export * }
+}

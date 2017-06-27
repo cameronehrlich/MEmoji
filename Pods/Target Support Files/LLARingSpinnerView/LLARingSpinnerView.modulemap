@@ -1,0 +1,6 @@
+framework module LLARingSpinnerView {
+  umbrella header "LLARingSpinnerView-umbrella.h"
+
+  export *
+  module * { export * }
+}

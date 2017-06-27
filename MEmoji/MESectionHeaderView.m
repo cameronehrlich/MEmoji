@@ -8,6 +8,7 @@
 
 #import "MESectionHeaderView.h"
 #import "MECaptureButton.h"
+#import "MEModel.h"
 
 const static CGFloat arrowButtonWidth = 37;
 

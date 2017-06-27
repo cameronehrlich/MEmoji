@@ -1,0 +1,6 @@
+framework module NSURL_ParseQuery {
+  umbrella header "NSURL+ParseQuery-umbrella.h"
+
+  export *
+  module * { export * }
+}

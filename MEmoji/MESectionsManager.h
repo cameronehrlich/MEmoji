@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Lucky Bunny LLC. All rights reserved.
 //
 
-
+#import "MEModel.h"
 #import "MEMEmojiCell.h"
 #import "MEOverlayCell.h"
 #import "MESectionHeaderView.h"
-#import <FLAnimatedImageView.h>
-#import <FLAnimatedImage.h>
+@import FLAnimatedImage;
 
 @import Foundation;
 

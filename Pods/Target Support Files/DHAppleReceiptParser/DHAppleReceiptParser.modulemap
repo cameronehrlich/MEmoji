@@ -1,0 +1,6 @@
+framework module DHAppleReceiptParser {
+  umbrella header "DHAppleReceiptParser-umbrella.h"
+
+  export *
+  module * { export * }
+}

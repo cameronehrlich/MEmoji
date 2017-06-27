@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-#import <LLARingSpinnerView.h>
+#import <LLARingSpinnerView/LLARingSpinnerView.h>
 
 const static CGFloat captureButtonDiameter = 80.0;
 
