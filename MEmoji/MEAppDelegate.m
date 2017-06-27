@@ -15,8 +15,7 @@
 {
     [MEModel sharedInstance];
         
-    [self.window  setTintColor:[UIColor whiteColor]];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [self.window setTintColor:[UIColor whiteColor]];
     [application setApplicationSupportsShakeToEdit:YES];
     
     // Appirater Setup
@@ -32,40 +31,16 @@
     [[GAI sharedInstance] setDispatchInterval:5];
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelNone];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-35804692-6"];
-    [[[GAI sharedInstance] defaultTracker] setAllowIDFACollection:NO];
+    [[[GAI sharedInstance] defaultTracker] setAllowIDFACollection:YES];
     
-    // Parse Push Notifications
-    [Parse setApplicationId:@"qordhDuNzL5nBU9u7H3w2krXjn1HC2Nthl0s7K4n"
-                  clientKey:@"aOTBL97DNoMle0bzg57AFBCqtKXRQQhVZ0xuNSXG"];
-    
-    // Register for Push Notitications, if running iOS 8
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
-                                                        UIUserNotificationTypeBadge |
-                                                        UIUserNotificationTypeSound);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                                 categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
-    } else {
-        // Register for Push Notifications before iOS 8
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                         UIRemoteNotificationTypeAlert |
-                                                         UIRemoteNotificationTypeSound)];
-    }
-    
+    // Register for Push Notitications!!!!!!!!!!!
+
     return YES;
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
 
-    // Store the deviceToken in the current installation and save it to Parse.
-    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    [currentInstallation setDeviceTokenFromData:deviceToken];
-    NSString *countryCode = [self sanitizeChannelName:[[NSLocale currentLocale] objectForKey: NSLocaleCountryCode]];
-    NSString *timeZone = [self sanitizeChannelName:[[NSTimeZone localTimeZone] name]];
-    [currentInstallation setChannels:@[ @"global", countryCode, timeZone]];
-    [currentInstallation saveInBackground];
 }
 
 - (NSString *)sanitizeChannelName:(NSString *)name
@@ -74,8 +49,9 @@
     return [[name componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [PFPush handlePush:userInfo];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

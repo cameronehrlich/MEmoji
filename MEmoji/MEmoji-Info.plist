@@ -62,6 +62,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We use your camera to look at you.</string>
 </dict>
 </plist>

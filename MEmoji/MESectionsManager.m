@@ -29,10 +29,6 @@ static NSString *CellIdentifier = @"MEmojiCell";
         [_libraryCache setDelegate:self];
         
         _loadingQueue = [[NSOperationQueue alloc] init];
-        if ([_loadingQueue respondsToSelector:@selector(setQualityOfService:)]) {
-            [_loadingQueue setQualityOfService:NSQualityOfServiceUserInteractive];
-        }
-
         [self.loadingQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
     }
     return self;
@@ -128,12 +124,7 @@ static NSString *CellIdentifier = @"MEmojiCell";
 
             __block FLAnimatedImage *image;
             
-            NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-            if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
-                [operation setQualityOfService:NSOperationQualityOfServiceUserInteractive];
-            }
-            [operation setQueuePriority:NSOperationQueuePriorityVeryHigh];
-            
+            NSBlockOperation *operation = [[NSBlockOperation alloc] init];            
             [operation addExecutionBlock:^{
                 
                 image = [[FLAnimatedImage alloc] initWithAnimatedGIFData:thisImage.imageData];

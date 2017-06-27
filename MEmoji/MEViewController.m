@@ -234,9 +234,6 @@
     [super viewDidAppear:animated];
     [self reloadAllCollections];
     
-    [[[GAI sharedInstance] defaultTracker] set:kGAIScreenName value:@"MainView"];
-    [[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createAppView] build]];
-    
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     switch (authStatus) {
         case AVAuthorizationStatusAuthorized:

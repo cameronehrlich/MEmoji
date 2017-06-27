@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "MEmojiSplashScreen10.1.14.png"
+      "filename" : "MEmojiSplashScreen.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
