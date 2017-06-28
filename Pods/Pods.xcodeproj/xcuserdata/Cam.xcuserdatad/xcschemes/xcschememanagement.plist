@@ -64,11 +64,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MEmojiTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -138,11 +133,6 @@
 			<true/>
 		</dict>
 		<key>74F1A61ABC3AF50BA57C055370166967</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7E70550E60AE783068B0DE0B0551CBBC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
