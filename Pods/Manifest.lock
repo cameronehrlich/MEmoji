@@ -1,6 +1,5 @@
 PODS:
   - Appirater (2.0.5)
-  - Bolts/Tasks (1.8.4)
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.12)
   - FSOpenInInstagram (1.0)
@@ -11,8 +10,6 @@ PODS:
     - MagicalRecord/Core (= 2.3.2)
   - MagicalRecord/Core (2.3.2)
   - NSURL+ParseQuery (0.1)
-  - Parse (1.14.2):
-    - Bolts/Tasks (~> 1.8)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
   - ReactiveCocoa/Core (2.5):
@@ -31,7 +28,7 @@ PODS:
 
 DEPENDENCIES:
   - Appirater (~> 2.0.5)
-  - DHAppleReceiptParser (~> 1.0)
+  - DHAppleReceiptParser (~> 1.0.1)
   - FLAnimatedImage (~> 1.0.12)
   - FSOpenInInstagram (~> 1.0)
   - GoogleAnalytics (~> 3.12)
@@ -39,7 +36,6 @@ DEPENDENCIES:
   - LLARingSpinnerView (~> 0.1.4)
   - MagicalRecord (~> 2.3.2)
   - NSURL+ParseQuery (~> 0.1)
-  - Parse (~> 1.14.2)
   - ReactiveCocoa (~> 2.5)
   - UIAlertView+Blocks (~> 0.9)
   - UIColor+Hex (~> 1.0)
@@ -49,7 +45,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
-  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DHAppleReceiptParser: 57663acea9b76fec8648cada173d2e76fe402be0
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FSOpenInInstagram: 5c3a0721f4f3b1529c1b4768e11c579e5e61bef2
@@ -58,7 +53,6 @@ SPEC CHECKSUMS:
   LLARingSpinnerView: 334c37fd53f25c86651cbb4c57f70b12d571d7a5
   MagicalRecord: 53bed74b4323b930992a725be713e53b37d19755
   NSURL+ParseQuery: e67ddd406d7e015ec7205fd29083cfb33c9ab8ea
-  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   UIAlertView+Blocks: a46c99c5144f6c5dbc7d62fd2a0678daceec89a3
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
@@ -66,6 +60,6 @@ SPEC CHECKSUMS:
   UIView+Positioning: e93fe9e3186d1ed7d60e344aa12787911e902056
   UIView+Shimmer: ed634f95e8f4bda666b28b47bd85a4336a4117d8
 
-PODFILE CHECKSUM: 1314d3a5c7a4925896ccf775fc931b2e6d5873f1
+PODFILE CHECKSUM: b548dd0b7fa49dc6fae5e5a5cac7d0537bc2b5dc
 
 COCOAPODS: 1.2.1

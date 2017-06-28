@@ -1,12 +1,12 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, "10.3"
+platform :ios, '10.3'
 
 inhibit_all_warnings!
 use_frameworks!
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "MEmoji" do
+target 'MEmoji' do
     pod 'MagicalRecord', '~> 2.3.2'
     pod 'UIImage+Additions', '~> 2.1.1'
     pod 'UIColor+Hex', '~> 1.0'
@@ -18,8 +18,7 @@ target "MEmoji" do
     pod 'UIAlertView+Blocks', '~> 0.9'
     pod 'GoogleAnalytics', '~> 3.12'
     pod 'ReactiveCocoa', '~> 2.5'
-    pod 'DHAppleReceiptParser', '~> 1.0'
-    pod 'Parse', '~> 1.14.2'
+    pod 'DHAppleReceiptParser', '~> 1.0.1'
     pod 'FSOpenInInstagram', '~> 1.0'
     pod 'NSURL+ParseQuery', '~> 0.1'
     pod 'Appirater', '~> 2.0.5'
