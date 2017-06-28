@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0875CBED65B871F65A53C0B4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */; };
+		302339515C38077D4049B037 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 712045F815EEC30270A47DCA /* CoreVideo.framework */; };
 		3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* FreePack.xcassets */; };
 		3210054219DE0F12001B3680 /* MEProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210054119DE0F12001B3680 /* MEProgressView.m */; };
 		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
@@ -36,10 +38,18 @@
 		32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFAB9F19DD097000D0051F /* MESettingsCell.m */; };
 		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
 		32F752681987513000045AFA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F752671987513000045AFA /* Image.m */; };
+		34555329D77AEAA62024635E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */; };
 		68A29E63D517455FE774EC0D /* Pods_MEmoji.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */; };
+		8183B205E88D4B4F6B663F23 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 193F542FFD66F33A5CEE2520 /* CoreMedia.framework */; };
+		8DD922C45BE2BF91F8B68CF0 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */; };
+		AC65BFEBA7B3ED7F7F396FDA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */; };
+		C9F493A21BC10BE341508A04 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E99B827C45D83AD5A741934E /* CoreTelephony.framework */; };
+		EF8FAD4E4C279B837668CE0D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1DBB69AAB20E414AFD8D74B /* CoreText.framework */; };
+		F06CB3EAE3DB9B66260A8B1B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		193F542FFD66F33A5CEE2520 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		3201656B19D225CE00B3ECB1 /* FreePack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FreePack.xcassets; sourceTree = "<group>"; };
 		3210054019DE0F12001B3680 /* MEProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEProgressView.h; sourceTree = "<group>"; };
 		3210054119DE0F12001B3680 /* MEProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEProgressView.m; sourceTree = "<group>"; };
@@ -97,9 +107,17 @@
 		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
+		45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		712045F815EEC30270A47DCA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MEmoji.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
 		AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
+		D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BuddyBuildSDK.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		E1DBB69AAB20E414AFD8D74B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		E99B827C45D83AD5A741934E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +129,15 @@
 				32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */,
 				32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */,
 				68A29E63D517455FE774EC0D /* Pods_MEmoji.framework in Frameworks */,
+				8DD922C45BE2BF91F8B68CF0 /* BuddyBuildSDK.framework in Frameworks */,
+				F06CB3EAE3DB9B66260A8B1B /* AssetsLibrary.framework in Frameworks */,
+				EF8FAD4E4C279B837668CE0D /* CoreText.framework in Frameworks */,
+				C9F493A21BC10BE341508A04 /* CoreTelephony.framework in Frameworks */,
+				0875CBED65B871F65A53C0B4 /* SystemConfiguration.framework in Frameworks */,
+				AC65BFEBA7B3ED7F7F396FDA /* QuartzCore.framework in Frameworks */,
+				34555329D77AEAA62024635E /* AVFoundation.framework in Frameworks */,
+				8183B205E88D4B4F6B663F23 /* CoreMedia.framework in Frameworks */,
+				302339515C38077D4049B037 /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +202,15 @@
 				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
 				32DD888919870B44008E8BCE /* UIKit.framework */,
 				8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */,
+				D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */,
+				720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */,
+				E1DBB69AAB20E414AFD8D74B /* CoreText.framework */,
+				E99B827C45D83AD5A741934E /* CoreTelephony.framework */,
+				F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */,
+				5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */,
+				45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */,
+				193F542FFD66F33A5CEE2520 /* CoreMedia.framework */,
+				712045F815EEC30270A47DCA /* CoreVideo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -500,6 +536,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
@@ -526,6 +566,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";

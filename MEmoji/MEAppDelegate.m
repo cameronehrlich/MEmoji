@@ -9,6 +9,7 @@
 #import "MEAppDelegate.h"
 #import "MEModel.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import <BuddyBuildSDK/BuddyBuildSDK.h>
 
 @import NSURL_ParseQuery;
 
@@ -16,6 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [BuddyBuildSDK setup];
+    
     [MEModel sharedInstance];
         
     [self.window setTintColor:[UIColor whiteColor]];
