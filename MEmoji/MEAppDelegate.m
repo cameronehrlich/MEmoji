@@ -8,7 +8,7 @@
 
 #import "MEAppDelegate.h"
 #import "MEModel.h"
-#import <MagicalRecord/>
+#import <MagicalRecord/MagicalRecord.h>
 
 @import NSURL_ParseQuery;
 

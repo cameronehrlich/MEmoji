@@ -86,7 +86,7 @@ THE SOFTWARE.
 
 ## GoogleAnalytics
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## JGProgressHUD
 

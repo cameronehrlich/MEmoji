@@ -3,8 +3,8 @@ PODS:
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.12)
   - FSOpenInInstagram (1.0)
-  - GoogleAnalytics (3.14.0)
-  - JGProgressHUD (1.3.5)
+  - GoogleAnalytics (3.17.0)
+  - JGProgressHUD (1.3.6)
   - LLARingSpinnerView (0.1.4)
   - MagicalRecord (2.3.2):
     - MagicalRecord/Core (= 2.3.2)
@@ -22,8 +22,8 @@ PODS:
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
   - UIColor+Hex/UIColor (1.0.1)
-  - UIImage+Additions (2.1.1)
-  - UIView+Positioning (1.1)
+  - UIImage+Additions (2.1.3)
+  - UIView+Positioning (1.5)
   - UIView+Shimmer (1.0.0)
 
 DEPENDENCIES:
@@ -48,16 +48,16 @@ SPEC CHECKSUMS:
   DHAppleReceiptParser: 57663acea9b76fec8648cada173d2e76fe402be0
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FSOpenInInstagram: 5c3a0721f4f3b1529c1b4768e11c579e5e61bef2
-  GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
-  JGProgressHUD: 5b202636fa103db63e6f001888d11ea628133129
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  JGProgressHUD: cd599e041ab8363ac5ce83a21a6d95e21d359152
   LLARingSpinnerView: 334c37fd53f25c86651cbb4c57f70b12d571d7a5
   MagicalRecord: 53bed74b4323b930992a725be713e53b37d19755
   NSURL+ParseQuery: e67ddd406d7e015ec7205fd29083cfb33c9ab8ea
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   UIAlertView+Blocks: a46c99c5144f6c5dbc7d62fd2a0678daceec89a3
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
-  UIImage+Additions: '0857fe36fc04d3f21862867931e39cf4914bace5'
-  UIView+Positioning: e93fe9e3186d1ed7d60e344aa12787911e902056
+  UIImage+Additions: 6f62221f8f2e08b9344c826560c95e107d98a975
+  UIView+Positioning: 20dd76cee61a0be663c42c24304a0baf4eebe7f7
   UIView+Shimmer: ed634f95e8f4bda666b28b47bd85a4336a4117d8
 
 PODFILE CHECKSUM: b548dd0b7fa49dc6fae5e5a5cac7d0537bc2b5dc
