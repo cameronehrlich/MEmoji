@@ -89,10 +89,6 @@
 		32DD889D19870B44008E8BCE /* MEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEViewController.h; sourceTree = "<group>"; };
 		32DD889E19870B44008E8BCE /* MEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEViewController.m; sourceTree = "<group>"; };
 		32DD88A019870B44008E8BCE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		32DD88A719870B44008E8BCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		32DD88AF19870B44008E8BCE /* MEmojiTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MEmojiTests-Info.plist"; sourceTree = "<group>"; };
-		32DD88B119870B44008E8BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		32DD88B319870B44008E8BCE /* MEmojiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEmojiTests.m; sourceTree = "<group>"; };
 		32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 7.xcdatamodel"; sourceTree = "<group>"; };
 		32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "../Launch Screen.xib"; sourceTree = "<group>"; };
 		32EFAB9E19DD097000D0051F /* MESettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESettingsCell.h; sourceTree = "<group>"; };
@@ -101,7 +97,6 @@
 		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
-		34D297C8CDD42D43348E9BAA /* Pods_MEmojiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MEmojiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MEmoji.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
 		AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
@@ -158,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				32DD888B19870B44008E8BCE /* MEmoji */,
-				32DD88AD19870B44008E8BCE /* MEmojiTests */,
 				32DD888419870B44008E8BCE /* Frameworks */,
 				32DD888319870B44008E8BCE /* Products */,
 				88FA6B9B9E374358AF762650 /* Pods */,
@@ -180,9 +174,7 @@
 				32DD888519870B44008E8BCE /* Foundation.framework */,
 				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
 				32DD888919870B44008E8BCE /* UIKit.framework */,
-				32DD88A719870B44008E8BCE /* XCTest.framework */,
 				8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */,
-				34D297C8CDD42D43348E9BAA /* Pods_MEmojiTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -221,24 +213,6 @@
 				32DD888E19870B44008E8BCE /* InfoPlist.strings */,
 				32DD889119870B44008E8BCE /* main.m */,
 				32DD889319870B44008E8BCE /* MEmoji-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		32DD88AD19870B44008E8BCE /* MEmojiTests */ = {
-			isa = PBXGroup;
-			children = (
-				32DD88B319870B44008E8BCE /* MEmojiTests.m */,
-				32DD88AE19870B44008E8BCE /* Supporting Files */,
-			);
-			path = MEmojiTests;
-			sourceTree = "<group>";
-		};
-		32DD88AE19870B44008E8BCE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				32DD88AF19870B44008E8BCE /* MEmojiTests-Info.plist */,
-				32DD88B019870B44008E8BCE /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -434,14 +408,6 @@
 			name = Main_iPhone.storyboard;
 			sourceTree = "<group>";
 		};
-		32DD88B019870B44008E8BCE /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32DD88B119870B44008E8BCE /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -464,6 +430,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -506,6 +473,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -532,7 +500,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;
-				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
@@ -559,7 +526,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;
-				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
 				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";

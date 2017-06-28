@@ -1,5 +1,5 @@
 PODS:
-  - Appirater (2.0.5)
+  - Appirater (2.1.2)
   - DHAppleReceiptParser (1.0.1)
   - FLAnimatedImage (1.0.12)
   - FSOpenInInstagram (1.0)
@@ -27,7 +27,7 @@ PODS:
   - UIView+Shimmer (1.0.0)
 
 DEPENDENCIES:
-  - Appirater (~> 2.0.5)
+  - Appirater (~> 2.1.2)
   - DHAppleReceiptParser (~> 1.0.1)
   - FLAnimatedImage (~> 1.0.12)
   - FSOpenInInstagram (~> 1.0)
@@ -44,7 +44,7 @@ DEPENDENCIES:
   - UIView+Shimmer (~> 1.0)
 
 SPEC CHECKSUMS:
-  Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
+  Appirater: f1c9e53e8b612193e6256144f6a0fd2e31f4340d
   DHAppleReceiptParser: 57663acea9b76fec8648cada173d2e76fe402be0
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FSOpenInInstagram: 5c3a0721f4f3b1529c1b4768e11c579e5e61bef2
@@ -60,6 +60,6 @@ SPEC CHECKSUMS:
   UIView+Positioning: 20dd76cee61a0be663c42c24304a0baf4eebe7f7
   UIView+Shimmer: ed634f95e8f4bda666b28b47bd85a4336a4117d8
 
-PODFILE CHECKSUM: b548dd0b7fa49dc6fae5e5a5cac7d0537bc2b5dc
+PODFILE CHECKSUM: 9a76b0c4372c554b51f03609949be1786d23374e
 
 COCOAPODS: 1.2.1

@@ -21,6 +21,6 @@ target 'MEmoji' do
     pod 'DHAppleReceiptParser', '~> 1.0.1'
     pod 'FSOpenInInstagram', '~> 1.0'
     pod 'NSURL+ParseQuery', '~> 0.1'
-    pod 'Appirater', '~> 2.0.5'
+    pod 'Appirater', '~> 2.1.2'
 end
 
