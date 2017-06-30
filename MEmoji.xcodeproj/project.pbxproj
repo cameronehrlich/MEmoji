@@ -34,6 +34,7 @@
 		32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32DD889719870B44008E8BCE /* Main_iPhone.storyboard */; };
 		32DD889F19870B44008E8BCE /* MEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889E19870B44008E8BCE /* MEViewController.m */; };
 		32DD88A119870B44008E8BCE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32DD88A019870B44008E8BCE /* Images.xcassets */; };
+		32EAACA11F06A153008BACC6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32EAACA01F06A153008BACC6 /* StoreKit.framework */; };
 		32EFAB9D19DCE5AC00D0051F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */; };
 		32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFAB9F19DD097000D0051F /* MESettingsCell.m */; };
 		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
@@ -100,6 +101,8 @@
 		32DD889E19870B44008E8BCE /* MEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEViewController.m; sourceTree = "<group>"; };
 		32DD88A019870B44008E8BCE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 7.xcdatamodel"; sourceTree = "<group>"; };
+		32EAACA01F06A153008BACC6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		32EAACA21F06A15D008BACC6 /* MEmoji.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MEmoji.entitlements; sourceTree = "<group>"; };
 		32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "../Launch Screen.xib"; sourceTree = "<group>"; };
 		32EFAB9E19DD097000D0051F /* MESettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESettingsCell.h; sourceTree = "<group>"; };
 		32EFAB9F19DD097000D0051F /* MESettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESettingsCell.m; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 		32DD888419870B44008E8BCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				32EAACA01F06A153008BACC6 /* StoreKit.framework */,
 				324211C519B7E43800F0B74E /* ImageIO.framework */,
 				32DD888519870B44008E8BCE /* Foundation.framework */,
 				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
@@ -245,6 +249,7 @@
 		32DD888C19870B44008E8BCE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				32EAACA21F06A15D008BACC6 /* MEmoji.entitlements */,
 				32DD888D19870B44008E8BCE /* MEmoji-Info.plist */,
 				32DD888E19870B44008E8BCE /* InfoPlist.strings */,
 				32DD889119870B44008E8BCE /* main.m */,
@@ -312,6 +317,14 @@
 					32DD888119870B44008E8BCE = {
 						DevelopmentTeam = 842K77RHSG;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -533,6 +546,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MEmoji/MEmoji.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;
@@ -563,6 +577,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MEmoji/MEmoji.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 842K77RHSG;

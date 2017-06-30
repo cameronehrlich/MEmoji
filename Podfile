@@ -22,5 +22,6 @@ target 'MEmoji' do
     pod 'FSOpenInInstagram', '~> 1.0'
     pod 'NSURL+ParseQuery', '~> 0.1'
     pod 'Appirater', '~> 2.1.2'
+    pod 'BuddyBuildSDK', '~> 1.0.16'
 end
 

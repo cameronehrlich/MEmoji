@@ -1,0 +1,666 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 47;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0875CBED65B871F65A53C0B4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */; };
+		302339515C38077D4049B037 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 712045F815EEC30270A47DCA /* CoreVideo.framework */; };
+		3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3201656B19D225CE00B3ECB1 /* FreePack.xcassets */; };
+		3210054219DE0F12001B3680 /* MEProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210054119DE0F12001B3680 /* MEProgressView.m */; };
+		3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3218C80D19C7691C0035B7BA /* MEOverlayCell.m */; };
+		3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3226033619D1F4F00082625F /* MEOverlayImage.m */; };
+		323DF6971A1027AA00FC8D04 /* HolidayPack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 323DF6961A1027AA00FC8D04 /* HolidayPack.xcassets */; };
+		323DF69A1A10464E00FC8D04 /* MEPackCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */; };
+		323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 323E26761A0067F100C33196 /* MEIntroductionView.m */; };
+		325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C434B19CA7F8400C93DCC /* CEMovieMaker.m */; };
+		325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C9CA719D61E4B00E426E9 /* MEViewFinder.m */; };
+		325E995C19DD2CD6004E8DBA /* HipHipPack.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */; };
+		327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327A02231987542200DF27BC /* MEMEmojiCell.m */; };
+		328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A119D5220F0010CF1C /* MESectionsManager.m */; };
+		328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A419D5333F0010CF1C /* MECaptureButton.m */; };
+		328F63A819D561CD0010CF1C /* MEShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328F63A719D561CD0010CF1C /* MEShareView.m */; };
+		329B189A19D4E526002B42BF /* MESectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 329B189919D4E526002B42BF /* MESectionHeaderView.m */; };
+		32A9384B199BE59E00125DA8 /* MEModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A9384A199BE59E00125DA8 /* MEModel.m */; };
+		32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888519870B44008E8BCE /* Foundation.framework */; };
+		32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888719870B44008E8BCE /* CoreGraphics.framework */; };
+		32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DD888919870B44008E8BCE /* UIKit.framework */; };
+		32DD889019870B44008E8BCE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD888E19870B44008E8BCE /* InfoPlist.strings */; };
+		32DD889219870B44008E8BCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889119870B44008E8BCE /* main.m */; };
+		32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889519870B44008E8BCE /* MEAppDelegate.m */; };
+		32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32DD889719870B44008E8BCE /* Main_iPhone.storyboard */; };
+		32DD889F19870B44008E8BCE /* MEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD889E19870B44008E8BCE /* MEViewController.m */; };
+		32DD88A119870B44008E8BCE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32DD88A019870B44008E8BCE /* Images.xcassets */; };
+		32EAACA11F06A153008BACC6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32EAACA01F06A153008BACC6 /* StoreKit.framework */; };
+		32EFAB9D19DCE5AC00D0051F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */; };
+		32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFAB9F19DD097000D0051F /* MESettingsCell.m */; };
+		32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32F7526319874FEA00045AFA /* Model.xcdatamodeld */; };
+		32F752681987513000045AFA /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F752671987513000045AFA /* Image.m */; };
+<<<<<<< Updated upstream
+		34555329D77AEAA62024635E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */; };
+		68A29E63D517455FE774EC0D /* Pods_MEmoji.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */; };
+		8183B205E88D4B4F6B663F23 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 193F542FFD66F33A5CEE2520 /* CoreMedia.framework */; };
+		8DD922C45BE2BF91F8B68CF0 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */; };
+		AC65BFEBA7B3ED7F7F396FDA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */; };
+		C9F493A21BC10BE341508A04 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E99B827C45D83AD5A741934E /* CoreTelephony.framework */; };
+		EF8FAD4E4C279B837668CE0D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1DBB69AAB20E414AFD8D74B /* CoreText.framework */; };
+		F06CB3EAE3DB9B66260A8B1B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */; };
+=======
+		D3277E7B287D0BDE9580CD40 /* Pods_MEmoji.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3FA25494C7B82307E439E31 /* Pods_MEmoji.framework */; };
+>>>>>>> Stashed changes
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		193F542FFD66F33A5CEE2520 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		3201656B19D225CE00B3ECB1 /* FreePack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FreePack.xcassets; sourceTree = "<group>"; };
+		3210054019DE0F12001B3680 /* MEProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEProgressView.h; sourceTree = "<group>"; };
+		3210054119DE0F12001B3680 /* MEProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEProgressView.m; sourceTree = "<group>"; };
+		3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
+		3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
+		3218C80C19C7691C0035B7BA /* MEOverlayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayCell.h; sourceTree = "<group>"; };
+		3218C80D19C7691C0035B7BA /* MEOverlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayCell.m; sourceTree = "<group>"; };
+		3226033519D1F4F00082625F /* MEOverlayImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEOverlayImage.h; sourceTree = "<group>"; };
+		3226033619D1F4F00082625F /* MEOverlayImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEOverlayImage.m; sourceTree = "<group>"; };
+		323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 8.xcdatamodel"; sourceTree = "<group>"; };
+		323DF6961A1027AA00FC8D04 /* HolidayPack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HolidayPack.xcassets; sourceTree = "<group>"; };
+		323DF6981A10464E00FC8D04 /* MEPackCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPackCollectionView.h; sourceTree = "<group>"; };
+		323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPackCollectionView.m; sourceTree = "<group>"; };
+		323E26751A0067F100C33196 /* MEIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIntroductionView.h; sourceTree = "<group>"; };
+		323E26761A0067F100C33196 /* MEIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIntroductionView.m; sourceTree = "<group>"; };
+		324211C519B7E43800F0B74E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		325C434A19CA7F8400C93DCC /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
+		325C434B19CA7F8400C93DCC /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
+		325C9CA619D61E4B00E426E9 /* MEViewFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEViewFinder.h; sourceTree = "<group>"; };
+		325C9CA719D61E4B00E426E9 /* MEViewFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEViewFinder.m; sourceTree = "<group>"; };
+		325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HipHipPack.xcassets; sourceTree = "<group>"; };
+		3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		327A02221987542200DF27BC /* MEMEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEMEmojiCell.h; sourceTree = "<group>"; };
+		327A02231987542200DF27BC /* MEMEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEMEmojiCell.m; sourceTree = "<group>"; };
+		328F63A019D5220F0010CF1C /* MESectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionsManager.h; sourceTree = "<group>"; };
+		328F63A119D5220F0010CF1C /* MESectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionsManager.m; sourceTree = "<group>"; };
+		328F63A319D5333F0010CF1C /* MECaptureButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MECaptureButton.h; sourceTree = "<group>"; };
+		328F63A419D5333F0010CF1C /* MECaptureButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MECaptureButton.m; sourceTree = "<group>"; };
+		328F63A619D561CD0010CF1C /* MEShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEShareView.h; sourceTree = "<group>"; };
+		328F63A719D561CD0010CF1C /* MEShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEShareView.m; sourceTree = "<group>"; };
+		329B189819D4E526002B42BF /* MESectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESectionHeaderView.h; sourceTree = "<group>"; };
+		329B189919D4E526002B42BF /* MESectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESectionHeaderView.m; sourceTree = "<group>"; };
+		32A93849199BE59E00125DA8 /* MEModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEModel.h; sourceTree = "<group>"; };
+		32A9384A199BE59E00125DA8 /* MEModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEModel.m; sourceTree = "<group>"; };
+		32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		32DD888219870B44008E8BCE /* MEmoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEmoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32DD888519870B44008E8BCE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		32DD888719870B44008E8BCE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		32DD888919870B44008E8BCE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		32DD888D19870B44008E8BCE /* MEmoji-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MEmoji-Info.plist"; sourceTree = "<group>"; };
+		32DD888F19870B44008E8BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32DD889119870B44008E8BCE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32DD889319870B44008E8BCE /* MEmoji-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MEmoji-Prefix.pch"; sourceTree = "<group>"; };
+		32DD889419870B44008E8BCE /* MEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEAppDelegate.h; sourceTree = "<group>"; };
+		32DD889519870B44008E8BCE /* MEAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEAppDelegate.m; sourceTree = "<group>"; };
+		32DD889819870B44008E8BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		32DD889D19870B44008E8BCE /* MEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEViewController.h; sourceTree = "<group>"; };
+		32DD889E19870B44008E8BCE /* MEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEViewController.m; sourceTree = "<group>"; };
+		32DD88A019870B44008E8BCE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 7.xcdatamodel"; sourceTree = "<group>"; };
+		32EAACA01F06A153008BACC6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		32EAACA21F06A15D008BACC6 /* MEmoji.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MEmoji.entitlements; sourceTree = "<group>"; };
+		32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "../Launch Screen.xib"; sourceTree = "<group>"; };
+		32EFAB9E19DD097000D0051F /* MESettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MESettingsCell.h; sourceTree = "<group>"; };
+		32EFAB9F19DD097000D0051F /* MESettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MESettingsCell.m; sourceTree = "<group>"; };
+		32F7526419874FEA00045AFA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		32F752661987513000045AFA /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
+		32F752671987513000045AFA /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
+<<<<<<< Updated upstream
+		45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		712045F815EEC30270A47DCA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MEmoji.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
+		AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
+		D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BuddyBuildSDK.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		E1DBB69AAB20E414AFD8D74B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		E99B827C45D83AD5A741934E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+=======
+		A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.release.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.release.xcconfig"; sourceTree = "<group>"; };
+		AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEmoji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji.debug.xcconfig"; sourceTree = "<group>"; };
+		B3FA25494C7B82307E439E31 /* Pods_MEmoji.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MEmoji.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+>>>>>>> Stashed changes
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		32DD887F19870B44008E8BCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32DD888819870B44008E8BCE /* CoreGraphics.framework in Frameworks */,
+				32DD888A19870B44008E8BCE /* UIKit.framework in Frameworks */,
+				32DD888619870B44008E8BCE /* Foundation.framework in Frameworks */,
+<<<<<<< Updated upstream
+				68A29E63D517455FE774EC0D /* Pods_MEmoji.framework in Frameworks */,
+				8DD922C45BE2BF91F8B68CF0 /* BuddyBuildSDK.framework in Frameworks */,
+				F06CB3EAE3DB9B66260A8B1B /* AssetsLibrary.framework in Frameworks */,
+				EF8FAD4E4C279B837668CE0D /* CoreText.framework in Frameworks */,
+				C9F493A21BC10BE341508A04 /* CoreTelephony.framework in Frameworks */,
+				0875CBED65B871F65A53C0B4 /* SystemConfiguration.framework in Frameworks */,
+				AC65BFEBA7B3ED7F7F396FDA /* QuartzCore.framework in Frameworks */,
+				34555329D77AEAA62024635E /* AVFoundation.framework in Frameworks */,
+				8183B205E88D4B4F6B663F23 /* CoreMedia.framework in Frameworks */,
+				302339515C38077D4049B037 /* CoreVideo.framework in Frameworks */,
+=======
+				32EAACA11F06A153008BACC6 /* StoreKit.framework in Frameworks */,
+				D3277E7B287D0BDE9580CD40 /* Pods_MEmoji.framework in Frameworks */,
+>>>>>>> Stashed changes
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3212C2A619C77717007ED774 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				329B189819D4E526002B42BF /* MESectionHeaderView.h */,
+				329B189919D4E526002B42BF /* MESectionHeaderView.m */,
+				327A02221987542200DF27BC /* MEMEmojiCell.h */,
+				327A02231987542200DF27BC /* MEMEmojiCell.m */,
+				3218C80C19C7691C0035B7BA /* MEOverlayCell.h */,
+				3218C80D19C7691C0035B7BA /* MEOverlayCell.m */,
+				32EFAB9E19DD097000D0051F /* MESettingsCell.h */,
+				32EFAB9F19DD097000D0051F /* MESettingsCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		32640E9719E6001400F023F6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				325C9CA619D61E4B00E426E9 /* MEViewFinder.h */,
+				325C9CA719D61E4B00E426E9 /* MEViewFinder.m */,
+				323E26751A0067F100C33196 /* MEIntroductionView.h */,
+				323E26761A0067F100C33196 /* MEIntroductionView.m */,
+				328F63A619D561CD0010CF1C /* MEShareView.h */,
+				328F63A719D561CD0010CF1C /* MEShareView.m */,
+				3210054019DE0F12001B3680 /* MEProgressView.h */,
+				3210054119DE0F12001B3680 /* MEProgressView.m */,
+				328F63A319D5333F0010CF1C /* MECaptureButton.h */,
+				328F63A419D5333F0010CF1C /* MECaptureButton.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		32DD887919870B44008E8BCE = {
+			isa = PBXGroup;
+			children = (
+				32DD888B19870B44008E8BCE /* MEmoji */,
+				32DD888419870B44008E8BCE /* Frameworks */,
+				32DD888319870B44008E8BCE /* Products */,
+				88FA6B9B9E374358AF762650 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		32DD888319870B44008E8BCE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				32DD888219870B44008E8BCE /* MEmoji.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		32DD888419870B44008E8BCE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				32EAACA01F06A153008BACC6 /* StoreKit.framework */,
+				324211C519B7E43800F0B74E /* ImageIO.framework */,
+				32DD888519870B44008E8BCE /* Foundation.framework */,
+				32DD888719870B44008E8BCE /* CoreGraphics.framework */,
+				32DD888919870B44008E8BCE /* UIKit.framework */,
+<<<<<<< Updated upstream
+				8A459CC5062E413677A9A76C /* Pods_MEmoji.framework */,
+				D29AA1D3D7447CACDBCEBA72 /* BuddyBuildSDK.framework */,
+				720EDB4F1A608CC59CAFAE49 /* AssetsLibrary.framework */,
+				E1DBB69AAB20E414AFD8D74B /* CoreText.framework */,
+				E99B827C45D83AD5A741934E /* CoreTelephony.framework */,
+				F8F74967AAFDA54DD44B911D /* SystemConfiguration.framework */,
+				5B123FF5F93AA3E0C7726A97 /* QuartzCore.framework */,
+				45A7A2FA4DD74EC4FE8FAFC8 /* AVFoundation.framework */,
+				193F542FFD66F33A5CEE2520 /* CoreMedia.framework */,
+				712045F815EEC30270A47DCA /* CoreVideo.framework */,
+=======
+				B3FA25494C7B82307E439E31 /* Pods_MEmoji.framework */,
+>>>>>>> Stashed changes
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		32DD888B19870B44008E8BCE /* MEmoji */ = {
+			isa = PBXGroup;
+			children = (
+				32DD889419870B44008E8BCE /* MEAppDelegate.h */,
+				32DD889519870B44008E8BCE /* MEAppDelegate.m */,
+				32DD889719870B44008E8BCE /* Main_iPhone.storyboard */,
+				32EFAB9C19DCE5AC00D0051F /* Launch Screen.xib */,
+				32DD889D19870B44008E8BCE /* MEViewController.h */,
+				32DD889E19870B44008E8BCE /* MEViewController.m */,
+				323DF6981A10464E00FC8D04 /* MEPackCollectionView.h */,
+				323DF6991A10464E00FC8D04 /* MEPackCollectionView.m */,
+				328F63A019D5220F0010CF1C /* MESectionsManager.h */,
+				328F63A119D5220F0010CF1C /* MESectionsManager.m */,
+				325C434A19CA7F8400C93DCC /* CEMovieMaker.h */,
+				325C434B19CA7F8400C93DCC /* CEMovieMaker.m */,
+				32F752691987514300045AFA /* Model */,
+				32640E9719E6001400F023F6 /* Views */,
+				3212C2A619C77717007ED774 /* Cells */,
+				32DD88A019870B44008E8BCE /* Images.xcassets */,
+				3201656B19D225CE00B3ECB1 /* FreePack.xcassets */,
+				325E995B19DD2CD6004E8DBA /* HipHipPack.xcassets */,
+				323DF6961A1027AA00FC8D04 /* HolidayPack.xcassets */,
+				32DD888C19870B44008E8BCE /* Supporting Files */,
+			);
+			path = MEmoji;
+			sourceTree = "<group>";
+		};
+		32DD888C19870B44008E8BCE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				32EAACA21F06A15D008BACC6 /* MEmoji.entitlements */,
+				32DD888D19870B44008E8BCE /* MEmoji-Info.plist */,
+				32DD888E19870B44008E8BCE /* InfoPlist.strings */,
+				32DD889119870B44008E8BCE /* main.m */,
+				32DD889319870B44008E8BCE /* MEmoji-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		32F752691987514300045AFA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				32F7526319874FEA00045AFA /* Model.xcdatamodeld */,
+				32A93849199BE59E00125DA8 /* MEModel.h */,
+				32A9384A199BE59E00125DA8 /* MEModel.m */,
+				32F752661987513000045AFA /* Image.h */,
+				32F752671987513000045AFA /* Image.m */,
+				3226033519D1F4F00082625F /* MEOverlayImage.h */,
+				3226033619D1F4F00082625F /* MEOverlayImage.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		88FA6B9B9E374358AF762650 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */,
+				A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		32DD888119870B44008E8BCE /* MEmoji */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 32DD88B719870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmoji" */;
+			buildPhases = (
+				310C9CC441759C46737130FE /* [CP] Check Pods Manifest.lock */,
+				32DD887E19870B44008E8BCE /* Sources */,
+				32DD887F19870B44008E8BCE /* Frameworks */,
+				32DD888019870B44008E8BCE /* Resources */,
+				03B488256937ED8E804D4376 /* [CP] Embed Pods Frameworks */,
+				26013C5BC9098A9B05908CF9 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MEmoji;
+			productName = MEmoji;
+			productReference = 32DD888219870B44008E8BCE /* MEmoji.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		32DD887A19870B44008E8BCE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = ME;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Lucky Bunny LLC";
+				TargetAttributes = {
+					32DD888119870B44008E8BCE = {
+						DevelopmentTeam = 842K77RHSG;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 32DD887D19870B44008E8BCE /* Build configuration list for PBXProject "MEmoji" */;
+			compatibilityVersion = "Xcode 6.3";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 32DD887919870B44008E8BCE;
+			productRefGroup = 32DD888319870B44008E8BCE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				32DD888119870B44008E8BCE /* MEmoji */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		32DD888019870B44008E8BCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3201656C19D225CE00B3ECB1 /* FreePack.xcassets in Resources */,
+				323DF6971A1027AA00FC8D04 /* HolidayPack.xcassets in Resources */,
+				32DD88A119870B44008E8BCE /* Images.xcassets in Resources */,
+				325E995C19DD2CD6004E8DBA /* HipHipPack.xcassets in Resources */,
+				32DD889919870B44008E8BCE /* Main_iPhone.storyboard in Resources */,
+				32DD889019870B44008E8BCE /* InfoPlist.strings in Resources */,
+				32EFAB9D19DCE5AC00D0051F /* Launch Screen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		03B488256937ED8E804D4376 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		26013C5BC9098A9B05908CF9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MEmoji/Pods-MEmoji-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		310C9CC441759C46737130FE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		32DD887E19870B44008E8BCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				328F63A519D5333F0010CF1C /* MECaptureButton.m in Sources */,
+				327A02241987542200DF27BC /* MEMEmojiCell.m in Sources */,
+				3226033719D1F4F00082625F /* MEOverlayImage.m in Sources */,
+				329B189A19D4E526002B42BF /* MESectionHeaderView.m in Sources */,
+				3218C80E19C7691C0035B7BA /* MEOverlayCell.m in Sources */,
+				325C9CA819D61E4B00E426E9 /* MEViewFinder.m in Sources */,
+				32DD889619870B44008E8BCE /* MEAppDelegate.m in Sources */,
+				328F63A819D561CD0010CF1C /* MEShareView.m in Sources */,
+				32DD889F19870B44008E8BCE /* MEViewController.m in Sources */,
+				32DD889219870B44008E8BCE /* main.m in Sources */,
+				323DF69A1A10464E00FC8D04 /* MEPackCollectionView.m in Sources */,
+				32F7526519874FEA00045AFA /* Model.xcdatamodeld in Sources */,
+				325C434C19CA7F8400C93DCC /* CEMovieMaker.m in Sources */,
+				323E26771A0067F100C33196 /* MEIntroductionView.m in Sources */,
+				32F752681987513000045AFA /* Image.m in Sources */,
+				328F63A219D5220F0010CF1C /* MESectionsManager.m in Sources */,
+				32EFABA019DD097000D0051F /* MESettingsCell.m in Sources */,
+				32A9384B199BE59E00125DA8 /* MEModel.m in Sources */,
+				3210054219DE0F12001B3680 /* MEProgressView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		32DD888E19870B44008E8BCE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32DD888F19870B44008E8BCE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		32DD889719870B44008E8BCE /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32DD889819870B44008E8BCE /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		32DD88B519870B44008E8BCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		32DD88B619870B44008E8BCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		32DD88B819870B44008E8BCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC0687E3476CE4B7EB581C0F /* Pods-MEmoji.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MEmoji/MEmoji.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 842K77RHSG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
+				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LuckyBunny.MEmoji;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		32DD88B919870B44008E8BCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5725AEE69580C8431B94899 /* Pods-MEmoji.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MEmoji/MEmoji.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 842K77RHSG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MEmoji/MEmoji-Prefix.pch";
+				INFOPLIST_FILE = "MEmoji/MEmoji-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LuckyBunny.MEmoji;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MEmoji/MEmoji-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		32DD887D19870B44008E8BCE /* Build configuration list for PBXProject "MEmoji" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32DD88B519870B44008E8BCE /* Debug */,
+				32DD88B619870B44008E8BCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		32DD88B719870B44008E8BCE /* Build configuration list for PBXNativeTarget "MEmoji" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32DD88B819870B44008E8BCE /* Debug */,
+				32DD88B919870B44008E8BCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		32F7526319874FEA00045AFA /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				32D0E8F719C8E2E8006D8804 /* Model 6.xcdatamodel */,
+				32E5C9D019E30D6F00C45F69 /* Model 7.xcdatamodel */,
+				323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */,
+				32F8343F19B8F4230078FAAE /* Model 2.xcdatamodel */,
+				3278916219BA6D9B0050F57C /* Model 3.xcdatamodel */,
+				3216CABD19BD61B7007F3D46 /* Model 4.xcdatamodel */,
+				3218C80B19C757BD0035B7BA /* Model 5.xcdatamodel */,
+				32F7526419874FEA00045AFA /* Model.xcdatamodel */,
+			);
+			currentVersion = 323B0E0419ECA1670007A80B /* Model 8.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 32DD887A19870B44008E8BCE /* Project object */;
+}
